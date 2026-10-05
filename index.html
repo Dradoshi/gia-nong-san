@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
+<head>banggianongsan
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
@@ -164,6 +164,21 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 }
 @media(min-width:768px){.cd .p{font-size:24px}.gd{gap:12px}}
 @media(min-width:1024px){.w{max-width:1120px}.hd{border-radius:0 0 16px 16px}.gd{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}.cv{height:340px}}
+.tc{margin:22px 16px 0;border:1px solid var(--line);border-radius:12px;background:#fafbfa;padding:12px 14px;font-size:13px;color:#2b332e}
+.tc h2{margin:0 0 6px;font-size:14px;font-weight:700}.tc p{margin:0 0 8px;line-height:1.55}
+.tc details{border-top:1px solid var(--line);padding:8px 0}.tc summary{cursor:pointer;font-weight:600}
+.tc ol{margin:8px 0 0;padding-left:20px}.tc li{margin:0 0 6px;line-height:1.55}
+.tc .ph{background:#fff3c4;border-radius:4px;padding:0 3px}
+
+.mbtn{margin:4px 0 8px;background:var(--g);color:#fff;border:0;border-radius:8px;padding:9px 14px;font-weight:700;min-height:40px}
+#md{border:0;border-radius:14px;padding:0;width:min(440px,calc(100vw - 24px));max-height:90vh;color:var(--k)}
+#md::backdrop{background:rgba(0,0,0,.5)}
+#md form{padding:16px;display:grid;gap:10px}#md h3{margin:0;font-size:16px}
+#md label{display:grid;gap:4px;font-size:12.5px;color:var(--mut);font-weight:600}
+#md input:not([type=checkbox]),#md select{padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--k);font-size:16px}
+#md .ck2{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--k);font-weight:500}#md .ck2 input{margin-top:3px;accent-color:var(--g)}
+#md .row{display:flex;gap:8px;justify-content:flex-end}#md .row button{border-radius:8px;padding:9px 14px;font-weight:700;border:1px solid var(--line);background:#fff}
+#md .row .ok{background:var(--g);color:#fff;border-color:var(--g)}#mm{font-size:12.5px;margin:0;min-height:1em}#mm.er{color:var(--dn)}#mm.ok{color:var(--g)}
 </style>
 </head>
 <body>
@@ -176,7 +191,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
           <path d="M21 12a9 9 0 1 1-2.64-6.36"/>
           <polyline points="21 3 21 9 15 9"/>
         </svg>
-        <span class="rf-lbl">Làm mới lại dữ liệu</span>
+        <span class="rf-lbl">Mới</span>
       </button>
     </div>
     <p id="up"><span class="dot"></span><span class="txt">Đang tải…</span></p>
@@ -184,6 +199,50 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
   </header>
   <main id="main"><p class="em">Đang tải…</p></main>
   <p class="ft" id="ft"></p>
+  <section class="tc" id="tc" aria-label="Ghi chú và điều khoản">
+   <h2>Ghi chú về giá</h2>
+   <p>Giá được cập nhật tự động từ các nguồn công bố và có thể được thành viên đã đăng nhập, đã xác minh điều chỉnh để luôn là giá mới nhất. Giá chưa cập nhật trong ngày được gắn nhãn ngày của lần cập nhật gần nhất. Nhãn <b>Tham khảo</b> là giá ước lượng, chưa phải giá đã được xác nhận. Hãy đối chiếu thêm với chợ, đại lý hoặc thương lái trước khi giao dịch.</p>
+   <button type="button" class="mbtn" id="mb">Đăng nhập để cập nhật giá</button>
+   <details><summary>Hướng dẫn cập nhật giá (dành cho thành viên đã xác minh)</summary><ol>
+    <li><b>Giá phải luôn mới nhất:</b> cập nhật ngay khi giá thay đổi, tối thiểu mỗi ngày với những cây bạn phụ trách.</li>
+    <li><b>Chỉ nhập giá thật:</b> là giá bạn trực tiếp mua bán, niêm yết hoặc xác nhận được trong ngày. Không nhập giá ước đoán, giá mong muốn hoặc giá của nơi khác.</li>
+    <li><b>Nhập đủ và đúng:</b> chọn đúng cây, loại hoặc quy cách, tỉnh/thành, đơn vị (đ/kg, đ/tấn…) và ngày áp dụng.</li>
+    <li><b>Giá lệch nhiều phải có nguồn:</b> nếu chênh từ 10% trở lên so với giá đang hiển thị, ghi rõ nơi mua bán và đính kèm ảnh bảng giá hoặc chứng từ nếu có.</li>
+    <li><b>Xác nhận trước khi gửi:</b> tick vào ô “Tôi xác nhận giá này chính xác và chịu trách nhiệm về thông tin đã cung cấp”.</li>
+    <li><b>Kiểm duyệt:</b> giá gửi lên được kiểm tra trước khi hiển thị chính thức. Giá bất thường có thể bị từ chối hoặc bị yêu cầu bổ sung thông tin.</li>
+    <li><b>Phát hiện giá sai:</b> sửa hoặc báo ngay. Tài khoản cố ý nhập sai, thao túng giá hoặc spam có thể bị khóa.</li>
+   </ol></details>
+   <details><summary>Điều khoản sử dụng</summary><ol>
+    <li><b>Phạm vi áp dụng.</b> Khi xem hoặc dùng trang này, bạn đồng ý với các điều khoản dưới đây. Trang do <b>CÔNG TY TNHH UNIGREEN</b> vận hành.</li>
+    <li><b>Tính chất của thông tin giá.</b> Giá chỉ để tra cứu, không phải báo giá, cam kết mua bán hay lời khuyên đầu tư. Giá thực tế có thể khác theo chất lượng, số lượng, địa điểm và thời điểm giao dịch.</li>
+    <li><b>Nguồn giá.</b> Giá đến từ (a) nguồn công bố được tự động tổng hợp, (b) thành viên đã đăng nhập và xác minh điều chỉnh, và (c) giá “Tham khảo” là ước lượng khi chưa có giá được xác nhận. Giá chưa cập nhật trong ngày được gắn nhãn ngày gần nhất.</li>
+    <li><b>Giá có thể được điều chỉnh.</b> Giá có thể thay đổi bất kỳ lúc nào để phản ánh giá mới nhất, do cập nhật tự động hoặc do thành viên điều chỉnh. Khách hàng muốn điều chỉnh giá cần đăng nhập và được xác minh.</li>
+    <li><b>Tài khoản và xác minh.</b> Người điều chỉnh giá phải đăng nhập, cung cấp thông tin xác minh trung thực và tự bảo mật tài khoản. Chúng tôi có quyền từ chối hoặc thu hồi quyền điều chỉnh giá.</li>
+    <li><b>Trách nhiệm của thành viên.</b> Khi gửi giá, bạn xác nhận giá đó chính xác, do bạn trực tiếp biết hoặc có nguồn rõ ràng, và chịu trách nhiệm về nội dung đã cung cấp. Nghiêm cấm nhập giá sai có chủ ý, thao túng giá, mạo danh hoặc spam.</li>
+    <li><b>Kiểm duyệt và xử lý vi phạm.</b> Chúng tôi có quyền kiểm tra, từ chối, chỉnh sửa, gỡ hoặc khôi phục giá, lưu nhật ký thay đổi (người gửi, thời gian) và khóa tài khoản vi phạm.</li>
+    <li><b>Giới hạn trách nhiệm.</b> Chúng tôi nỗ lực giữ giá chính xác và mới nhất nhưng không bảo đảm tuyệt đối. Bạn tự kiểm tra lại giá trước khi giao dịch. Trong phạm vi pháp luật cho phép, chúng tôi không chịu trách nhiệm về thiệt hại phát sinh do chỉ dựa vào giá hiển thị.</li>
+    <li><b>Dữ liệu cá nhân.</b> Chúng tôi chỉ thu thập thông tin cần thiết (như tên, email hoặc số điện thoại) để đăng nhập và xác minh, không bán cho bên thứ ba và xử lý theo quy định pháp luật Việt Nam về bảo vệ dữ liệu cá nhân. Bạn có thể yêu cầu xem, sửa hoặc xóa thông tin qua <a href="mailto:unigreen.agro@gmail.com">unigreen.agro@gmail.com</a>.</li>
+    <li><b>Thay đổi điều khoản.</b> Điều khoản có thể được cập nhật, bản mới có hiệu lực từ ngày đăng. Hiệu lực hiện tại: <b>05/10/2026</b>.</li>
+   </ol></details>
+  </section>
+<dialog id="md" aria-label="Thành viên cập nhật giá"><form id="mf" novalidate>
+ <h3 id="mt">Đăng nhập thành viên</h3>
+ <div id="lg" style="display:grid;gap:10px">
+  <label>Email<input id="me" type="email" autocomplete="username"></label>
+  <label>Mật khẩu<input id="mp" type="password" autocomplete="current-password"></label>
+  <label class="ck2"><input id="ma" type="checkbox"><span>Tôi đã đọc và đồng ý Điều khoản sử dụng, hiểu rằng giá tôi gửi phải chính xác.</span></label>
+ </div>
+ <div id="pf" style="display:none;gap:10px">
+  <label>Cây trồng / sản phẩm<select id="pc"></select></label>
+  <label>Tỉnh/thành<select id="pv"></select></label>
+  <label>Giá (<span id="pu">đ/kg</span>)<input id="pp" type="number" min="1" step="any" inputmode="decimal"></label>
+  <label>Ngày áp dụng<input id="pd" type="date"></label>
+  <label>Nơi mua bán / nguồn (bắt buộc)<input id="ps" type="text" maxlength="200" placeholder="VD: chợ đầu mối Thủ Đức, đại lý A"></label>
+  <label class="ck2"><input id="pk" type="checkbox"><span>Tôi xác nhận giá này chính xác và chịu trách nhiệm về thông tin đã cung cấp.</span></label>
+ </div>
+ <p id="mm" role="status"></p>
+ <div class="row"><button type="button" id="mx">Đóng</button><button type="submit" class="ok" id="mo">Đăng nhập</button></div>
+</form></dialog>
 </div>
 <script>
 (()=>{
@@ -199,6 +258,7 @@ const CONFIG={
  REFRESH_MIN:0,UPDATE_HOUR:0,RETRY_MIN:2,CHECK_MIN:5,VERSION_CHECK_MIN:30,
  SOURCE:"banggianongsan.com; nongdanviet.vn; giaca.nsvl.com.vn; vietfood.org.vn; dichvu.cesti.gov.vn; nhachannuoi.vn; nongthonviet.vn; thoibaotaichinhvietnam.vn; vov.vn",
  WORKER:"",
+ MEMBER_API:"", /* địa chỉ máy chủ xác minh thành viên, VD https://api.example.com. Để trống = chưa kích hoạt đăng nhập */
  LIVE:[
    {url:"https://nongdanviet.vn/gia-ca-phe",cay:"Cà phê Robusta",nhom:"cn",fmt:"tbl"},
    {url:"https://nongdanviet.vn/gia-ho-tieu",cay:"Hồ tiêu",nhom:"cn",fmt:"tbl"},
@@ -586,6 +646,45 @@ setInterval(head,3e4);
 setInterval(()=>{const e=$("#clk");if(e)e.textContent=clock();const d=fd(new Date());if(d!==DAY){DAY=d;load(true)}},1000);
 setInterval(checkUpdate,CONFIG.VERSION_CHECK_MIN*60000);
 checkUpdate();
+
+/* ===== Thành viên: đăng nhập và gửi giá (cần máy chủ xác minh, token chỉ giữ trong bộ nhớ) ===== */
+{const md=$("#md"),mm=$("#mm"),mo=$("#mo");let tk=null,busy=false;
+const say=(t,c)=>{mm.textContent=t;mm.className=c||""};
+const sel=(id,arr)=>{$(id).innerHTML=arr.map(a=>`<option value="${E(a[0])}">${E(a[1])}</option>`).join("")};
+const view=()=>{const on=!!tk;$("#lg").style.display=on?"none":"grid";$("#pf").style.display=on?"grid":"none";$("#mt").textContent=on?"Cập nhật giá":"Đăng nhập thành viên";mo.textContent=on?"Gửi giá":"Đăng nhập";say("")};
+const api=async(p,b)=>{const r=await fetch(CONFIG.MEMBER_API.replace(/\/$/,"")+p,{method:"POST",headers:{"Content-Type":"application/json",...(tk?{Authorization:"Bearer "+tk}:{})},body:JSON.stringify(b)});let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.message||"Không thực hiện được ("+r.status+")");return j};
+sel("#pc",C.map(c=>[c.id,c.name+" ("+c.unit+")"]));
+sel("#pv",Object.values(PV).flat().map(p=>[p,p]));
+const pu=()=>{const c=C.find(x=>x.id===$("#pc").value);$("#pu").textContent=c?c.unit:"đ/kg"};
+$("#pc").addEventListener("change",pu);pu();
+$("#mb").addEventListener("click",()=>{$("#pd").value=new Date().toISOString().slice(0,10);view();if(!CONFIG.MEMBER_API)say("Chức năng đăng nhập chưa được kích hoạt. Quản trị viên cần cấu hình máy chủ xác minh trước.","er");md.showModal()});
+$("#mx").addEventListener("click",()=>md.close());
+$("#mf").addEventListener("submit",async e=>{e.preventDefault();if(busy)return;
+ if(!CONFIG.MEMBER_API){say("Chức năng đăng nhập chưa được kích hoạt.","er");return}
+ busy=true;mo.disabled=true;
+ try{
+  if(!tk){
+   const em=$("#me").value.trim(),pw=$("#mp").value;
+   if(!em||!pw)throw new Error("Nhập email và mật khẩu.");
+   if(!$("#ma").checked)throw new Error("Cần đồng ý Điều khoản sử dụng để tiếp tục.");
+   const j=await api("/login",{email:em,password:pw,acceptTerms:true});
+   if(!j.token)throw new Error("Tài khoản chưa được xác minh hoặc không hợp lệ.");
+   tk=j.token;$("#mp").value="";view();
+  }else{
+   const price=parseFloat($("#pp").value),src=$("#ps").value.trim();
+   if(!(price>0))throw new Error("Nhập giá lớn hơn 0.");
+   if(!$("#pd").value)throw new Error("Chọn ngày áp dụng.");
+   if(src.length<3)throw new Error("Ghi rõ nơi mua bán hoặc nguồn giá.");
+   if(!$("#pk").checked)throw new Error("Cần tick xác nhận giá chính xác trước khi gửi.");
+   const c=C.find(x=>x.id===$("#pc").value);
+   await api("/price",{crop:c.name,unit:c.unit,province:$("#pv").value,price,date:$("#pd").value,source:src,confirmed:true});
+   $("#pp").value="";$("#ps").value="";$("#pk").checked=false;
+   say("Đã gửi. Giá sẽ hiển thị chính thức sau khi được kiểm duyệt.","ok");
+  }
+ }catch(x){say(x.message||"Có lỗi, thử lại sau.","er")}
+ finally{busy=false;mo.disabled=false}
+});
+md.addEventListener("close",()=>{tk=null;$("#mp").value=""});}
 })();
 </script>
 </body>
