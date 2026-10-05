@@ -164,39 +164,10 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .tc h2{margin:0 0 6px;font-size:14px;font-weight:700}.tc p{margin:0 0 8px;line-height:1.55}
 .tc details{border-top:1px solid var(--line);padding:8px 0}.tc summary{cursor:pointer;font-weight:600}
 .tc ol{margin:8px 0 0;padding-left:20px}.tc li{margin:0 0 6px;line-height:1.55}
-.tc .ph{background:#fff3c4;border-radius:4px;padding:0 3px}
 .tc .upd{margin:10px 0 0;font-size:11.5px;color:var(--mut);font-style:italic}
 .tc .faq dt{font-weight:700;margin:8px 0 2px}
 .tc .faq dd{margin:0 0 6px;line-height:1.55}
 .mbtn{margin:4px 0 8px;background:var(--g);color:#fff;border:0;border-radius:8px;padding:9px 14px;font-weight:700;min-height:40px}
-#md{border:0;border-radius:14px;padding:0;width:min(560px,calc(100vw - 24px));max-height:92vh;color:var(--k)}
-#md::backdrop{background:rgba(0,0,0,.5)}
-#md form{padding:16px;display:grid;gap:10px;max-height:88vh;overflow:auto}#md h3{margin:0;font-size:16px}
-#md label{display:grid;gap:4px;font-size:12.5px;color:var(--mut);font-weight:600}
-#md input:not([type=checkbox]),#md select{padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--k);font-size:16px}
-#md .ck2{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--k);font-weight:500}#md .ck2 input{margin-top:3px;accent-color:var(--g)}
-#md .row{display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:#fff;padding-top:6px}#md .row button{border-radius:8px;padding:9px 14px;font-weight:700;border:1px solid var(--line);background:#fff}
-#md .row .ok{background:var(--g);color:#fff;border-color:var(--g)}#mm{font-size:12.5px;margin:0;min-height:1em}#mm.er{color:var(--dn)}#mm.ok{color:var(--g)}
-#md .adm{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:6px}
-#md .adm details{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:#fafbfa}
-#md .adm summary{cursor:pointer;font-weight:700;font-size:12.5px}
-.adm-list{max-height:160px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:2px 8px;background:#fff;margin-top:6px}
-.adm-list:empty{display:none}
-.adm-list div{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;font-size:12px;border-bottom:1px dashed var(--line)}
-.adm-list div:last-child{border-bottom:0}
-.adm-list button{background:none;border:0;color:var(--dn);font-weight:700;padding:2px 6px;font-size:14px}
-.logwrap{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:2px 8px;margin-top:6px;background:#fff}
-.logtbl{width:100%;font-size:11.5px;border-collapse:collapse}
-.logtbl th,.logtbl td{padding:5px 4px;text-align:left;border-bottom:1px dashed var(--line);vertical-align:top}
-.logtbl th{color:var(--mut);font-weight:600;font-size:10.5px;text-transform:uppercase;position:sticky;top:0;background:#fff}
-.logtbl button{background:none;border:0;color:var(--dn);font-weight:700;padding:2px 4px}
-.logtbl .who{font-weight:700}
-.logtbl .who.a{color:var(--flt)}
-.logtbl .who.m{color:var(--g)}
-.pwform{display:grid;gap:6px;margin-top:6px}
-.pwform input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px}
-.pwform button{background:var(--k);color:#fff;border:0;border-radius:8px;padding:8px;font-weight:700}
-.mini{font-size:11px;color:var(--mut);margin:4px 0 0}
 .ubar{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:#b9c4bd;flex-wrap:wrap}
 .ubar b{color:#fff;font-weight:600}
 .ubar button{background:transparent;border:1px solid #3a4a41;color:#fff;border-radius:6px;padding:5px 11px;font-size:11.5px;font-weight:600;min-height:30px}
@@ -272,7 +243,91 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 #fabReport[hidden]{display:none}
 #fabCnt{margin-left:6px;background:var(--dn);color:#fff;border-radius:99px;padding:1px 7px;font-size:10.5px;display:inline-block;min-width:14px;text-align:center}
 #fabCnt:empty{display:none}
-@media(max-width:600px){.soc{margin-left:12px;margin-right:12px;padding:10px}.rp{margin-left:0}#fab{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}}
+
+/* ===== DIALOG CẬP NHẬT GIÁ — thiết kế lại ===== */
+#md{border:0;border-radius:16px;padding:0;width:min(540px,calc(100vw - 24px));max-height:92vh;color:var(--k);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#md::backdrop{background:rgba(0,0,0,.55);backdrop-filter:blur(2px)}
+#md form{padding:0;display:flex;flex-direction:column;max-height:92vh}
+#md .mhd{padding:18px 22px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2;border-radius:16px 16px 0 0}
+#md .mhd h3{margin:0;font-size:17px;font-weight:800;color:var(--k);line-height:1.3}
+#md .mhd .mhint{margin:4px 0 0;font-size:12.5px;color:var(--mut);line-height:1.5}
+#md .mbody{padding:18px 22px 4px;overflow-y:auto;flex:1;display:grid;gap:14px}
+#md .mfoot{padding:12px 22px 16px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:#fff;border-radius:0 0 16px 16px}
+#md .mfoot button{border-radius:10px;padding:11px 22px;font-weight:700;font-size:13.5px;border:1px solid var(--line);background:#fff;min-height:44px;transition:transform .15s,box-shadow .15s}
+#md .mfoot button:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+#md .mfoot .ok{background:var(--g);color:#fff;border-color:var(--g)}
+#md .mfoot .ok:hover{background:#1a7a3b}
+
+#lg,#pf{display:grid;gap:14px}
+#lg[hidden],#pf[hidden]{display:none}
+
+.fld{display:grid;gap:6px;min-width:0}
+.fld .lb{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#2b332e;font-weight:600;line-height:1.3}
+.fld .lb .unit{font-style:normal;color:var(--g);font-weight:700;background:var(--gl);padding:2px 10px;border-radius:99px;font-size:11px;line-height:1.4;white-space:nowrap}
+.fld .lb .req{color:var(--dn);font-weight:600;font-size:11.5px;font-style:normal}
+.fld input:not([type=checkbox]):not([type=radio]),.fld select,.fld textarea{
+  width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--k);
+  font-size:15px;line-height:1.4;box-sizing:border-box;font-family:inherit;
+  transition:border-color .18s,box-shadow .18s,background .18s
+}
+.fld textarea{font-size:13.5px;min-height:80px;resize:vertical;line-height:1.5}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(31,143,70,.13);background:#fefffe}
+.fld input::placeholder,.fld textarea::placeholder{color:#a8b2ac}
+.fld select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%235f6b64' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:12px 8px;padding-right:36px}
+
+#md .ck2{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--k);font-weight:500;line-height:1.5;padding:12px 14px;background:#fafbfa;border:1px solid var(--line);border-radius:10px;cursor:pointer;transition:background .15s,border-color .15s}
+#md .ck2:hover{background:#f5f8f6;border-color:#d3dcd6}
+#md .ck2 input{margin-top:2px;width:18px;height:18px;accent-color:var(--g);flex:0 0 auto;cursor:pointer}
+
+#mm{font-size:12.5px;margin:0;min-height:0;padding:0}
+#mm:not(:empty){padding:10px 14px;border-radius:8px;background:#fafbfa;border-left:3px solid var(--mut)}
+#mm.er{color:var(--dn);background:#fef3f2;border-left-color:var(--dn)}
+#mm.ok{color:var(--g);background:var(--gl);border-left-color:var(--g)}
+
+#md .adm{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:8px;margin-top:2px}
+#md .adm details{border:1px solid var(--line);border-radius:10px;background:#fafbfa;overflow:hidden}
+#md .adm summary{cursor:pointer;font-weight:700;font-size:12.5px;padding:11px 14px;color:var(--k);display:flex;align-items:center;gap:6px;user-select:none;list-style:none}
+#md .adm summary::-webkit-details-marker{display:none}
+#md .adm summary::before{content:"▸";font-size:11px;color:var(--mut);transition:transform .2s;display:inline-block}
+#md .adm details[open] summary::before{transform:rotate(90deg)}
+#md .adm details[open] summary{border-bottom:1px solid var(--line)}
+#md .adm details > *:not(summary){padding:10px 14px}
+#md .adm details > *:not(summary):last-child{padding-bottom:12px}
+
+.adm-list{max-height:180px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:8px;margin:10px 14px 0;padding:0}
+.adm-list:empty{display:none}
+.adm-list > div{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:9px 12px;font-size:12.5px;border-bottom:1px dashed var(--line);line-height:1.4}
+.adm-list > div:last-child{border-bottom:0}
+.adm-list button{background:none;border:0;color:var(--dn);font-weight:700;padding:4px 8px;font-size:15px;line-height:1;border-radius:6px;transition:background .15s}
+.adm-list button:hover{background:#fef3f2}
+
+.logwrap{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:8px;margin:10px 14px 0;background:#fff}
+.logtbl{width:100%;font-size:11.5px;border-collapse:collapse}
+.logtbl th,.logtbl td{padding:7px 6px;text-align:left;border-bottom:1px dashed var(--line);vertical-align:top;line-height:1.4}
+.logtbl th{color:var(--mut);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.3px;position:sticky;top:0;background:#fafbfa;z-index:1}
+.logtbl tr:last-child td{border-bottom:0}
+.logtbl button{background:none;border:0;color:var(--dn);font-weight:700;padding:3px 6px;border-radius:4px}
+.logtbl button:hover{background:#fef3f2}
+.logtbl .who{font-weight:700}
+.logtbl .who.a{color:var(--flt)}
+.logtbl .who.m{color:var(--g)}
+
+.pwform{display:grid;gap:10px;margin:0}
+.pwform input{padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;width:100%;transition:border-color .18s,box-shadow .18s}
+.pwform input:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(31,143,70,.13)}
+.pwform button{background:var(--k);color:#fff;border:0;border-radius:8px;padding:11px;font-weight:700;font-size:13px;transition:background .15s,transform .15s}
+.pwform button:hover{background:#000;transform:translateY(-1px)}
+.pwform .mini{font-size:11px;color:var(--mut);margin:0;line-height:1.5}
+.pwform .mini code{background:#f1f3f2;padding:1px 6px;border-radius:4px;font-size:10.5px}
+
+@media(max-width:600px){
+#md{width:calc(100vw - 16px);max-height:94vh}
+#md .mhd{padding:16px 18px 12px}
+#md .mbody{padding:16px 18px 4px}
+#md .mfoot{padding:10px 18px 14px}
+#md .mfoot button{padding:11px 18px;font-size:13px;flex:1}
+.fld input:not([type=checkbox]):not([type=radio]),.fld select{padding:12px 13px;font-size:16px}
+}
 </style>
 </head>
 <body>
@@ -413,42 +468,50 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 </div>
 
 <dialog id="md" aria-label="Thành viên cập nhật giá"><form id="mf" novalidate>
- <h3 id="mt">Đăng nhập thành viên</h3>
- <div id="lg" style="display:grid;gap:10px">
-  <label>Tài khoản (email hoặc admin)<input id="me" type="text" autocomplete="username"></label>
-  <label>Mật khẩu<input id="mp" type="password" autocomplete="current-password"></label>
-  <label class="ck2"><input id="ma" type="checkbox"><span>Tôi đã đọc và đồng ý Điều khoản sử dụng, hiểu rằng giá tôi gửi phải chính xác.</span></label>
+ <div class="mhd">
+  <h3 id="mt">Đăng nhập thành viên</h3>
+  <p class="mhint" id="mhint">Đăng nhập để gửi giá chính xác cho cộng đồng.</p>
  </div>
- <div id="pf" style="display:none;gap:10px">
-  <label>Cây trồng / sản phẩm<select id="pc"></select></label>
-  <label>Tỉnh/thành<select id="pv"></select></label>
-  <label>Giá (<span id="pu">đ/kg</span>)<input id="pp" type="number" min="1" step="any" inputmode="decimal"></label>
-  <label>Ngày áp dụng<input id="pd" type="date"></label>
-  <label>Nơi mua bán / nguồn (bắt buộc)<input id="ps" type="text" maxlength="200" placeholder="VD: chợ đầu mối Thủ Đức, đại lý A"></label>
-  <label class="ck2"><input id="pk" type="checkbox"><span>Tôi xác nhận giá này chính xác và chịu trách nhiệm về thông tin đã cung cấp.</span></label>
-  <div class="adm" id="admBox" hidden>
-   <details open><summary>Giá quản trị đã nhập (<span id="acn">0</span>)</summary>
-    <div class="adm-list" id="admList"></div>
-    <button type="button" id="admClear" style="margin-top:6px;border:1px solid var(--dn);background:#fff;color:var(--dn);border-radius:8px;padding:6px 10px;font-weight:700;font-size:12px">Xóa tất cả giá quản trị</button>
-   </details>
-   <details><summary>Nhật ký cập nhật giá (<span id="lgn">0</span>)</summary>
-    <div class="logwrap"><table class="logtbl"><thead><tr><th>Lúc</th><th>Ai</th><th>Cây</th><th>Tỉnh</th><th>Giá</th><th></th></tr></thead><tbody id="lgList"></tbody></table></div>
-    <button type="button" id="lgClear" style="margin-top:6px;border:1px solid var(--dn);background:#fff;color:var(--dn);border-radius:8px;padding:6px 10px;font-weight:700;font-size:12px">Xóa tất cả nhật ký</button>
-   </details>
-   <details><summary>Đổi mật khẩu quản trị</summary>
-    <div class="pwform">
-     <label style="font-size:11.5px;color:var(--mut);display:grid;gap:3px">Mật khẩu hiện tại<input id="pwc" type="password" autocomplete="current-password"></label>
-     <label style="font-size:11.5px;color:var(--mut);display:grid;gap:3px">Mật khẩu mới (tối thiểu 6 ký tự)<input id="pwn" type="password" autocomplete="new-password"></label>
-     <label style="font-size:11.5px;color:var(--mut);display:grid;gap:3px">Nhập lại mật khẩu mới<input id="pw2" type="password" autocomplete="new-password"></label>
-     <button type="button" id="pwDo">Đổi mật khẩu</button>
-     <p class="mini" id="pwMsg"></p>
-     <p class="mini">Quên mật khẩu? Mở DevTools → Application → Local Storage → xóa khóa <code>tcns_admin_pw</code> để khôi phục mặc định.</p>
-    </div>
-   </details>
+ <div class="mbody">
+  <div id="lg">
+   <label class="fld"><span class="lb">Tài khoản (email hoặc admin)</span><input id="me" type="text" autocomplete="username" placeholder="you@example.com"></label>
+   <label class="fld"><span class="lb">Mật khẩu</span><input id="mp" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu"></label>
+   <label class="ck2"><input id="ma" type="checkbox"><span>Tôi đã đọc và đồng ý Điều khoản sử dụng, hiểu rằng giá tôi gửi phải chính xác.</span></label>
   </div>
+  <div id="pf" hidden>
+   <label class="fld"><span class="lb">Cây trồng / sản phẩm</span><select id="pc"></select></label>
+   <label class="fld"><span class="lb">Tỉnh/thành</span><select id="pv"></select></label>
+   <label class="fld"><span class="lb">Giá <em class="unit" id="pu">đ/kg</em></span><input id="pp" type="number" min="1" step="any" inputmode="decimal" placeholder="Nhập giá, ví dụ 6.500"></label>
+   <label class="fld"><span class="lb">Ngày áp dụng</span><input id="pd" type="date"></label>
+   <label class="fld"><span class="lb">Nơi mua bán / nguồn <em class="req">(bắt buộc)</em></span><input id="ps" type="text" maxlength="200" placeholder="VD: chợ đầu mối Thủ Đức, đại lý A"></label>
+   <label class="ck2"><input id="pk" type="checkbox"><span>Tôi xác nhận giá này chính xác và chịu trách nhiệm về thông tin đã cung cấp.</span></label>
+   <div class="adm" id="admBox" hidden>
+    <details open><summary>Giá quản trị đã nhập (<span id="acn">0</span>)</summary>
+     <div class="adm-list" id="admList"></div>
+     <button type="button" id="admClear" style="margin:10px 14px 12px;border:1px solid var(--dn);background:#fff;color:var(--dn);border-radius:8px;padding:8px 12px;font-weight:700;font-size:12px;width:calc(100% - 28px)">Xóa tất cả giá quản trị</button>
+    </details>
+    <details><summary>Nhật ký cập nhật giá (<span id="lgn">0</span>)</summary>
+     <div class="logwrap"><table class="logtbl"><thead><tr><th>Lúc</th><th>Ai</th><th>Cây</th><th>Tỉnh</th><th>Giá</th><th></th></tr></thead><tbody id="lgList"></tbody></table></div>
+     <button type="button" id="lgClear" style="margin:10px 14px 12px;border:1px solid var(--dn);background:#fff;color:var(--dn);border-radius:8px;padding:8px 12px;font-weight:700;font-size:12px;width:calc(100% - 28px)">Xóa tất cả nhật ký</button>
+    </details>
+    <details><summary>Đổi mật khẩu quản trị</summary>
+     <div class="pwform" style="padding:12px 14px">
+      <label style="display:grid;gap:5px;font-size:12px;color:var(--mut);font-weight:600">Mật khẩu hiện tại<input id="pwc" type="password" autocomplete="current-password"></label>
+      <label style="display:grid;gap:5px;font-size:12px;color:var(--mut);font-weight:600">Mật khẩu mới (tối thiểu 6 ký tự)<input id="pwn" type="password" autocomplete="new-password"></label>
+      <label style="display:grid;gap:5px;font-size:12px;color:var(--mut);font-weight:600">Nhập lại mật khẩu mới<input id="pw2" type="password" autocomplete="new-password"></label>
+      <button type="button" id="pwDo">Đổi mật khẩu</button>
+      <p class="mini" id="pwMsg"></p>
+      <p class="mini">Quên mật khẩu? Mở DevTools → Application → Local Storage → xóa khóa <code>tcns_admin_pw</code> để khôi phục mặc định.</p>
+     </div>
+    </details>
+   </div>
+  </div>
+  <p id="mm" role="status"></p>
  </div>
- <p id="mm" role="status"></p>
- <div class="row"><button type="button" id="mx">Đóng</button><button type="submit" class="ok" id="mo">Đăng nhập</button></div>
+ <div class="mfoot">
+  <button type="button" id="mx">Đóng</button>
+  <button type="submit" class="ok" id="mo">Đăng nhập</button>
+ </div>
 </form></dialog>
 </div>
 <script>
@@ -456,7 +519,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 const DEBUG=true;
 const log=(...a)=>{if(DEBUG)console.log("[tcns]",...a)};
 
-const VERSION="2026.10.05-05";
+const VERSION="2026.10.05-06";
 const CONFIG={
  DATA_URL:"https://raw.githubusercontent.com/Dradoshi/gia-nong-san/main/prices.json",
  SHOW_REF:true,
@@ -501,7 +564,6 @@ const setPW=o=>{try{localStorage.setItem(CONFIG.ADMIN_KEY_PW,JSON.stringify(o))}
 const getLOG=()=>{try{return JSON.parse(localStorage.getItem(CONFIG.ADMIN_KEY_LOG)||"[]")}catch(e){return[]}};
 const setLOG=a=>{try{localStorage.setItem(CONFIG.ADMIN_KEY_LOG,JSON.stringify(a.slice(-500)))}catch(e){}};
 const addLOG=o=>{const a=getLOG();a.push({...o,id:"L"+Date.now()+"_"+Math.random().toString(36).slice(2,6),t:Date.now()});setLOG(a)};
-const abBadge=()=>{};
 
 const E=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const fm=n=>Math.round(n).toLocaleString("vi-VN");
@@ -870,14 +932,24 @@ setInterval(checkUpdate,CONFIG.VERSION_CHECK_MIN*60000);
 checkUpdate();
 
 /* ===== Dialog cũ: đăng nhập admin cục bộ để cập nhật giá ===== */
-{const md=$("#md"),mm=$("#mm"),mo=$("#mo");let tk=null,busy=false,who="";
+{const md=$("#md"),mm=$("#mm"),mo=$("#mo"),mhint=$("#mhint");let tk=null,busy=false,who="";
 const say=(t,c)=>{mm.textContent=t;mm.className=c||""};
 const sel=(id,arr)=>{$(id).innerHTML=arr.map(a=>`<option value="${E(a[0])}">${E(a[1])}</option>`).join("")};
 const fmtAR=r=>{const c=C.find(x=>x.id===r.cid);return `<div><span><b>${E(c?c.name:r.cay)}</b> · ${E(r.tinh||"Toàn quốc")} · ${fm(r.gia)} · ${dmy(pd(r.ngay))}</span><button type="button" data-del="${E(r.id)}" aria-label="Xóa">✕</button></div>`};
-const renderAR=()=>{const a=getAR();$("#acn").textContent=a.length;$("#admList").innerHTML=a.length?a.map(fmtAR).join(""):'<div style="color:var(--mut);border:0">Chưa có giá quản trị nào.</div>'};
+const renderAR=()=>{const a=getAR();$("#acn").textContent=a.length;$("#admList").innerHTML=a.length?a.map(fmtAR).join(""):'<div style="color:var(--mut);border:0;text-align:center;padding:14px">Chưa có giá quản trị nào.</div>'};
 const fmtLG=r=>{const c=C.find(x=>x.id===r.cid);return `<tr><td>${hm(r.t)}<br>${dmy(r.t)}</td><td><span class="who ${r.role==="admin"?"a":"m"}">${E(r.role==="admin"?"👑 admin":r.who||"thành viên")}</span></td><td><b>${E(c?c.name:r.cay)}</b></td><td>${E(r.tinh||"Toàn quốc")}</td><td>${fm(r.gia)}</td><td><button type="button" data-lg="${E(r.id)}" aria-label="Xóa">✕</button></td></tr>`};
-const renderLG=()=>{const a=getLOG().slice().reverse();$("#lgn").textContent=a.length;$("#lgList").innerHTML=a.length?a.map(fmtLG).join(""):'<tr><td colspan="6" style="color:var(--mut);text-align:center;padding:10px">Chưa có lượt cập nhật nào.</td></tr>'};
-const view=()=>{const on=!!tk;$("#lg").style.display=on?"none":"grid";$("#pf").style.display=on?"grid":"none";$("#mt").textContent=on?(ADMIN?"Cập nhật giá (Quản trị)":"Cập nhật giá"):"Đăng nhập thành viên";mo.textContent=on?"Gửi giá":"Đăng nhập";$("#admBox").hidden=!ADMIN;abBadge();say("");if(on){renderAR();renderLG()}};
+const renderLG=()=>{const a=getLOG().slice().reverse();$("#lgn").textContent=a.length;$("#lgList").innerHTML=a.length?a.map(fmtLG).join(""):'<tr><td colspan="6" style="color:var(--mut);text-align:center;padding:14px">Chưa có lượt cập nhật nào.</td></tr>'};
+const view=()=>{
+ const on=!!tk;
+ $("#lg").hidden=on;
+ $("#pf").hidden=!on;
+ $("#mt").textContent=on?(ADMIN?"Cập nhật giá (Quản trị)":"Cập nhật giá"):"Đăng nhập thành viên";
+ mhint.textContent=on?"Điền đầy đủ thông tin. Giá sẽ được lưu và ưu tiên hiển thị sau khi kiểm duyệt.":"Đăng nhập bằng tài khoản quản trị để gửi giá chính xác cho cộng đồng.";
+ mo.textContent=on?"Gửi giá":"Đăng nhập";
+ $("#admBox").hidden=!ADMIN;
+ say("");
+ if(on){renderAR();renderLG()}
+};
 sel("#pc",C.map(c=>[c.id,c.name+" ("+c.unit+")"]));
 sel("#pv",Object.values(PV).flat().map(p=>[p,p]));
 const pu=()=>{const c=C.find(x=>x.id===$("#pc").value);$("#pu").textContent=c?c.unit:"đ/kg"};
@@ -936,7 +1008,7 @@ $("#mf").addEventListener("submit",async e=>{e.preventDefault();if(busy)return;
  }catch(x){say(x.message||"Có lỗi, thử lại sau.","er")}
  finally{busy=false;mo.disabled=false}
 });
-md.addEventListener("close",()=>{tk=null;ADMIN=0;who="";abBadge();$("#mp").value="";$("#pwMsg").textContent="";document.body.classList.remove("modal-open")});
+md.addEventListener("close",()=>{tk=null;ADMIN=0;who="";$("#mp").value="";$("#pwMsg").textContent="";document.body.classList.remove("modal-open")});
 document.addEventListener("tcns:auth-change",()=>{if(md.open)md.close()});}
 
 /* ================== USER FEATURES (Supabase) ================== */
@@ -971,7 +1043,7 @@ async function initAuth(){
   cur=s?await loadProfile(s.user.id):null;
   hdr();refreshSocial();
   document.dispatchEvent(new Event("tcns:auth-change"));
-  updateFab&&updateFab();
+  window.updateFab&&window.updateFab();
  });
 }
 
@@ -1208,19 +1280,18 @@ async function openAdminReports(){
  list.querySelectorAll("[data-rj]").forEach(b=>b.onclick=async()=>{
   await sb.from("reports").update({status:"ok"}).eq("id",+b.dataset.rj);
   b.textContent="✓ Đã xử lý";b.disabled=true;
-  updateFab&&updateFab();
+  window.updateFab&&window.updateFab();
  });
  list.querySelectorAll("[data-rd]").forEach(b=>b.onclick=async()=>{
   if(!confirm("Xóa báo cáo này?"))return;
   await sb.from("reports").delete().eq("id",+b.dataset.rd);
   openAdminReports();
-  updateFab&&updateFab();
+  window.updateFab&&window.updateFab();
  });
 }
 $("#arwx").onclick=()=>{const w=$("#arw");w.classList.remove("on");w.hidden=true;unlockBody()};
 $("#arw").onclick=e=>{if(e.target===$("#arw"))$("#arwx").click()};
 
-/* ==== Nút nổi ==== */
 const fab=$("#fab"),fabTop=$("#fabTop"),fabPrice=$("#fabPrice"),fabReport=$("#fabReport");
 fabTop.onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
 fabPrice.onclick=()=>{const mb=document.getElementById("mb");if(mb)mb.click()};
