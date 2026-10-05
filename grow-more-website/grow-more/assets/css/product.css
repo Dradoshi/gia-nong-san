@@ -1,0 +1,187 @@
+/* ============================================================
+   GROW MORE — product.css
+   Trang danh sách sản phẩm + trang chi tiết sản phẩm (PDP)
+   Layout PDP theo mẫu: gallery trái / thông tin phải,
+   chip phân loại quy cách, ô ảnh đồng nhất một cỡ
+   ============================================================ */
+
+/* ---------- Danh sách: bộ lọc + toolbar ---------- */
+.layout { display: grid; grid-template-columns: 230px 1fr; gap: 30px; align-items: start }
+.side { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; position: sticky; top: 84px; transition: background .3s, border-color .3s }
+.side details { border-bottom: 1px solid var(--line); padding: 12px 0 }
+.side details:first-child { padding-top: 0 }
+.side details:last-child { border: 0; padding-bottom: 0 }
+.side summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center }
+.side summary::-webkit-details-marker { display: none }
+.side summary::after { content: "⌄"; color: var(--muted); font-size: 13px; transition: transform .2s }
+.side details[open] summary::after { content: "⌃" }
+.side summary h4 { margin: 0; font-size: 13px; color: var(--ink) }
+.side label { display: flex; gap: 8px; font-size: 12px; margin: 7px 0; cursor: pointer; align-items: center; color: var(--text) }
+.side label:hover span { color: var(--green) }
+.side label span { flex: 1 }
+.side label em { font-style: normal; font-size: 10.5px; color: var(--muted) }
+.side input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green) }
+.toolbar { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; font-size: 13px; color: var(--muted) }
+.toolbar b { color: var(--green) }
+.toolbar input { flex: 1; min-width: 200px; height: 40px; border: 1px solid var(--input-bd); border-radius: 20px; padding: 0 16px; font-size: 13px; background: var(--input-bg); color: var(--text); transition: border-color .2s, box-shadow .2s }
+.toolbar input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(10, 127, 63, .12); outline: none }
+.more-wrap { text-align: center; margin-top: 26px }
+
+/* ---------- Card sản phẩm ---------- */
+.pcard { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: transform .25s, box-shadow .25s, background .3s; box-shadow: 0 2px 10px rgba(20, 67, 43, .04) }
+.pcard:hover { transform: translateY(-4px); box-shadow: var(--shadow) }
+.pimg { height: 190px; position: relative; display: flex; align-items: center; justify-content: center; background: var(--tile); padding: 10px; overflow: hidden }
+.pimg img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .35s }
+.pcard:hover .pimg img { transform: scale(1.07) }
+.tag { position: absolute; left: 8px; top: 8px; background: #0c6b38; color: #fff; font-size: 8.5px; font-weight: 700; padding: 2px 7px; border-radius: 3px; z-index: 1 }
+.noimg { display: grid; place-items: center; width: 100%; height: 100%; color: #7aa68a; font-weight: 800; letter-spacing: .08em; font-size: 13px }
+.pbody { padding: 12px 14px 14px; display: flex; flex-direction: column; flex: 1 }
+.pbody h3 { margin: 0 0 7px; font-size: 14px; color: var(--ink); line-height: 1.3 }
+.pbody h3 a:hover { color: var(--green) }
+.psub { margin: 0 0 8px; font-size: 10.5px; color: var(--muted); line-height: 1.4; min-height: 30px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-transform: uppercase; letter-spacing: .01em }
+.meta { display: flex; gap: 16px; font-size: 10.5px; color: var(--soft); margin-bottom: 8px }
+.meta span { display: flex; gap: 5px; align-items: center }
+.meta .icon { width: 14px; height: 14px }
+.chips { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; flex: 1; align-content: flex-start }
+.pact { display: flex; align-items: center; gap: 8px }
+.pact a.l { font-size: 11.5px; font-weight: 700; color: var(--ink); margin-right: auto }
+.pact a.l:hover { color: var(--green) }
+.cbtn { width: 32px; height: 32px; border: 1.5px solid var(--green); border-radius: 6px; display: grid; place-items: center; color: var(--green); background: transparent; cursor: pointer; transition: background .2s, color .2s, transform .2s }
+.cbtn:hover { background: var(--green); color: #fff; transform: translateY(-1px) }
+[data-theme="dark"] .cbtn:hover { color: #06281a }
+.cbtn .icon { width: 15px; height: 15px }
+.cbtn.big { width: 44px; height: 44px; border-radius: 10px }
+.cbtn.big .icon { width: 19px; height: 19px }
+.cbtn.on { background: var(--green); color: #fff }
+[data-theme="dark"] .cbtn.on { color: #06281a }
+
+/* ============================================================
+   TRANG CHI TIẾT (PDP)
+   ============================================================ */
+.pd-head { display: flex; align-items: center; gap: 14px; padding: 4px 0 16px; margin-bottom: 20px; border-bottom: 1px solid var(--line) }
+.pd-head .back { display: inline-flex; gap: 8px; align-items: center; font-weight: 700; font-size: 14px; color: var(--ink); margin-right: auto; transition: color .2s, gap .2s }
+.pd-head .back:hover { color: var(--green); gap: 12px }
+.pd-head .back .icon { width: 18px; height: 18px }
+.pd-actions { display: flex; gap: 10px }
+
+.pd-grid { display: grid; grid-template-columns: minmax(0, 460px) minmax(0, 1fr); gap: 34px; align-items: start }
+.pd-left, .pd-right { min-width: 0 }
+
+/* ----- Gallery: mọi ảnh cùng một cỡ khung ----- */
+.gal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; transition: background .3s, border-color .3s }
+.gal-main { aspect-ratio: 1 / 1; background: var(--tile); border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative }
+.gal-main img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: opacity .25s, transform .45s }
+.gal-main:hover img { transform: scale(1.06) }
+.gal-thumbs { display: grid; grid-template-columns: repeat(auto-fill, 76px); gap: 10px; margin-top: 12px }
+.gal-thumbs button { width: 76px; height: 76px; border: 2px solid var(--border); border-radius: 10px; background: var(--tile); padding: 4px; cursor: pointer; transition: border-color .2s, transform .2s, box-shadow .2s; overflow: hidden }
+.gal-thumbs button:hover { transform: translateY(-2px); box-shadow: var(--shadow) }
+.gal-thumbs button.on { border-color: var(--green); box-shadow: 0 0 0 3px rgba(10, 127, 63, .15) }
+.gal-thumbs img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; display: block }
+
+/* ----- Card thương hiệu ----- */
+.brand-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; margin-top: 16px; display: grid; gap: 14px; transition: background .3s, border-color .3s }
+.bc-row { display: flex; align-items: center; gap: 12px }
+.bc-row > div { display: grid; gap: 2px }
+.bc-row > div span { font-size: 11px; color: var(--muted) }
+.bc-row:last-child { justify-content: space-between; border-top: 1px solid var(--line); padding-top: 14px }
+.bc-logo { width: 42px; height: 42px; border-radius: 50%; background: var(--chip-bg); color: var(--green); display: grid; place-items: center; flex: none }
+.bc-logo .icon { width: 22px; height: 22px }
+.bc-row b { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ink) }
+.bc-loc { display: flex; gap: 7px; align-items: center; font-size: 12px; color: var(--muted) }
+.bc-loc .icon { width: 15px; height: 15px }
+
+/* ----- Cột thông tin ----- */
+.pd-badge { display: inline-block; background: var(--chip-bg); color: var(--green); border: 1px solid var(--border); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; margin-bottom: 12px }
+.pd-right h1 { margin: 0 0 4px; font-size: clamp(22px, 3vw, 30px); color: var(--ink); line-height: 1.25; letter-spacing: -.01em }
+.dsub { margin: 0 0 10px; font-size: 12.5px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: .02em }
+.pd-meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 16px }
+.pd-meta span { display: inline-flex; gap: 6px; align-items: center; background: var(--surface-2); border: 1px solid var(--border); font-size: 11px; color: var(--soft); padding: 5px 11px; border-radius: 20px }
+.pd-meta .icon { width: 14px; height: 14px; color: var(--green) }
+.pd-price { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; margin-bottom: 18px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap }
+.pd-price b { font-size: 26px; font-weight: 800; color: var(--green); letter-spacing: -.01em }
+.pd-price span { font-size: 11.5px; color: var(--muted) }
+
+/* ----- Nhóm phân loại (dạng / quy cách) ----- */
+.opt { margin-bottom: 18px }
+.opt-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 9px; flex-wrap: wrap }
+.opt-head b, .opt-title { font-size: 13px; color: var(--ink); font-weight: 700 }
+.opt-title { display: block; margin-bottom: 9px }
+.opt-val { font-size: 12.5px; color: var(--green); font-weight: 700 }
+.opt-chips { display: flex; gap: 8px; flex-wrap: wrap }
+.ochip { background: var(--surface); border: 1.5px solid var(--border); color: var(--text); font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 8px; cursor: default; transition: border-color .2s, color .2s, background .2s, transform .15s }
+button.ochip { cursor: pointer }
+button.ochip:hover { border-color: var(--green); color: var(--green); transform: translateY(-1px) }
+button.ochip.on { border-color: var(--green); color: var(--green); background: var(--chip-bg); box-shadow: 0 0 0 3px rgba(10, 127, 63, .12) }
+.sku-note { display: flex; gap: 7px; align-items: center; font-size: 11.5px; color: var(--muted); margin: 10px 0 0 }
+.sku-note .icon { width: 14px; height: 14px; color: #7c5cff }
+.sku-note b { color: var(--ink) }
+
+/* ----- Mô tả dạng gạch đầu dòng ----- */
+.pd-desc { margin: 0; padding-left: 18px; display: grid; gap: 7px }
+.pd-desc li { font-size: 13px; color: var(--soft); line-height: 1.55 }
+.pd-desc li::marker { color: var(--green) }
+
+/* ----- Shipping information: 3 ô ----- */
+.ship { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px }
+.ship-t { display: flex; gap: 10px; align-items: center; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; transition: transform .2s, box-shadow .2s }
+.ship-t:hover { transform: translateY(-2px); box-shadow: var(--shadow) }
+.ship-t .icon { width: 20px; height: 20px; color: var(--green) }
+.ship-t b { display: block; font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em }
+.ship-t span { font-size: 11.5px; color: var(--ink); font-weight: 600; line-height: 1.35 }
+
+/* ----- CTA ----- */
+.pd-cta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 22px }
+
+/* ----- Tabs nội dung dưới PDP ----- */
+.pd-tabs { margin: 34px 0 0 }
+.pd-panel.anim { animation: panel-in .35s ease both }
+.pd-panel .card p { font-size: 13px; color: var(--soft); margin: 0 0 10px }
+@keyframes panel-in { from { opacity: 0; transform: translateY(10px) } }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start }
+.dh { font-size: 15px; margin: 22px 0 8px; color: var(--ink) }
+.card .dh:first-child { margin-top: 0 }
+.mfr { margin-top: 18px; font-size: 13px; color: var(--soft) }
+.mfr b { color: var(--ink) }
+
+/* ----- Đánh giá ----- */
+.review { margin-top: 18px; display: flex; gap: 26px; align-items: center; flex-wrap: wrap }
+.rv-head h3 { margin: 0 0 4px; font-size: 16px; color: var(--ink) }
+.rv-count { font-size: 12px; color: var(--muted) }
+.rv-body { display: flex; gap: 18px; align-items: center; flex-wrap: wrap }
+.rv-stars { display: flex; gap: 4px }
+.rv-stars button { background: none; border: 0; padding: 2px; cursor: pointer; color: var(--border); transition: transform .15s, color .15s }
+.rv-stars button:hover { transform: scale(1.2) }
+.rv-stars button.on { color: #f5a623 }
+.rv-stars .icon { width: 24px; height: 24px; fill: currentColor; stroke-width: 1.2 }
+#rv-msg { margin: 0; font-size: 12.5px; color: var(--muted) }
+
+/* ----- Thanh CTA dính trên mobile ----- */
+.pd-bar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; background: var(--surface); border-top: 1px solid var(--border); padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); gap: 10px; box-shadow: 0 -6px 24px rgba(0, 0, 0, .12) }
+.pd-bar .pack { flex: 1; min-width: 0; font-size: 11px; color: var(--muted); display: flex; flex-direction: column; justify-content: center }
+.pd-bar .pack b { font-size: 12.5px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.pd-bar .btn { min-height: 42px; padding: 0 16px; font-size: 12.5px }
+
+/* ---------- Responsive PDP ---------- */
+@media (max-width: 1100px) {
+  .pd-grid { grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 26px }
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr }
+  .side { position: static }
+  .pd-grid { grid-template-columns: 1fr }
+  .gal { max-width: 520px; margin-inline: auto; width: 100% }
+  .ship { grid-template-columns: 1fr }
+  .two-col { grid-template-columns: 1fr }
+  .pd-bar { display: flex }
+  footer.site { padding-bottom: 64px }
+  .pd-head { flex-wrap: wrap }
+}
+@media (max-width: 560px) {
+  .pd-head .pd-actions { width: 100%; justify-content: flex-start }
+  .gal-thumbs { grid-template-columns: repeat(auto-fill, 64px) }
+  .gal-thumbs button { width: 64px; height: 64px }
+  .review { flex-direction: column; align-items: flex-start }
+  .pd-cta { display: grid; grid-template-columns: 1fr auto; gap: 10px }
+  .pd-cta .btn-green { grid-column: 1 / -1 }
+  .pd-cta .btn-ghost { min-width: 0; justify-content: center }
+}

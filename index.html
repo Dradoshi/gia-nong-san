@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>banggianongsan
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<title>Tra cứu nông sản và cây trồng Việt Nam</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--g:#1f8f46;--dn:#d92d20;--fl:#f2b705;--flt:#8a6200;--gl:#e9f6ee;--k:#111;--mut:#5f6b64;--line:#e1e8e3;font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--k);font-size:14px;line-height:1.45;padding:0 env(safe-area-inset-right,0) 0 env(safe-area-inset-left,0)}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+.w{max-width:1000px;margin:0 auto;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+.hd{background:var(--k);color:#fff;padding:calc(20px + env(safe-area-inset-top,0px)) 16px 16px}
+.hr{display:flex;align-items:flex-start;gap:10px}
+.hr h1{flex:1;min-width:0}
+.hd h1{margin:0;font-size:22px;font-weight:800;line-height:1.25}
+/* ĐỔI: inline-flex để dot căn giữa hoàn hảo với text, kể cả khi wrap nhiều dòng */
+.hd p{margin:6px 0 0;padding-left:14px;font-size:12px;color:#b9c4bd;line-height:1.5;font-weight:500;
+      display:inline-flex;align-items:center;flex-wrap:wrap;column-gap:0;row-gap:2px;max-width:100%}
+.hd p .txt{display:inline;overflow-wrap:anywhere}
+.hd p b{color:#fff;font-weight:600;font-variant-numeric:tabular-nums}
+/* Dot mới: to hơn, căn giữa qua flex, không dùng vertical-align nữa */
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#4ade80;margin-right:8px;flex:0 0 auto;animation:pu 2s infinite}
+.dot.off{background:var(--fl);animation:none}
+@keyframes pu{0%{box-shadow:0 0 0 0 rgba(74,222,128,.65)}100%{box-shadow:0 0 0 7px rgba(74,222,128,0)}}
+.rf{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    background:transparent;border:1px solid #3a4a41;color:#fff;border-radius:8px;
+    padding:7px 12px;font-size:12.5px;font-weight:600;line-height:1;
+    min-height:36px;transition:border-color .2s,color .2s,opacity .2s}
+.rf:hover{border-color:var(--g);color:#4ade80}
+.rf:active{transform:scale(.97)}
+.rf[disabled]{opacity:.5;cursor:default;pointer-events:none}
+.rf svg{width:14px;height:14px;flex:0 0 auto;display:block}
+.rf[disabled] svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hl{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.hl b{font-size:12px;color:#b9c4bd;font-weight:500;align-self:center;margin-right:2px}
+.hc{border:1px solid #3a4a41;background:transparent;color:#fff;border-radius:99px;padding:5px 12px;font-size:12.5px;line-height:1.3}
+.hc.up{border-color:var(--g)}.hc.dn{border-color:var(--dn)}.hc i{font-style:normal;font-weight:700;margin-left:6px}.hc.up i{color:#4ade80}.hc.dn i{color:#ff7b70}
+.fb{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;background:#fff;border-bottom:1px solid var(--line);transition:transform .25s ease}.fb.cp{transform:translateY(-100%)}
+.bar{display:flex;gap:8px;padding:10px 16px 0;flex-wrap:wrap;align-items:center}
+.sl,.q{padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.bar .q{min-width:140px}.ck{display:flex;align-items:center;gap:6px;white-space:nowrap;font-size:12.5px;color:var(--mut)}.ck input{accent-color:var(--g)}
+.stl{margin:10px 0 0;padding:8px 12px;border-left:3px solid var(--fl);background:#fffaf0;border-radius:0 8px 8px 0;font-size:12.5px;color:var(--flt)}
+.sl{flex:0 1 220px;min-width:0;font-weight:600}.q{flex:1;min-width:0}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:4px 16px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch}.tabs::-webkit-scrollbar{display:none}
+.tb{white-space:nowrap;border:0;background:none;padding:10px 12px;font-weight:500;color:var(--mut);border-bottom:3px solid transparent}
+.tb[aria-pressed=true]{color:var(--k);font-weight:700;border-bottom-color:var(--g)}
+.sum{padding:12px 16px 0;font-size:12.5px;color:var(--mut)}
+.nt{margin:12px 16px 0;padding:10px 14px;background:var(--gl);border-left:4px solid var(--g);border-radius:0 8px 8px 0;font-size:13px;line-height:1.5}
+.gh{margin:14px 16px 0;font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px}
+.gh:before{content:"";width:4px;height:16px;background:var(--g);border-radius:2px}
+.gh small{color:var(--mut);font-weight:500}
+.gd{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;padding:8px 16px 0}
+.cd{appearance:none;-webkit-appearance:none;display:block;position:relative;width:100%;min-height:130px;padding:11px 12px 10px;text-align:left;font:inherit;color:var(--k);cursor:pointer;background:#fff;border:1px solid var(--line);border-top:3px solid var(--k);border-radius:10px;transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .4s ease;overflow:hidden}
+.cd.up{border-top-color:var(--g)}
+.cd.dn{border-top-color:var(--dn)}
+.cd.fl{border-top-color:var(--fl)}
+.cd.nop{border-top-color:var(--line);background:#fafbfa;color:var(--mut)}
+.cd:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(17,17,17,.10);border-left-color:#cfd8d2;border-right-color:#cfd8d2;border-bottom-color:#cfd8d2}
+.cd:active{transform:translateY(-1px) scale(.99)}
+.cd > .t,.cd > .u,.cd > .p,.cd > .y{display:block;width:100%;box-sizing:border-box;word-break:normal;overflow-wrap:break-word;hyphens:none;min-width:0}
+.cd .t{font-size:13.5px;font-weight:600;line-height:1.3;color:var(--k);margin:0}
+.cd.nop .t{color:var(--mut)}
+.cd .u{font-size:11px;color:var(--mut);line-height:1.35;margin:1px 0 4px}
+.cd .p{font-size:22px;font-weight:800;line-height:1.1;color:var(--k);font-variant-numeric:tabular-nums;margin:0 0 6px}
+.cd.nop .p{color:var(--mut)}
+.cd .y{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;color:var(--mut);line-height:1.4;margin-top:4px}
+.cd .y .sp{margin-left:auto;line-height:0}
+.pl{display:inline-block;padding:2px 9px;border-radius:99px;font-weight:700;font-size:11.5px;line-height:1.5;white-space:nowrap;flex:0 0 auto}
+.pl.up{background:var(--g);color:#fff}
+.pl.dn{background:var(--dn);color:#fff}
+.pl.fl{background:var(--fl);color:var(--k)}
+.sp.up{color:var(--g)}.sp.dn{color:var(--dn)}.sp.fl{color:var(--flt)}
+.up{color:var(--g)}.dn{color:var(--dn)}.fl{color:var(--flt)}
+.ds{font-size:10.5px;color:var(--mut);white-space:nowrap}
+@media(hover:none){.cd:hover{transform:none;box-shadow:none;border-left-color:var(--line);border-right-color:var(--line);border-bottom-color:var(--line)}}
+.em{margin:20px 16px;color:var(--mut)}
+.bk{position:sticky;top:env(safe-area-inset-top,0px);z-index:3;display:block;width:100%;margin:0;padding:12px 16px;text-align:left;font-size:14px;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:0;border-bottom:1px solid var(--line);color:var(--g);font-weight:700}
+.dh{padding:6px 16px 0}.dh h2{margin:8px 0 2px;font-size:24px;font-weight:800;line-height:1.2}
+.tag{display:inline-block;background:var(--gl);color:#0e5a2a;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600}
+.big{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:baseline}
+.big b{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}.big small{font-size:14px;font-weight:400;color:var(--mut)}.cg{font-weight:700}
+.cmp,.st,.inf{display:grid;gap:8px;margin:12px 16px 0}
+.cmp{grid-template-columns:repeat(3,1fr)}.st{grid-template-columns:repeat(4,1fr)}.inf{grid-template-columns:repeat(2,1fr)}
+.rs .inf{margin:0}
+.card{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.card span{display:block;font-size:12px;color:var(--mut)}.card b{font-size:16px;font-variant-numeric:tabular-nums;word-break:normal;overflow-wrap:break-word}
+.sb{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:16px 16px 0}
+.seg{display:inline-flex;border:1px solid var(--k);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:#fff;padding:8px 16px;font-weight:600}
+.seg button[aria-pressed=true]{background:var(--k);color:#fff}
+#cp{font-size:12.5px;color:var(--mut)}
+.cv{position:relative;height:clamp(220px,52vw,340px);margin:10px 16px 0}
+.ab,.rs{margin:16px 16px 0}
+.ab{padding:14px 16px;background:var(--gl);border-left:4px solid var(--g);border-radius:0 8px 8px 0}
+.ab h3,.rs h3{margin:0 0 8px;font-size:15px}.ab p{margin:0}
+.rgs{max-height:min(270px,45vh);overflow:auto;border:1px solid var(--line);border-radius:8px;padding:4px 10px}
+.rg{display:grid;grid-template-columns:112px 1fr 76px;gap:8px;align-items:center;width:100%;border:0;background:none;padding:6px 0;text-align:left;font-size:13px}
+.rg i{display:block;height:8px;border-radius:4px;background:var(--g);opacity:.35}
+.rg.on i{opacity:1}.rg.on span{font-weight:800}.rg b{text-align:right;font-variant-numeric:tabular-nums}
+.mo{display:grid;grid-template-columns:repeat(12,1fr);gap:4px}
+.mo span{text-align:center;padding:8px 0;border-radius:6px;background:#f1f3f2;font-size:12px;color:var(--mut)}
+.mo .on{background:var(--g);color:#fff;font-weight:700}.mo .now{outline:2px solid var(--k);outline-offset:1px}
+.lg a{color:var(--g);font-weight:600}.lg{margin:8px 0 0;font-size:12px;color:var(--mut)}
+.rl{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;margin:0 6px 6px 0}
+.rl:hover{border-color:var(--g)}
+.ft{margin:16px 16px 0;font-size:11.5px;color:var(--mut);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(pointer:coarse){.tb,.seg button,.ck{min-height:44px}.ck input{width:20px;height:20px}.rl{min-height:40px;padding:8px 14px}.hc{min-height:36px}.sl,.q{min-height:44px;font-size:16px}.q{-webkit-appearance:none;appearance:none}.rf{min-height:40px}}
+@media(prefers-reduced-motion:reduce){*,:before,:after{animation:none!important;transition:none!important}.tk{overflow-x:auto}.tkt{width:auto}}
+.an .cd{animation:cin .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d,0ms)}
+.an .sp polyline{stroke-dasharray:1;animation:dr 1s ease-out both;animation-delay:var(--d,0ms)}
+.dt>*{animation:cin .45s cubic-bezier(.2,.7,.2,1) both}.dt>:nth-child(n+2){animation-delay:.06s}.dt>:nth-child(n+4){animation-delay:.12s}.dt>:nth-child(n+6){animation-delay:.18s}
+.dt .rg i{transform-origin:left;animation:gr .8s .25s cubic-bezier(.2,.7,.2,1) both}
+.cd.bu{animation:fu 2.6s ease-out}.cd.bd{animation:fw 2.6s ease-out}
+.tk{overflow:hidden;margin:12px -16px -16px;padding:9px 0;border-top:1px solid #2b3a31;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.tkt{display:flex;width:max-content;animation:mq 70s linear infinite}.tk:hover .tkt{animation-play-state:paused}
+.tk .tki{background:none;border:0;color:#fff;padding:0 16px;white-space:nowrap;font-size:12.5px}.tki i{font-style:normal;font-weight:700;margin-left:4px}.tki.up i{color:#4ade80}.tki.dn i{color:#ff7b70}.tki.fl i{color:var(--fl)}
+@keyframes cin{from{opacity:0;transform:translateY(12px)}}@keyframes dr{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}@keyframes gr{from{transform:scaleX(0)}}
+@keyframes fu{0%,25%{background:#d3f3de}100%{background:#fff}}@keyframes fw{0%,25%{background:#fde0dd}100%{background:#fff}}
+@keyframes mq{to{transform:translateX(-50%)}}
+@media(max-width:760px){.tabs{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}}
+@media(max-width:600px){
+.hd h1{font-size:19px}
+.hd p{font-size:11px}
+.ft{font-size:10.5px}
+.hl{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:-16px;padding-right:16px}.hl::-webkit-scrollbar{display:none}.hl b,.hc{flex:none;white-space:nowrap}
+.bar{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 12px 0}
+.bar .q{grid-column:1/-1;order:-1;min-width:0}.sl{flex:none;width:100%;min-width:0}.ck{justify-content:flex-end}
+.tabs{padding:2px 8px 0}.tb{padding:10px 11px}
+.gh,.sum,.nt,.rs,.ab,.sb,.cmp,.st,.inf,.ft,.em{margin-left:12px;margin-right:12px}
+.gh{margin-top:16px}.dh{padding:6px 12px 0}.cv{margin:10px 12px 0}
+.seg{width:100%}.seg button{flex:1;padding:8px 6px}#cp{width:100%}
+.gd{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:8px 12px}
+.cd{padding:10px 10px 9px;min-height:120px}
+.cd .t{font-size:13px}
+.cd .u{font-size:10.5px}
+.cd .p{font-size:19px;margin-bottom:4px}
+.cd .y{font-size:10.5px}
+.st{grid-template-columns:1fr 1fr}
+.big b{font-size:26px}
+.card{padding:8px 10px}.card b{font-size:14px}
+.mo{grid-template-columns:repeat(6,1fr)}
+}
+@media(max-width:420px){.rf-lbl{display:none}.rf{padding:7px 10px}}
+@media(max-width:380px){
+.inf{grid-template-columns:1fr}
+.cmp .card b{font-size:13px}.cmp .card span{font-size:11px}
+.rg{grid-template-columns:92px 1fr 68px}
+.gd{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:6px 8px}
+.cd{padding:9px 8px 8px;min-height:112px}
+.cd .t{font-size:12.5px}
+.cd .u{font-size:10px}
+.cd .p{font-size:17px}
+.cd .y{font-size:10px}
+.big b{font-size:24px}
+.hd p{font-size:10px}
+.ft{font-size:10px}
+}
+@media(min-width:768px){.cd .p{font-size:24px}.gd{gap:12px}}
+@media(min-width:1024px){.w{max-width:1120px}.hd{border-radius:0 0 16px 16px}.gd{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}.cv{height:340px}}
+</style>
+</head>
+<body>
+<div class="w">
+  <header class="hd">
+    <div class="hr">
+      <h1>Tra cứu nông sản và cây trồng</h1>
+      <button id="rf" class="rf" aria-label="Cập nhật ngay" title="Cập nhật ngay">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12a9 9 0 1 1-2.64-6.36"/>
+          <polyline points="21 3 21 9 15 9"/>
+        </svg>
+        <span class="rf-lbl">Mới</span>
+      </button>
+    </div>
+    <p id="up"><span class="dot"></span><span class="txt">Đang tải…</span></p>
+    <div id="hh"></div>
+  </header>
+  <main id="main"><p class="em">Đang tải…</p></main>
+  <p class="ft" id="ft"></p>
+</div>
+<script>
+(()=>{
+const DEBUG=true;
+const log=(...a)=>{if(DEBUG)console.log("[tcns]",...a)};
+
+const VERSION="2026.10.04-08";
+const CONFIG={
+ DATA_URL:"", /* link prices.json do bot tạo (xem hướng dẫn). Khi có link này trang chỉ đọc dữ liệu từ bot, không tự quét các trang nguồn nữa */
+ SHOW_REF:true, /* false = ẩn giá "Tham khảo" ước lượng, cây chưa có giá thật sẽ hiện "Chưa có giá" */
+
+ VERSION_URL:"version.json",
+ REFRESH_MIN:0,UPDATE_HOUR:0,RETRY_MIN:2,CHECK_MIN:5,VERSION_CHECK_MIN:30,
+ SOURCE:"banggianongsan.com; nongdanviet.vn; giaca.nsvl.com.vn; vietfood.org.vn; dichvu.cesti.gov.vn; nhachannuoi.vn; nongthonviet.vn; thoibaotaichinhvietnam.vn; vov.vn",
+ WORKER:"",
+ LIVE:[
+   {url:"https://nongdanviet.vn/gia-ca-phe",cay:"Cà phê Robusta",nhom:"cn",fmt:"tbl"},
+   {url:"https://nongdanviet.vn/gia-ho-tieu",cay:"Hồ tiêu",nhom:"cn",fmt:"tbl"},
+   {url:"https://nongdanviet.vn/gia-heo-hoi",cay:"Heo hơi",nhom:"ns",fmt:"tbl"},
+   {url:"https://giaca.nsvl.com.vn/",tinh:"Vĩnh Long",fmt:"gln"},
+   {url:"https://nongthonviet.vn/thi-truong-nong-san-6-5-ho-tieu-va-lua-gao-vung-vang-vi-the-xuat-khau-45264.html",fmt:"art"},
+   {url:"https://thoibaotaichinhvietnam.vn/ngay-2-10-gia-ca-phe-tang-manh-ho-tieu-neo-o-muc-cao-204711.html",fmt:"art"},
+   ...["","gia-khoai-lang/","bang-gia-dua-hau/","bang-gia-dua/","bang-gia-mang-cut/",
+      "gia-mit-hom-nay/","gia-lua-gao-hom-nay/","gia-ca-phe-hom-nay/",
+      "gia-ho-tieu-hom-nay/","gia-sau-rieng-hom-nay/","gia-thanh-long-hom-nay/",
+      "gia-buoi-hom-nay/","gia-xoai-hom-nay/","gia-chuoi-hom-nay/",
+      "bang-gia-ca-chua/","bang-gia-rau-cu/","bang-gia-nhan/","bang-gia-vai/",
+      "gia-dieu-hom-nay/","gia-tieu-hom-nay/","gia-gao-hom-nay/"
+   ].map(p=>({url:"https://banggianongsan.com/"+p,fmt:"bg"}))
+ ],
+ PROXIES:[
+   u=>"https://corsproxy.io/?url="+encodeURIComponent(u),
+   u=>"https://api.allorigins.win/raw?url="+encodeURIComponent(u),
+   u=>"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(u),
+   u=>"https://cors.eu.org/"+u,
+   u=>"https://thingproxy.freeboard.io/fetch/"+u
+ ]};
+const $=s=>document.querySelector(s),main=$("#main");
+const E=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fm=n=>Math.round(n).toLocaleString("vi-VN");
+const sgn=n=>(n>0?"+":"")+n.toLocaleString("vi-VN",{maximumFractionDigits:1});
+const nz=s=>String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d");
+const kn=s=>nz(s).replace(/\W/g,"");
+const CATS=[["all","Tất cả"],["ns","Nông sản"],["qa","Cây ăn quả"],["cn","Cây công nghiệp"],["rm","Rau màu"],["dl","Gia vị & dược liệu"],["lm","Cây lâm nghiệp"],["hc","Hoa & cây cảnh"]];
+const BLURB={dl:"Giá gia vị và dược liệu phụ thuộc diện tích trồng, tuổi cây, hàm lượng hoạt chất và nhu cầu thị trường chế biến, xuất khẩu.",lm:"Giá gỗ và lâm sản gắn với nhu cầu nhà máy dăm, ván ép, chế biến đồ gỗ, tuổi cây khai thác, chi phí vận chuyển.",ns:"Nhóm lương thực, củ và cây lấy đường, lấy dầu. Giá chịu ảnh hưởng sản lượng từng vụ, chính sách XNK, giá thế giới.",qa:"Giá cây ăn quả theo mùa vụ: rộ thì giảm, trái vụ hoặc Tết thì tăng. Tiêu chuẩn xuất khẩu, thời tiết tác động mạnh.",cn:"Giá cây công nghiệp gắn với thị trường thế giới, tỷ giá và tồn kho toàn cầu.",rm:"Rau màu ngắn ngày nên giá biến động nhanh theo thời tiết, vận chuyển và sức mua.",hc:"Hoa và cây cảnh phụ thuộc nhiều vào dịp lễ, Tết. Giá còn theo chất lượng, kích thước, giống."};
+const Z={B:"Miền Bắc",T:"Miền Trung",N:"Tây Nguyên",D:"Đông Nam Bộ",M:"Tây Nam Bộ"};
+const PV={B:["Hà Nội","Hải Phòng","Quảng Ninh","Bắc Ninh","Hưng Yên","Ninh Bình","Phú Thọ","Thái Nguyên","Tuyên Quang","Lào Cai","Cao Bằng","Lạng Sơn","Lai Châu","Điện Biên","Sơn La"],
+T:["Thanh Hóa","Nghệ An","Hà Tĩnh","Quảng Trị","TP Huế","Đà Nẵng","Quảng Ngãi","Khánh Hòa"],N:["Gia Lai","Đắk Lắk","Lâm Đồng"],
+D:["TP Hồ Chí Minh","Đồng Nai","Tây Ninh"],M:["Cần Thơ","Vĩnh Long","Đồng Tháp","An Giang","Cà Mau"]};
+const PZ={},PN={"ho chi minh":"TP Hồ Chí Minh","hue":"TP Huế"};
+for(const z in PV)PV[z].forEach(p=>{PZ[p]=z;PN[nz(p)]=p});
+Object.assign(PN,{"dak nong":"Lâm Đồng","binh thuan":"Lâm Đồng","phu yen":"Đắk Lắk","binh dinh":"Gia Lai","kon tum":"Quảng Ngãi","ninh thuan":"Khánh Hòa","ba ria vung tau":"TP Hồ Chí Minh","binh duong":"TP Hồ Chí Minh","binh phuoc":"Đồng Nai","long an":"Tây Ninh","tien giang":"Đồng Tháp","ben tre":"Vĩnh Long","tra vinh":"Vĩnh Long","soc trang":"Cần Thơ","hau giang":"Cần Thơ","kien giang":"An Giang","bac lieu":"Cà Mau","quang binh":"Quảng Trị","thua thien hue":"TP Huế","quang nam":"Đà Nẵng","ha nam":"Ninh Bình","nam dinh":"Ninh Bình","thai binh":"Hưng Yên","hai duong":"Hải Phòng","bac giang":"Bắc Ninh","vinh phuc":"Phú Thọ","hoa binh":"Phú Thọ","bac kan":"Thái Nguyên","ha giang":"Tuyên Quang","yen bai":"Lào Cai","ba ria":"TP Hồ Chí Minh","vung tau":"TP Hồ Chí Minh","phu rieng":"Đồng Nai","binh long":"Đồng Nai","mang yang":"Gia Lai"});
+const P=[
+["ns","Lúa","BTDM","3-4,6-8,10-11"],["ns","Gạo","BTDM","3-4,6-8,10-11"],["ns","Ngô","BTN","6-10"],["ns","Sắn","TND","11-4"],
+["ns","Khoai lang","BTNM","1-12"],["ns","Đậu tương","BTN","6-9"],["ns","Lạc","BTD","6-7,10-11"],["ns","Mía","TNM","11-4","đ/tấn"],
+["ns","Vừng (mè)","BTM",""],["ns","Đậu xanh","TNM",""],
+["qa","Sầu riêng","NDM","5-9"],["qa","Xoài","TDM","3-6"],["qa","Thanh long","TDM","5-10"],["qa","Bưởi","BDM","8-9,12-2"],
+["qa","Chuối","BNDM","1-12"],["qa","Cam","BTM","10-2"],["qa","Quýt","M","11-1"],["qa","Nhãn","BM","6-8"],["qa","Vải thiều","B","5-6"],
+["qa","Chôm chôm","DM","5-8"],["qa","Măng cụt","DM","5-8"],["qa","Mít","BTNDM","1-12"],["qa","Dứa (khóm)","BTM","1-12"],
+["qa","Dừa","TM","1-12","đ/trái"],["qa","Bơ","N","6-9"],["qa","Ổi","BNDM","1-12"],["qa","Chanh","BNDM","1-12"],
+["qa","Na (mãng cầu)","BM","7-10"],["qa","Mận hậu","B","5-6"],["qa","Mơ","B","4-5"],["qa","Hồng giòn","BN","9-11"],
+["qa","Đu đủ","BTDM","1-12"],["qa","Dưa hấu","BTDM","12-5"],["qa","Vú sữa","M","1-3"],["qa","Nho","T",""],
+["qa","Táo","T","1-4"],["qa","Lê","B",""],["qa","Mãng cầu xiêm","M",""],["qa","Sa pô chê","DM",""],["qa","Mận (roi)","M",""],
+["cn","Cà phê Robusta","ND","10-1"],["cn","Cà phê Arabica","N","10-1"],["cn","Hồ tiêu","NDT","2-4"],["cn","Cao su","ND","3-12"],
+["cn","Hạt điều","ND","2-5"],["cn","Chè","BN","3-11"],["cn","Ca cao","NM",""],["cn","Quế","BT",""],["cn","Hồi","B","3-4,8-10"],["cn","Mắc ca","N",""],
+["rm","Cà chua","BN","1-12"],["rm","Dưa leo","BND","1-12"],["rm","Cải thảo","BN","10-3"],["rm","Bắp cải","BN","10-3"],["rm","Su hào","B","10-2"],
+["rm","Súp lơ","BN","10-3"],["rm","Cà rốt","BN","11-3"],["rm","Khoai tây","BN","12-3"],["rm","Xà lách","BN","1-12"],["rm","Rau muống","BTDM","1-12"],
+["rm","Cải xanh","BTNDM","1-12"],["rm","Hành lá","BM","1-12"],["rm","Tỏi","TM","3-4"],["rm","Hành tím","M",""],["rm","Hành tây","N",""],
+["rm","Ớt","TNM","1-12"],["rm","Gừng","BN",""],["rm","Nghệ","BTN",""],["rm","Bí đỏ","BTNM","1-12"],["rm","Bí xanh (bí đao)","BM","1-12"],
+["rm","Mướp đắng","BTM","1-12"],["rm","Đậu đũa","BTM","1-12"],["rm","Cà tím","BM","1-12"],["rm","Nấm rơm","M",""],
+["hc","Hoa hồng","BNM","1-3,10"],["hc","Hoa cúc","BNM","12-2,10"],["hc","Hoa ly","BN","1-3,10"],["hc","Hoa cẩm chướng","BN","1-3,10"],
+["hc","Hoa đồng tiền","BNM","1-3,10"],["hc","Hoa lay ơn","BN","12-2"],["hc","Hoa huệ","BM",""],["hc","Lan hồ điệp","NDM","12-2","đ/chậu"],
+["hc","Lan cắt cành","NDM",""],["hc","Mai vàng","DM","12-2","đ/cây"],["hc","Hoa đào","B","12-2","đ/cây"],["hc","Quất cảnh","BM","12-2","đ/chậu"],
+["hc","Sen đá","NDM","","đ/chậu"],["hc","Kim ngân","DM","","đ/chậu"],["hc","Trầu bà","DM","","đ/chậu"],["hc","Lan ý","NDM","","đ/chậu"],
+["ns","Lúa nếp","BTDM","3-4,6-8,10-11"],["ns","Gạo thơm","BTDM","3-4,6-8,10-11"],["ns","Gạo nếp","BTDM","3-4,6-8,10-11"],["ns","Khoai môn","BTNM","9-12"],["ns","Khoai sọ","B","9-12"],["ns","Dong riềng","BT","10-12"],["ns","Đậu đen","BT","6-9"],["ns","Đậu đỏ","BT","6-9"],["ns","Ngô nếp","BTN","1-12"],["ns","Hạt sen","BM","6-9"],["ns","Cỏ voi","BTNDM","1-12","đ/tấn"],
+["qa","Sầu riêng Ri6","NDM","5-9"],["qa","Sầu riêng Thái","NDM","5-9"],["qa","Sầu riêng Musang King","ND","5-9"],["qa","Cam sành","M","10-2"],["qa","Cam xoàn","M","10-2"],["qa","Cam Cao Phong","B","10-12"],["qa","Cam Vinh","T","10-12"],["qa","Bưởi da xanh","M","8-9,12-2"],["qa","Bưởi Diễn","B","9-11"],["qa","Bưởi Đoan Hùng","B","9-11"],["qa","Bưởi năm roi","M","8-9,12-2"],["qa","Xoài cát Hòa Lộc","M","3-6"],["qa","Xoài cát Chu","M","3-6"],["qa","Xoài keo","DM","5-8"],["qa","Nhãn xuồng","M","6-8"],["qa","Nhãn lồng","B","7-8"],["qa","Vải u hồng","B","5-6"],["qa","Chuối tiêu","BTNDM","1-12"],["qa","Chuối già Nam Mỹ","NDM","1-12"],["qa","Mít Thái","DM","1-12"],["qa","Dưa lưới","BTDM","1-12"],["qa","Dưa lê","BTM","3-6"],["qa","Cóc","M","1-12"],["qa","Sấu","B","8-10"],["qa","Khế","M","1-12"],["qa","Lựu","BT","8-10"],["qa","Me","BTM","1-3"],["qa","Dâu tây","N","12-4"],["qa","Chanh dây","BNM","1-12"],["qa","Chanh không hạt","M","1-12"],["qa","Nhót","B","3-5"],["qa","Đào","B","5-7"],["qa","Sơ ri","M","4-7"],["qa","Bòn bon","DM","7-9"],["qa","Thanh trà","T","8-9"],["qa","Dừa xiêm","M","1-12","đ/trái"],["qa","Dừa khô","M","1-12","đ/trái"],
+["cn","Điều nhân","ND","2-5"],["cn","Chè búp tươi","BN","3-11"],["cn","Chè Thái Nguyên","B","3-11"],["cn","Tiêu trắng","NDT","2-4"],["cn","Mủ cao su đông","ND","3-12"],["cn","Thuốc lá","BTN","3-5"],["cn","Cọ dầu","TD","1-12"],["cn","Cói","BT","6-10"],["cn","Dâu tằm","BN","1-12"],["cn","Bông vải","NT",""],
+["rm","Cải ngọt","BTNDM","1-12"],["rm","Cải bó xôi","BN","10-3"],["rm","Cải cúc","BNDM","1-12"],["rm","Cải ngồng","B","10-2"],["rm","Rau dền","BTNDM","1-12"],["rm","Rau má","BTM","1-12"],["rm","Rau ngót","BTM","1-12"],["rm","Mồng tơi","BTM","1-12"],["rm","Rau lang","BTM","1-12"],["rm","Rau đay","BTM","5-9"],["rm","Rau cần","BM","1-12"],["rm","Cần tây","BN","10-3"],["rm","Xà lách xoăn","N","1-12"],["rm","Măng tây","N","1-12"],["rm","Bông cải xanh","BN","10-3"],["rm","Ngò rí","BNDM","1-12"],["rm","Tía tô","BM","1-12"],["rm","Kinh giới","B","1-12"],["rm","Diếp cá","BM","1-12"],["rm","Thì là","BN","1-12"],["rm","Hẹ","BM","1-12"],["rm","Tỏi tây","N","10-3"],["rm","Củ cải trắng","BN","10-3"],["rm","Củ dền","N","11-3"],["rm","Su su","BN","1-12"],["rm","Bầu","BM","1-12"],["rm","Mướp","BM","1-12"],["rm","Bí ngòi","BN","1-12"],["rm","Đậu cove","BN","1-12"],["rm","Đậu Hà Lan","BN","11-3"],["rm","Đậu bắp","BM","1-12"],["rm","Cà pháo","B","5-9"],["rm","Ngô bao tử","BN","1-12"],["rm","Măng tre","B","5-9"],["rm","Nấm sò","BM","1-12"],["rm","Nấm mỡ","BN","10-4"],["rm","Nấm đông cô","B","10-4"],["rm","Ngó sen","BM","5-9"],["rm","Ớt chuông","N","1-12"],["rm","Ớt hiểm","TNM","1-12"],
+["dl","Sả","BTNDM","1-12"],["dl","Riềng","BT","1-12"],["dl","Húng quế","BNM","1-12"],["dl","Lá lốt","BM","1-12"],["dl","Ngải cứu","B","1-12"],["dl","Đinh lăng","BN","1-12"],["dl","Atiso","N","1-12"],["dl","Nha đam","TM","1-12"],["dl","Gấc","BTM","10-1"],["dl","Thảo quả","B","10-12"],["dl","Sa nhân","B","8-10"],["dl","Đẳng sâm","B",""],["dl","Tam thất","B",""],["dl","Sâm Ngọc Linh","N",""],["dl","Ba kích","B",""],["dl","Cà gai leo","B","1-12"],["dl","Giảo cổ lam","B","1-12"],["dl","Hà thủ ô","B",""],["dl","Linh chi","BN","1-12"],["dl","Cỏ ngọt","B","1-12"],
+["lm","Keo lai","BTNDM","1-12"],["lm","Keo dăm","BTNDM","1-12"],["lm","Bạch đàn","BT","1-12"],["lm","Thông nhựa","BTN","1-12"],["lm","Gỗ cao su","ND","1-12"],["lm","Tre","BT","1-12","đ/cây"],["lm","Luồng","BT","1-12","đ/cây"],["lm","Mây","TN","1-12"],["lm","Dó bầu","TN","","đ/kg"],["lm","Tràm","M","1-12","đ/cây"],
+["hc","Hoa sen","BTM","5-8"],["hc","Hoa loa kèn","B","3-5"],["hc","Hoa hướng dương","BN","10-3"],["hc","Hoa cát tường","N","1-3,10"],["hc","Hoa thược dược","N","11-2"],["hc","Cúc mâm xôi","N","12-2","đ/chậu"],["hc","Hoa giấy","DM","","đ/chậu"],["hc","Lan Dendro","NDM","12-2"],["hc","Lan Mokara","NDM","12-2"],["hc","Mai chiếu thủy","T","","đ/cây"],["hc","Cây phát tài","DM","","đ/chậu"],["hc","Cây lưỡi hổ","NDM","","đ/chậu"],["hc","Cây kim tiền","NDM","","đ/chậu"],["hc","Cây đa búp đỏ","DM","","đ/chậu"]
+];
+const C=P.map((p,i)=>({id:"c"+i,cat:p[0],name:p[1],z:p[2],mo:p[3],unit:p[4]||(p[0]==="hc"?"đ/cành":p[0]==="lm"?"đ/tấn":"đ/kg")}));
+const NZ={};C.forEach(c=>NZ[nz(c.name)]=c);
+const S={cat:"all",q:"",sel:"",id:null,g:"day",hp:0};
+const RS=new Set();let DATA={},LD=0,SIG=null,UPD=new Date(),CH=null,ERR=0,HK="";
+function csv(t){const R=[];let r=[],c="",q=false;
+ for(let i=0;i<t.length;i++){const h=t[i];
+  if(q){if(h==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=h}
+  else if(h==='"')q=true;else if(h===","){r.push(c);c=""}
+  else if(h==="\n"||h==="\r"){if(h==="\r"&&t[i+1]==="\n")i++;r.push(c);c="";R.push(r);r=[]}else c+=h}
+ if(c||r.length){r.push(c);R.push(r)}
+ const k=R.shift().map(kn);
+ return R.filter(a=>a.some(x=>x.trim())).map(a=>Object.fromEntries(k.map((n,i)=>[n,(a[i]||"").trim()])))}
+function pd(s){s=String(s).trim();let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+ if(m)return new Date(+m[1],m[2]-1,+m[3]).getTime();
+ m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);return m?new Date(+m[3],m[2]-1,+m[1]).getTime():NaN}
+function build(rows){
+ const D={},RF=[];RS.clear();
+ for(const o of rows){
+  const t=pd(o.ngay),v=parseInt(String(o.gia||"").replace(/\D/g,""),10),n=(o.cay||"").trim(),tn=(o.tinh||"").trim();
+  if(!n||isNaN(t)||!v)continue;
+  const pv=tn&&nz(tn)!=="toan quoc"?PN[nz(tn)]:"";
+  if(pv===undefined)continue;
+  let c=NZ[nz(n)];
+  if(!c){c={id:"x"+C.length,cat:["ns","qa","cn","rm","dl","lm","hc"].includes(o.nhom)?o.nhom:"ns",name:n,z:"",mo:"",unit:o.donvi||"đ/kg"};C.push(c);NZ[nz(n)]=c}
+  if(o.ref){RF.push([c.id,pv,t,v]);continue}
+  if(o.donvi)c.unit=o.donvi;
+  const m=D[c.id]=D[c.id]||{};(m[pv]=m[pv]||new Map()).set(t,v)}
+ RF.forEach(([id,p,t,v])=>{if(!D[id]){D[id]={[p]:new Map([[t,v]])};RS.add(id)}});
+ const R={};LD=0;
+ for(const id in D){const r=R[id]={};
+  for(const p in D[id])r[p]=[...D[id][p]].sort((a,b)=>a[0]-b[0]);
+  {const m=new Map(),ex=r[""]||[];
+   for(const p in r)if(p)for(const[t,v]of r[p]){if(!m.has(t))m.set(t,[]);m.get(t).push(v)}
+   const g=new Map([...m].map(([t,a])=>[t,Math.round(a.reduce((s,x)=>s+x,0)/a.length)]));ex.forEach(([t,v])=>g.set(t,v));
+   r[""]=[...g].sort((a,b)=>a[0]-b[0])}
+  const l=r[""];if(l.length)LD=Math.max(LD,l[l.length-1][0])}
+ DATA=R;return rows.length+"|"+LD+"|"+fd(new Date())+"|"+rows.reduce((a,o)=>a+(parseInt(String(o.gia).replace(/\D/g,""))||0),0)}
+const LK=Object.entries(PN).map(([k,v])=>[kn(k),v]).sort((a,b)=>b[0].length-a[0].length),
+ provOf=t=>{t=kn(t);const m=LK.find(([k])=>t.startsWith(k));return m?m[1]:""},
+ priceOf=t=>{const n=(String(t).match(/\d{1,3}(?:[.,]\d{3})+|\d+/g)||[]).map(x=>+x.replace(/\D/g,"")).filter(x=>x>=500);return n.length?Math.round(n.reduce((a,b)=>a+b,0)/n.length):0},
+ fd=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"),
+ dmy=t=>{const d=new Date(t);return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear()},
+ hm=t=>{const d=new Date(t);return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")},
+ MS={},
+ ls=(k,v)=>{if(v===undefined){try{const x=localStorage.getItem(k);if(x!==null)return x}catch(e){}return k in MS?MS[k]:null}MS[k]=v;try{localStorage.setItem(k,v)}catch(e){}};
+const due=(a,b)=>!a||b-a>=CONFIG.REFRESH_MIN*6e4;
+const DIAG=[];let OFF=0,FT=0,BUSY=0,NCH=0,DAY=fd(new Date());
+const clock=()=>{const n=new Date();return "Hôm nay "+dmy(n)+" "+hm(n)+":"+String(n.getSeconds()).padStart(2,"0")};
+async function grab(u){
+ const same=new URL(u).hostname.replace(/^www\./,"")===location.hostname.replace(/^www\./,""),L=[].concat(same?[x=>x]:[],CONFIG.WORKER?[x=>CONFIG.WORKER+(CONFIG.WORKER.includes("?")?"&":"?")+"u="+encodeURIComponent(x)]:[]).concat(CONFIG.PROXIES);
+ for(const px of L){let h="";try{h=new URL(px("x:")).hostname}catch(e){}
+  try{const r=await fetch(px(u),{cache:"no-store",signal:AbortSignal.timeout?AbortSignal.timeout(6000):undefined});
+   if(!r.ok){DIAG.push(h+" "+r.status);continue}const t=await r.text();if(t.length>500)return t;DIAG.push(h+" rỗng")}catch(e){DIAG.push(h+" lỗi")}}
+ throw 0}
+function safe(fn,html,s,d){try{const r=fn(html,s,d);return Array.isArray(r)?r:[]}catch(e){if(DEBUG)console.warn("[tcns] parser error",s.url,e);return[]}}
+function tbl(html,s,d){
+ const doc=new DOMParser().parseFromString(html,"text/html"),y=new Date(d),out=[];y.setDate(d.getDate()-1);
+ const dm=(doc.body?doc.body.textContent:"").match(/Ngày:\s*(\d{1,2})\/(\d{1,2})\/(\d{4})/),nd=dm?new Date(+dm[3],dm[2]-1,+dm[1]):d;
+ doc.querySelectorAll("table").forEach(t=>{
+  const tr=[...t.querySelectorAll("tr")],hs=[...(tr[0]?tr[0].cells:[])].map(c=>nz(c.textContent)),pc=hs.findIndex((h,i)=>i>0&&h.includes("gia")),dc=hs.findIndex(h=>h.includes("thay doi"));
+  if(pc<0)return;
+  tr.slice(1).forEach(r=>{const c=r.cells,tinh=c.length>pc?provOf(c[0].textContent):"",v=tinh?priceOf(c[pc].textContent):0;if(!v)return;
+   const b={cay:s.cay,tinh,donvi:s.donvi||"đ/kg",nhom:s.nhom};out.push({...b,ngay:fd(d),gia:v});
+   if(dc>=0&&c[dc]){const m=c[dc].textContent.match(/[+\-−–]?\s*\d[\d.,]*/),dv=m?(/^[-−–]/.test(m[0])?-1:1)*(parseInt(m[0].replace(/\D/g,""))||0):0;if(v-dv>=500)out.push({...b,ngay:fd(y),gia:v-dv,syn:1})}})});
+ return out}
+const wn=s=>" "+nz(s).replace(/[^a-z0-9]+/g," ").trim()+" ",
+ AL={"ca phe":"Cà phê Robusta","dieu tuoi":"Hạt điều","cacao":"Ca cao","macca":"Mắc ca","ot chi thien":"Ớt","mu dong":"Mủ cao su đông","mu chen":"Mủ cao su đông","sau thai":"Sầu riêng Thái"},
+ PAR={"Sầu riêng Thái":"Sầu riêng","Mủ cao su đông":"Cao su"},
+ SKIP=/ (loai [b2]|loi|dat|kem|xo ab|com chuan|say kho|vo xanh|tach vo|sung vang) /,RG=/dbscl|tay nguyen|mien /,UN={kg:"kg",trai:"trái",tan:"tấn"},
+ pvIn=t=>{t=kn(t);const m=LK.find(([k])=>t.includes(k));return m?m[1]:""},
+ find=r=>{r=wn(r);let b="",n=0;for(const c of C){const w=wn(c.name);if(w.length>n&&r.includes(w)){b=c.name;n=w.length}}
+  for(const k in AL)if(r.includes(" "+k+" ")&&k.length+2>n){b=AL[k];n=k.length+2}return b};
+function bg(html,s,d){
+ const doc=new DOMParser().parseFromString(html,"text/html"),o=new Map(),m=(doc.title+" "+(doc.body?doc.body.textContent:"")).match(/(\d{1,2})\/(\d{1,2})\/(20\d\d)/);
+ if(!m)return[];const nd=new Date(+m[3],m[2]-1,+m[1]),y=new Date(nd);y.setDate(nd.getDate()-1);
+ doc.querySelectorAll("table").forEach(t=>{
+  const tr=[...t.querySelectorAll("tr")],hs=[...(tr[0]?tr[0].cells:[])].map(c=>nz(c.textContent)),
+   pc=[hs.findIndex(h=>h.includes("gia moi")),hs.findIndex(h=>h.includes("gia hien tai")),hs.findIndex((h,i)=>i>0&&h.includes("gia"))].find(i=>i>0),oc=hs.findIndex(h=>h.includes("gia cu"));let ctx=[];
+  if(!pc)return;
+  tr.slice(1).forEach(r=>{
+   const c=r.cells,nm=c[0]?c[0].textContent.trim():"";if(!nm)return;
+   const v=c.length>pc?priceOf(c[pc].textContent):0;
+   if(!v){if(nm.includes("("))ctx=[...new Set(nm.replace(/^[^(]*\(/,"").split(/[,;)]/).map(pvIn).filter(Boolean))];return}
+   const cay=find(nm),w=wn(nm);if(!cay||SKIP.test(w))return;
+   const up=(nm.match(/\(([^()]*)\)\s*$/)||[])[1],ut=nz(up!=null?up:hs[pc]).replace(/\s+/g,""),um=ut.match(/(?:^|[^a-z])(?:d|vnd|dong)\/(kg|trai|tan)(?![a-z])/)||(/12trai/.test(ut)?[0,"trai"]:null);if(!um)return;
+   const pv=pvIn(nm),dr=!!pv&&kn(nm).includes(kn(pv)),ps=pv?[pv]:ctx.length?ctx:RG.test(w)?[]:[""],ov=oc>=0&&c[oc]?priceOf(c[oc].textContent):0,qd=/12trai/.test(ut)?12:1;
+   [cay,PAR[cay]].filter(Boolean).forEach(cy=>ps.forEach(p=>[[nd,v/qd,0],[y,ov/qd,1]].forEach(([dt,g,syn])=>{
+    if(g<500)return;const k=fd(dt)+"|"+cy+"|"+p,e=o.get(k);
+    if(!e||(dr&&!e.dr))o.set(k,{ngay:fd(dt),cay:cy,tinh:p,donvi:"đ/"+UN[um[1]],gia:Math.round(g),dr,syn})})))})});
+ return[...o.values()].map(({dr,...r})=>r)}
+function gln(html,s,d){
+ const doc=new DOMParser().parseFromString(html,"text/html"),o=[],m=(doc.body?doc.body.textContent:"").match(/(\d{1,2})\/(\d{1,2})\/(20\d\d)/);
+ const nd=m?new Date(+m[3],m[2]-1,+m[1]):d;
+ doc.querySelectorAll("table").forEach(t=>{
+  const tr=[...t.querySelectorAll("tr")],hs=[...(tr[0]?tr[0].cells:[])].map(c=>nz(c.textContent));
+  const nc=hs.findIndex(h=>h.includes("ten")||h.includes("mat hang")||h.includes("san pham")),pc=hs.findIndex((h,i)=>i>0&&h.includes("gia"));
+  if(nc<0||pc<0)return;
+  tr.slice(1).forEach(r=>{const c=r.cells,nm=c[nc]?c[nc].textContent.trim():"",v=priceOf(c[pc]?c[pc].textContent:"");
+   const cay=find(nm);if(cay&&v>=500)o.push({cay,tinh:s.tinh||"Vĩnh Long",donvi:"đ/kg",ngay:fd(nd),gia:v})})});
+ return o}
+function art(html,s,d){
+ const doc=new DOMParser().parseFromString(html,"text/html"),o=[];
+ const txt=(doc.body?doc.body.textContent:"")+" "+(doc.title||"");
+ const m=txt.match(/(\d{1,2})\/(\d{1,2})\/(20\d\d)/);const nd=m?new Date(+m[3],m[2]-1,+m[1]):d;
+ const g2=(name,re,min)=>{let z;const r=new RegExp(re.source,re.flags);while((z=r.exec(txt))){
+   const v=z[2]?Math.round((+z[1].replace(/[.,]/g,"")+ +z[2].replace(/[.,]/g,""))/2):+z[1].replace(/[.,]/g,"");
+   if(v>=min)o.push({cay:name,tinh:"",donvi:"đ/kg",ngay:fd(nd),gia:v})}};
+ g2("Cà phê Robusta",/giá (?:cà phê|ca phe)[^.]{0,120}?(?:dao động|khoảng|từ|ở|đạt)\s*(\d{1,3}(?:[.,]\d{3})+|\d+)\s*(?:-|–|đến)\s*(\d{1,3}(?:[.,]\d{3})+|\d+)\s*đồng\/kg/gi,50000);
+ g2("Hồ tiêu",/giá (?:hồ tiêu|ho tieu)[^.]{0,120}?(?:dao động|khoảng|từ|ở|neo|đạt)\s*(\d{1,3}(?:[.,]\d{3})+|\d+)\s*(?:-|–|đến)\s*(\d{1,3}(?:[.,]\d{3})+|\d+)\s*đồng\/kg/gi,100000);
+ g2("Sầu riêng",/giá (?:sầu riêng|sau rieng)[^.]{0,120}?(?:dao động|khoảng|từ|ở|đạt)\s*(\d{1,3}(?:[.,]\d{3})+|\d+)\s*(?:-|–|đến)\s*(\d{1,3}(?:[.,]\d{3})+|\d+)\s*đồng\/kg/gi,30000);
+ g2("Lúa",/giá (?:lúa tươi|thóc)[^.]{0,100}?(?:dao động|khoảng|từ|ở)\s*(\d{1,3}(?:[.,]\d{3})+|\d+)\s*(?:-|–|đến)\s*(\d{1,3}(?:[.,]\d{3})+|\d+)\s*đồng\/kg/gi,3000);
+ g2("Gạo",/giá (?:gạo|gao)[^.]{0,100}?(?:dao động|khoảng|từ|ở)\s*(\d{1,3}(?:[.,]\d{3})+|\d+)\s*(?:-|–|đến)\s*(\d{1,3}(?:[.,]\d{3})+|\d+)\s*đồng\/kg/gi,5000);
+ return o}
+function avg(a){const m={};a.forEach(r=>{const k=r.ngay+"|"+r.cay+"|"+r.tinh;(m[k]=m[k]||[]).push(r)});return Object.values(m).map(v=>({...v[0],gia:Math.round(v.reduce((s,x)=>s+x.gia,0)/v.length)}))}
+function keep(rows){let h=[];try{h=JSON.parse(ls("tcns")||"[]")}catch(e){}
+ const k=r=>r.ngay+"|"+r.cay+"|"+r.tinh,m=new Map(h.map(r=>[k(r),r]));
+ rows.forEach(r=>{if(!(r.syn&&m.has(k(r))))m.set(k(r),r)});
+ const a=[...m.values()].sort((x,y)=>x.ngay<y.ngay?-1:x.ngay>y.ngay?1:0).slice(-8000);ls("tcns",JSON.stringify(a));ls("tcns_t",Date.now());return a}
+const VL=[["Cam sành loại 1","Cam sành",25000],["Quýt đường loại 1","Quýt",45000],["Bưởi Năm Roi loại 1","Bưởi năm roi",45000],["Xoài cát Hòa Lộc loại 1","Xoài cát Hòa Lộc",80000],["Xoài Cát Chu loại 1","Xoài cát Chu",40000],["Dưa hấu loại 1","Dưa hấu",25000],["Chôm chôm Java loại 1","Chôm chôm",30000],["Thanh Long ruột trắng loại 1","Thanh long",35000],["Nhãn tiêu da bò loại 1","Nhãn",25000],["Sầu riêng cơm vàng hạt lép loại 1","Sầu riêng Ri6",80000],["Xà lách thường","Xà lách",30000],["Rau diếp cá","Diếp cá",30000],["Cải ngọt loại 1","Cải ngọt",25000],["Cải bẹ xanh loại 1","Cải xanh",25000],["Rau muống","Rau muống",20000],["Bí đao","Bí xanh (bí đao)",25000],["Dưa leo truyền thống loại 1","Dưa leo",25000],["Cà chua thường loại 1","Cà chua",30000],["Hành lá","Hành lá",35000],["Nấm rơm","Nấm rơm",80000],["Đậu bắp","Đậu bắp",15000]];
+const SNAP=(()=>{const o=[],a=(ngay,cay,tinh,gia,prev,dv)=>{o.push({ngay,cay,tinh,gia,donvi:dv||"đ/kg"});if(prev!=null)o.push({ngay:"2026-10-03",cay,tinh,gia:prev,donvi:dv||"đ/kg"})};
+ [["Đắk Lắk",94000,93800],["Lâm Đồng",93499,93200],["Gia Lai",94000,93800],["Đắk Nông",94000,93800]].forEach(([t,g,p])=>a("2026-10-04","Cà phê Robusta",t,g,p));
+ [["Lâm Đồng",140500,140000],["Đắk Lắk",138500,138000],["TP Hồ Chí Minh",137000,136500],["Gia Lai",136500,136000],["Đồng Nai",136500,136000]].forEach(([t,g,p])=>a("2026-10-04","Hồ tiêu",t,g,p));
+ [["Sầu riêng Thái","Đắk Lắk",88000,86500],["Sầu riêng Thái","Gia Lai",84000,84000],["Sầu riêng Thái","Lâm Đồng",79500,82500],
+  ["Sầu riêng","Đắk Lắk",88000,86500],["Sầu riêng","Gia Lai",84000,84000],["Sầu riêng","Lâm Đồng",79500,82500],
+  ["Sầu riêng Ri6","Đắk Lắk",62000,62000],["Sầu riêng Ri6","Gia Lai",62000,62000],["Sầu riêng Musang King","Đắk Lắk",65000,65000],
+  ["Mắc ca","Đắk Lắk",78000,80000],["Mắc ca","Lâm Đồng",80000,78500],["Mắc ca","Gia Lai",97500,97500],
+  ["Mủ cao su đông","TP Hồ Chí Minh",18000,18000],["Cao su","TP Hồ Chí Minh",18000,18000],
+  ["Ca cao","",7550,7550],["Bơ","",26500,26500],["Ớt","",27200,27200],["Ớt hiểm","",24000,24000],
+  ["Lúa","An Giang",6300,6280],["Lúa","Đồng Tháp",6200,6180],["Gạo","An Giang",8800,8780],["Gạo thơm","",9300,9280]
+ ].forEach(([c,t,g,q])=>a("2026-10-04",c,t,g,q));
+ ["Đắk Lắk","Lâm Đồng","Gia Lai","Quảng Ngãi","Đồng Nai"].forEach(t=>a("2026-10-04","Hạt điều",t,27500,27500));a("2026-10-04","Hạt điều","TP Hồ Chí Minh",32500,32500);
+ a("2026-09-06","Dừa","",9000,null,"đ/trái");a("2026-09-06","Dừa xiêm","",7500,null,"đ/trái");
+ VL.forEach(([,c,g])=>a("2026-10-02",c,"Vĩnh Long",g));return o})();
+const BASEX=()=>CONFIG.SHOW_REF===false?[]:BASE;
+const BASE=`Lúa 6800;Ngô 7500;Sắn 3200;Khoai lang 5500@2026-04-14;Đậu tương 17000;Lạc 38000;Mía 1000000;Vừng (mè) 50000;Đậu xanh 40000;Lúa nếp 9500;Gạo nếp 20000;Khoai môn 25000;Khoai sọ 25000;Dong riềng 4000;Đậu đen 45000;Đậu đỏ 60000;Ngô nếp 12000;Hạt sen 110000;Cỏ voi 750000;Xoài 30000;Bưởi 40000;Chuối 12000;Cam 25000;Vải thiều 35000;Măng cụt 70000@2026-05-05;Mít 20000@2026-05-11;Dứa (khóm) 20000@2026-04-29;Ổi 20000;Chanh 25000;Na (mãng cầu) 60000;Mận hậu 40000;Mơ 50000;Hồng giòn 40000;Đu đủ 14000;Vú sữa 50000;Nho 60000;Táo 25000;Lê 35000;Mãng cầu xiêm 40000;Sa pô chê 35000;Mận (roi) 30000;Cam xoàn 22000;Cam Cao Phong 35000;Cam Vinh 30000;Bưởi da xanh 50000;Bưởi Diễn 40000;Bưởi Đoan Hùng 35000;Nhãn xuồng 25000;Nhãn lồng 40000;Vải u hồng 30000;Chuối tiêu 12000;Chuối già Nam Mỹ 10000;Mít Thái 35000;Dưa lưới 35000;Dưa lê 18000;Cóc 15000;Sấu 40000;Khế 15000;Lựu 60000;Me 30000;Dâu tây 130000;Chanh dây 30000;Chanh không hạt 25000;Nhót 40000;Đào 40000;Sơ ri 30000;Bòn bon 30000;Thanh trà 30000;Dừa khô 9000;Xoài keo 25000;Cà phê Arabica 140000;Chè 9000;Quế 65000;Hồi 80000;Điều nhân 252000@2026-05-04;Chè búp tươi 9000;Chè Thái Nguyên 250000;Tiêu trắng 190000;Thuốc lá 60000;Cọ dầu 4000;Cói 12000;Dâu tằm 40000;Bông vải 20000;Cải thảo 12000;Bắp cải 6000@2026-04-08;Su hào 12000;Súp lơ 30000;Cà rốt 15000@2026-04-08;Khoai tây 30000@2026-04-08;Tỏi 55000;Hành tím 45000;Hành tây 15000;Gừng 35000;Nghệ 30000;Bí đỏ 20000;Mướp đắng 30000@2026-04-08;Đậu đũa 30000;Cà tím 20000;Cải bó xôi 35000;Cải cúc 25000;Cải ngồng 25000;Rau dền 20000;Rau má 30000;Rau ngót 25000;Mồng tơi 20000;Rau lang 20000;Rau đay 20000;Rau cần 30000;Cần tây 30000;Xà lách xoăn 40000;Măng tây 120000;Bông cải xanh 50000;Ngò rí 35000@2026-04-08;Tía tô 40000;Kinh giới 40000;Thì là 35000;Hẹ 30000;Tỏi tây 40000;Củ cải trắng 15000;Củ dền 25000;Su su 15000;Bầu 5000@2026-04-08;Mướp 20000;Bí ngòi 30000;Đậu cove 38000;Đậu Hà Lan 60000;Cà pháo 30000;Ngô bao tử 30000;Măng tre 20000;Nấm sò 60000;Nấm mỡ 70000;Nấm đông cô 120000;Ngó sen 60000;Ớt chuông 40000;Sả 16000;Riềng 25000;Húng quế 40000;Lá lốt 40000;Ngải cứu 30000;Đinh lăng 40000;Atiso 40000;Nha đam 8000;Gấc 40000;Thảo quả 150000;Sa nhân 200000;Đẳng sâm 300000;Tam thất 1500000;Sâm Ngọc Linh 70000000;Ba kích 400000;Cà gai leo 100000;Giảo cổ lam 90000;Hà thủ ô 200000;Linh chi 600000;Cỏ ngọt 100000;Keo lai 1300000;Keo dăm 1900000;Bạch đàn 1100000;Thông nhựa 1000000;Gỗ cao su 1700000;Tre 25000;Luồng 30000;Mây 22000000;Dó bầu 500000;Tràm 20000;Hoa hồng 5000;Hoa cúc 3000;Hoa ly 15000;Hoa cẩm chướng 4000;Hoa đồng tiền 4000;Hoa lay ơn 3000;Hoa huệ 4000;Lan hồ điệp 350000;Lan cắt cành 8000;Mai vàng 2000000;Hoa đào 800000;Quất cảnh 300000;Sen đá 20000;Kim ngân 150000;Trầu bà 80000;Lan ý 80000;Hoa sen 8000;Hoa loa kèn 8000;Hoa hướng dương 8000;Hoa cát tường 7000;Hoa thược dược 10000;Cúc mâm xôi 50000;Hoa giấy 100000;Lan Dendro 10000;Lan Mokara 8000;Mai chiếu thủy 200000;Cây phát tài 300000;Cây lưỡi hổ 80000;Cây kim tiền 250000;Cây đa búp đỏ 200000`.split(";").map(z=>{const m=z.trim().match(/^(.*\S)\s+(\d+)(?:@(\d{4}-\d{2}-\d{2}))?$/);return m?{ngay:m[3]||"2026-10-04",cay:m[1],tinh:"",gia:m[2],ref:m[3]?"":"1"}:null}).filter(Boolean);
+async function rowsNow(force){
+ let sh=[],lv=null,lf=0;
+ if(CONFIG.DATA_URL)try{const t=await(await fetch(CONFIG.DATA_URL,{cache:"no-store"})).text(),z=t.trim();
+  sh=z[0]==="["?JSON.parse(z).map(o=>Object.fromEntries(Object.entries(o).map(([k,v])=>[kn(k),String(v)]))):csv(t)}catch(e){}
+ const c=ls("tcns"),T=Date.now(),t0=+ls("tcns_t")||0,tf=+ls("tcns_f")||0,dn=force||due(t0,T),wait=!force&&tf>0&&T-tf<CONFIG.RETRY_MIN*6e4;
+ if(!dn||wait){try{lv=JSON.parse(c)}catch(e){}if(wait&&dn)lf=1;if(!lv&&wait)lv=[]}
+ if(!lv&&!sh.length){const nd=new Date(),all=[];DIAG.length=0;
+  const results=await Promise.all(CONFIG.LIVE.map(async s=>{try{const html=await grab(s.url);const fn={tbl,bg,gln,art}[s.fmt]||bg;return safe(fn,html,s,nd)}catch(e){if(DEBUG)console.warn("[tcns] grab fail",s.url);return[]}}));
+  results.forEach(r=>{if(r&&r.length)all.push(...r)});
+  log("Fetched rows:",all.length,"từ",results.filter(r=>r&&r.length).length+"/"+CONFIG.LIVE.length,"nguồn");
+  if(all.length){lv=keep(avg(all));ls("tcns_f","0")}else{lf=1;ls("tcns_f",String(T));try{lv=JSON.parse(c)}catch(e){}}}
+ OFF=lf&&!sh.length?1:0;FT=sh.length?T:(+ls("tcns_t")||T);
+ const out=sh.length||(lv&&lv.length)?SNAP.concat(BASEX(),sh,lv||[]):SNAP.concat(BASEX());
+ if(DEBUG)log("rowsNow →",out.length,"dòng");
+ return out}
+async function load(force){
+ if(BUSY)return;BUSY=1;
+ const rf=$("#rf"),up=$("#up");
+ if(rf)rf.disabled=true;
+ if(up)up.innerHTML='<span class="dot"></span><span class="txt">Đang lấy giá mới…</span>';
+ try{
+   const snap=()=>{const o={};for(const id in DATA){const a=DATA[id][""];if(a&&a.length)o[id]=a[a.length-1][1]}return o},before=SIG===null?null:snap();
+   const rows=await rowsNow(force);
+   const g=build(rows);
+   if(before){const af=snap();NCH=Object.keys(af).filter(id=>before[id]!==undefined&&before[id]!==af[id]).length}
+   UPD=new Date();ERR=0;
+   if(g!==SIG){const f=SIG===null;SIG=g;show(f)}else head()
+ }catch(e){
+   if(DEBUG)console.error("[tcns] load error",e);
+   ERR=1;
+   try{build(SNAP.concat(BASEX()))}catch(_){}
+   if(SIG===null){SIG="";show()}else show(1)
+ }finally{
+   BUSY=0;if(rf)rf.disabled=false
+ }
+}
+async function checkUpdate(){
+ try{
+   if(sessionStorage.getItem("tcns_reloaded")==="1")return;
+   const r=await fetch(CONFIG.VERSION_URL+"?t="+Date.now(),{cache:"no-store"});
+   if(!r.ok)return;
+   const j=await r.json();
+   if(j&&j.v&&j.v!==VERSION){log("Version mới:",j.v,"→ reload");sessionStorage.setItem("tcns_reloaded","1");location.reload()}
+ }catch(e){}
+}
+function px(id,p){
+ const a=(DATA[id]||{})[p];if(!a)return null;
+ const n=a.length,l=a[n-1],q=n>1?a[n-2]:l;
+ return{price:l[1],prev:q[1],t:l[0],pt:q[0],ref:RS.has(id),trend:a.slice(-14).map(z=>z[1])}}
+const D0=()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()};
+const dl=t=>{const k=Math.round((D0()-t)/864e5);return k===0?"Hôm nay":k===1?"Hôm qua":new Date(t).toLocaleDateString("vi-VN",{day:"2-digit",month:"2-digit"})};
+const pl=x=>x.pt===x.t?"Hôm trước":dl(x.pt),pv=x=>x.pt===x.t?"–":fm(x.prev);
+function chg(x){const d=x.price-x.prev,p=x.prev?d/x.prev*100:0;return{d,p,c:d>0?"up":d<0?"dn":"fl",a:d>0?"▲":d<0?"▼":"–"}}
+function spark(t){if(!t||t.length<2)return"";const mn=Math.min(...t),mx=Math.max(...t),w=56,h=20;
+ const pts=t.map((v,i)=>(i/(t.length-1)*w).toFixed(1)+","+(h-2-(mx===mn?.5:(v-mn)/(mx-mn))*(h-4)).toFixed(1)).join(" ");
+ return`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline pathLength="1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" points="${pts}"/></svg>`}
+function mset(mo){const s=new Set();
+ mo.split(",").filter(Boolean).forEach(r=>{const[a,b]=r.split("-").map(Number);for(let m=a;;m=m%12+1){s.add(m);if(m===(b||a))break}});return s}
+const mtxt=mo=>mo==="1-12"?"Quanh năm":mo?mo.split(",").map(r=>{const[a,b]=r.split("-");return!b||a===b?`T${a}`:`T${a}–T${b}`}).join(", "):"Chưa cập nhật";
+const zt=z=>z?[...z].map(c=>Z[c]).join(", "):"Chưa cập nhật";
+function sel(){const[t,v]=S.sel.split(":");return t==="p"?{p:v,z:PZ[v]}:t==="z"?{z:v,p:""}:{z:"",p:""}}
+function items(){
+ const q=nz(S.q.trim()),{z,p}=sel();
+ return C.filter(x=>(S.cat==="all"||x.cat===S.cat)&&nz(x.name).includes(q)&&(!z||!x.z||x.z.includes(z)))
+  .map(x=>{let r=p&&px(x.id,p),nat=false;if(!r){r=px(x.id,"");nat=!!(p&&r)}return{...x,...(r||{}),has:!!r,nat}})
+  .filter(x=>!S.hp||S.q.trim()||x.has).sort((a,b)=>b.has-a.has)}
+function agg(h,g){
+ if(g==="day")return h.slice(-30);
+ const m=new Map();
+ for(const[t,v]of h){const d=new Date(t);let k;
+  if(g==="week"){const e=new Date(d);e.setDate(d.getDate()-(d.getDay()+6)%7);k=e.setHours(0,0,0,0)}
+  else if(g==="month")k=new Date(d.getFullYear(),d.getMonth(),1).getTime();
+  else k=new Date(d.getFullYear(),0,1).getTime();
+  if(!m.has(k))m.set(k,[]);m.get(k).push(v)}
+ return[...m].map(([k,v])=>[k,Math.round(v.reduce((s,x)=>s+x,0)/v.length)]).slice(-{week:26,month:24,year:5}[g])}
+const CAP={day:"30 ngày gần nhất",week:"26 tuần gần nhất, giá trung bình tuần",month:"24 tháng gần nhất, giá trung bình tháng",year:"5 năm gần nhất, giá trung bình năm"};
+const LP={},RM=matchMedia("(prefers-reduced-motion:reduce)").matches;
+const tk=w=>{const a=w.filter(x=>x.has).slice(0,24).map(x=>{const c=chg(x);return`<button class="tki ${c.c}" data-id="${E(x.id)}">${E(x.name)} <b>${fm(x.price)}</b><i>${c.a} ${sgn(c.p)}%</i></button>`}).join("");return a?`<div class="tk" aria-label="Giá đang chạy"><div class="tkt">${a}${a}</div></div>`:""};
+function fx(a){const L=$("#lst");L.classList.toggle("an",!!a);
+ if(a&&!RM)L.querySelectorAll(".cd").forEach((e,i)=>e.style.setProperty("--d",Math.min(i,24)*22+"ms"));
+ document.querySelectorAll(".cd[data-pr]").forEach(e=>{const k=e.dataset.id+"|"+S.sel,p=+e.dataset.pr;if(LP[k]!==undefined&&LP[k]!==p)e.classList.add(p>LP[k]?"bu":"bd");LP[k]=p})}
+function cnt(){if(RM)return;document.querySelectorAll(".nu").forEach(e=>{const v=+e.dataset.v,t0=performance.now(),f=t=>{const k=Math.min(1,(t-t0)/800);e.textContent=fm(v*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
+const card=x=>{
+ if(!x.has){
+  return `<button class="cd nop" data-id="${E(x.id)}">
+   <span class="t">${E(x.name)}</span>
+   <span class="u">${E(x.unit)}</span>
+   <span class="p">–</span>
+   <span class="y">Chưa có giá</span>
+  </button>`;
+ }
+ const c=chg(x),stale=!x.ref&&x.t<D0();
+ const border=x.ref?"fl":c.c;
+ let unitLine = E(x.unit);
+ if (x.nat) unitLine += " · toàn quốc";
+ let footer;
+ if (x.ref) {footer = `<span class="pl fl">Tham khảo</span>`;}
+ else {footer = `<span class="pl ${c.c}">${c.a} ${sgn(c.p)}%</span>${stale?`<span class="ds">Giá ${dl(x.t).toLowerCase()}</span>`:""}<span class="sp ${c.c}">${spark(x.trend)}</span>`;}
+ return `<button class="cd ${border}" data-id="${E(x.id)}" data-pr="${x.price}">
+   <span class="t">${E(x.name)}</span>
+   <span class="u">${unitLine}</span>
+   <span class="p">${fm(x.price)}</span>
+   <span class="y">${footer}</span>
+  </button>`;
+};
+function hl(it){
+ const s=it.map(x=>({x,c:chg(x)})).sort((a,b)=>b.c.p-a.c.p),
+  ch=(o,k)=>`<button class="hc ${k}" data-id="${E(o.x.id)}">${E(o.x.name)}<i>${o.c.a} ${sgn(o.c.p)}%</i></button>`,
+  u=s.filter(o=>o.c.p>0).slice(0,3),d=s.filter(o=>o.c.p<0).slice(-3).reverse();
+ return(u.length?`<div class="hl"><b>Tăng mạnh</b>${u.map(o=>ch(o,"up")).join("")}</div>`:"")+(d.length?`<div class="hl"><b>Giảm mạnh</b>${d.map(o=>ch(o,"dn")).join("")}</div>`:"")}
+const opts=()=>`<option value="">Toàn quốc</option>`+Object.keys(PV).map(z=>`<optgroup label="${Z[z]}"><option value="z:${z}">Cả ${Z[z]}</option>${PV[z].map(p=>`<option value="p:${p}">${p}</option>`).join("")}</optgroup>`).join("");
+function fillList(a){
+ const it=items(),{p,z}=sel(),aw=it.filter(x=>x.has),w=aw.filter(x=>!x.ref),u=w.filter(x=>x.price>x.prev).length,d=w.filter(x=>x.price<x.prev).length;
+ {const hh=hl(w)+tk(w);if(HK!==hh){HK=hh;$("#hh").innerHTML=hh}}
+ $("#lst").innerHTML=(LD?"":'<div class="nt">Chưa kết nối được nguồn giá trực tuyến. Bạn vẫn có thể tra cứu thông tin từng loại cây bên dưới.</div>')+
+ (!it.length?'<p class="em">Không tìm thấy loại cây phù hợp. Thử từ khoá khác, đổi tỉnh/thành, chọn "Tất cả" hoặc bỏ chọn "Chỉ cây có giá".</p>':
+ `<div class="sum">${p||(z?Z[z]:"Toàn quốc")} · ${it.length} loại cây · ${aw.length} có giá${w.length?` · so với phiên trước: ${u} tăng, ${d} giảm, ${w.length-u-d} đi ngang`:""}${aw.length>w.length?` · ${aw.length-w.length} giá tham khảo`:""}</div>`+
+ (S.cat==="all"?CATS.slice(1).map(([k,n])=>{const g=it.filter(x=>x.cat===k);return g.length?`<div class="gh">${n} <small>${g.length}</small></div><div class="gd">${g.map(card).join("")}</div>`:""}).join(""):`<div class="gd">${it.map(card).join("")}</div>`));fx(a)}
+function viewList(a){
+ $("#hh").innerHTML="";HK="";main.className="";
+ main.innerHTML=`<div class="fb"><div class="bar"><select id="sl" class="sl" aria-label="Chọn tỉnh thành">${opts()}</select><input id="q" class="q" type="search" placeholder="Tìm cây trồng, ví dụ: sau rieng" aria-label="Tìm cây trồng" value="${E(S.q)}"><label class="ck"><input type="checkbox" id="hp"${S.hp?" checked":""}> Chỉ cây có giá</label></div>
+ <div class="tabs" role="group" aria-label="Nhóm cây trồng">${CATS.map(([k,n])=>`<button class="tb" data-cat="${k}" aria-pressed="${S.cat===k}">${n}</button>`).join("")}</div></div><div id="lst"></div>`;
+ $("#sl").value=S.sel;fillList(a)}
+function rgs(x){
+ const A=DATA[x.id]||{},{p}=sel(),L=Object.keys(A).filter(q=>q).map(q=>[q,A[q][A[q].length-1][1]]).sort((a,b)=>b[1]-a[1]);
+ if(!L.length)return"";const mx=L[0][1];
+ return`<section class="rs"><h3>Giá theo tỉnh thành</h3><div class="rgs">${L.map(([q,v])=>`<button class="rg${q===p?" on":""}" data-p="${E(q)}"><span>${E(q)}</span><i style="width:${Math.round(v/mx*100)}%"></i><b>${fm(v)}</b></button>`).join("")}</div></section>`}
+function chart(x,h){
+ if(CH){CH.destroy();CH=null}
+ $(".cv").innerHTML=`<canvas id="cv" role="img" aria-label="Biểu đồ giá ${E(x.name)}"></canvas>`;
+ $("#cp").textContent=CAP[S.g];
+ const st=$("#st");
+ if(typeof Chart==="undefined"){$(".cv").innerHTML='<p class="em">Chưa tải được biểu đồ.</p>';st.innerHTML="";return}
+ const a=agg(h,S.g),v=a.map(z=>z[1]),mx=Math.max(...v),mn=Math.min(...v),av=v.reduce((s,n)=>s+n,0)/v.length,ch=(v[v.length-1]-v[0])/v[0]*100;
+ st.innerHTML=[["Cao nhất",fm(mx)],["Thấp nhất",fm(mn)],["Trung bình",fm(av)],["Biến động cả kỳ",sgn(ch)+"%",ch>0?"up":ch<0?"dn":"fl"]].map(([l,n,c])=>`<div class="card"><span>${l}</span><b class="${c||""}">${n}</b></div>`).join("");
+ const lb=a.map(z=>{const d=new Date(z[0]);return S.g==="year"?String(d.getFullYear()):S.g==="month"?`${d.getMonth()+1}/${d.getFullYear()}`:d.toLocaleDateString("vi-VN",{day:"2-digit",month:"2-digit"})});
+ const ctx=$("#cv").getContext("2d"),gr=ctx.createLinearGradient(0,0,0,280);
+ gr.addColorStop(0,"rgba(31,143,70,.25)");gr.addColorStop(1,"rgba(31,143,70,0)");
+ CH=new Chart(ctx,{type:"line",data:{labels:lb,datasets:[{data:v,borderColor:"#1f8f46",backgroundColor:gr,fill:true,tension:.3,borderWidth:2,pointRadius:a.length>40?0:3,pointHoverRadius:5}]},
+  options:{maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:i=>fm(i.parsed.y)+" "+x.unit}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:8}},y:{ticks:{callback:n=>fm(n)}}}}})}
+function viewDetail(a){
+ const x0=C.find(i=>i.id===S.id);if(!x0){S.id=null;return viewList()}
+ const{p}=sel(),A=DATA[x0.id]||{};let r=p&&px(x0.id,p),nat=false;if(!r){r=px(x0.id,"");nat=!!(p&&r)}
+ const h=r&&(p&&!nat?A[p]:A[""]),x={...x0,...(r||{})},c=r&&chg(x),cn=CATS.find(k=>k[0]===x.cat),s=mset(x.mo),cur=new Date().getMonth()+1,L=x.cat==="hc"?"Cao điểm tiêu thụ":"Mùa thu hoạch";
+ $("#hh").innerHTML="";HK="";main.className="";
+ main.innerHTML=`<button class="bk" data-act="back">← Quay lại danh sách</button>
+ <div class="dh"><span class="tag">${cn?cn[1]:""}</span> <span class="tag">${E(p&&!nat?p:"Toàn quốc")}</span><h2>${E(x.name)}</h2>`+
+ (r?`<div class="big"><b><span class="nu" data-v="${x.price}">${fm(x.price)}</span> <small>${E(x.unit)}</small></b>${x.ref?`<span class="cg fl">Giá tham khảo</span>`:`<span class="cg ${c.c}">${c.a} ${fm(Math.abs(c.d))} (${sgn(c.p)}%) so với ${pl(x).toLowerCase()}</span>`}</div>${x.ref?`<p class="stl">Loại này chưa có nguồn công bố giá hằng ngày nên đang hiển thị giá tham khảo theo mặt bằng chợ đầu mối.</p>`:x.t<D0()?`<p class="stl">Chưa có giá mới hôm nay. Đang hiển thị giá gần nhất, ngày ${dmy(x.t)}.</p>`:""}</div>${x.ref?"":`
+ <div class="cmp"><div class="card"><span>${dl(x.t)}</span><b>${fm(x.price)}</b></div><div class="card"><span>${pl(x)}</span><b>${pv(x)}</b></div><div class="card"><span>Chênh lệch</span><b class="${c.c}">${c.d>0?"+":c.d<0?"−":""}${fm(Math.abs(c.d))}</b></div></div>
+ <div class="sb"><div class="seg" role="group">${[["day","Ngày"],["week","Tuần"],["month","Tháng"],["year","Năm"]].map(([k,n])=>`<button data-g="${k}" aria-pressed="${S.g===k}">${n}</button>`).join("")}</div><span id="cp"></span></div>
+ <div class="cv"></div><div class="st" id="st"></div>`}`:`<p class="em" style="margin:8px 0 0">Chưa có giá cập nhật cho loại cây này${p?" tại "+E(p):""}.</p></div>`)+
+ rgs(x0)+
+ `<section class="rs"><h3>Thông tin tra cứu</h3><div class="inf"><div class="card"><span>Nhóm</span><b>${cn?cn[1].replace(" & "," và "):""}</b></div><div class="card"><span>Đơn vị giá</span><b>${E(x.unit)}</b></div><div class="card"><span>Vùng trồng chính</span><b>${zt(x.z)}</b></div><div class="card"><span>${L}</span><b>${mtxt(x.mo)}</b></div></div></section>
+ <section class="rs"><h3>Lịch ${L.toLowerCase()}</h3>${x.mo?`<div class="mo">${[...Array(12)].map((_,i)=>`<span class="${s.has(i+1)?"on":""}${i+1===cur?" now":""}">T${i+1}</span>`).join("")}</div><p class="lg">Ô xanh: ${L.toLowerCase()}. Viền đen: tháng hiện tại.</p>`:`<p class="lg">Chưa có lịch cho loại cây này.</p>`}</section>
+ <section class="ab"><h3>Yếu tố ảnh hưởng đến giá</h3><p>${BLURB[x.cat]||""}</p></section>
+ <section class="rs"><h3>Cây cùng nhóm</h3>${C.filter(y=>y.cat===x.cat&&y.id!==x.id).slice(0,10).map(y=>`<button class="rl" data-id="${E(y.id)}">${E(y.name)}</button>`).join("")}</section>`;
+ if(r&&!x.ref)chart(x,h);if(a){main.className="dt";setTimeout(()=>main.className="",900);cnt()}}
+function head(){
+ const err=ERR,n=Object.keys(DATA).length;
+ $("#up").innerHTML=`<span class="dot${err||OFF?" off":""}"></span><span class="txt">`+(LD
+   ?`<b id="clk">${clock()}</b> · Giá mới nhất ngày ${dmy(LD)} · lấy lúc ${hm(FT)} · ${n} loại có giá${RS.size?`, trong đó ${RS.size} loại dùng giá tham khảo`:""}${NCH?` · ${NCH} giá vừa thay đổi`:""}`
+   :(err?"Không tải được dữ liệu giá — đang dùng dữ liệu tĩnh":"Chưa có dữ liệu giá — đang dùng dữ liệu tĩnh"))+`</span>`;
+}
+function show(a){head();S.id?viewDetail(a):viewList(a)}
+main.addEventListener("click",e=>{
+ const t=e.target.closest("[data-act],[data-id],[data-cat],[data-g],[data-p]");if(!t)return;const d=t.dataset;
+ if(d.id){S.id=d.id;S.g="day";show(1);scrollTo(0,0)}
+ else if(d.act==="back"){S.id=null;show(1)}
+ else if(d.p){S.sel="p:"+d.p;viewDetail()}
+ else if(d.cat){S.cat=d.cat;main.querySelectorAll(".tb").forEach(b=>b.setAttribute("aria-pressed",b===t));fillList(1);t.scrollIntoView({inline:"center",block:"nearest",behavior:RM?"auto":"smooth"})}
+ else if(d.g){S.g=d.g;viewDetail()}
+});
+$("#hh").addEventListener("click",e=>{const t=e.target.closest("[data-id]");if(t){S.id=t.dataset.id;S.g="day";show(1);scrollTo(0,0)}});
+main.addEventListener("input",e=>{if(e.target.id==="q"){S.q=e.target.value;fillList()}});
+main.addEventListener("change",e=>{if(e.target.id==="sl"){S.sel=e.target.value;fillList()}else if(e.target.id==="hp"){S.hp=e.target.checked;fillList(1)}});
+$("#rf").addEventListener("click",()=>load(true));
+let ly=0;addEventListener("scroll",()=>{const y=scrollY,f=$(".fb");if(f)f.classList.toggle("cp",y>ly&&y>160&&document.activeElement.id!=="q");ly=y},{passive:true});
+load();
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)load()});
+setInterval(()=>load(),CONFIG.CHECK_MIN*60000);
+setInterval(head,3e4);
+/* đồng hồ chạy từng giây; sang ngày mới thì tự tải lại giá và tính lại so sánh hôm qua/hôm trước */
+setInterval(()=>{const e=$("#clk");if(e)e.textContent=clock();const d=fd(new Date());if(d!==DAY){DAY=d;load(true)}},1000);
+setInterval(checkUpdate,CONFIG.VERSION_CHECK_MIN*60000);
+checkUpdate();
+})();
+</script>
+</body>
+</html>
