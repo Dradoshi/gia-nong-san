@@ -479,7 +479,16 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
    <label class="ck2"><input id="ma" type="checkbox"><span>Tôi đã đọc và đồng ý Điều khoản sử dụng, hiểu rằng giá tôi gửi phải chính xác.</span></label>
   </div>
   <div id="pf" hidden>
-   <label class="fld"><span class="lb">Cây trồng / sản phẩm</span><select id="pc"></select></label>
+   <!-- TÍNH NĂNG 2: SEARCHABLE COMBOBOX -->
+   <label class="fld">
+       <span class="lb">Cây trồng / sản phẩm</span>
+       <div style="position:relative">
+           <input type="text" id="pc-search" placeholder="Gõ để tìm kiếm sản phẩm..." style="width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:15px" autocomplete="off">
+           <input type="hidden" id="pc" value="">
+           <ul id="pc-list" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:200px;overflow-y:auto;background:#fff;border:1px solid var(--line);border-radius:10px;z-index:10;margin:4px 0 0;padding:0;list-style:none;box-shadow:0 4px 12px rgba(0,0,0,0.1)"></ul>
+       </div>
+   </label>
+   
    <label class="fld"><span class="lb">Tỉnh/thành</span><select id="pv"></select></label>
    <label class="fld"><span class="lb">Giá <em class="unit" id="pu">đ/kg</em></span><input id="pp" type="number" min="1" step="any" inputmode="decimal" placeholder="Nhập giá, ví dụ 6.500"></label>
    <label class="fld"><span class="lb">Ngày áp dụng</span><input id="pd" type="date"></label>
@@ -890,9 +899,48 @@ function viewDetail(a){
  const{p}=sel(),A=DATA[x0.id]||{};let r=p&&px(x0.id,p),nat=false;if(!r){r=px(x0.id,"");nat=!!(p&&r)}
  const h=r&&(p&&!nat?A[p]:A[""]),x={...x0,...(r||{})},c=r&&chg(x),cn=CATS.find(k=>k[0]===x.cat),s=mset(x.mo),cur=new Date().getMonth()+1,L=x.cat==="hc"?"Cao điểm tiêu thụ":"Mùa thu hoạch";
  $("#hh").innerHTML="";HK="";main.className="";
+
+ // TÍNH NĂNG 3: LỊCH SỬ CHỈNH SỬA (AUDIT TRAIL)
+ const logs = getLOG().filter(l => l.cid === x.id).reverse().slice(0, 10);
+ const auditHtml = `
+ <section class="rs" style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
+     <h3 style="display:flex;justify-content:space-between;align-items:center">
+         Lịch sử cập nhật giá
+         <span style="font-size:11px;font-weight:400;color:var(--mut)">Chỉ hiển thị 10 lần gần nhất</span>
+     </h3>
+     ${logs.length ? `<div style="display:grid;gap:8px;font-size:12.5px">
+         ${logs.map(l => `
+             <div style="background:#fafbfa;border:1px solid var(--line);border-radius:8px;padding:8px 10px">
+                 <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                     <b style="color:var(--k)">${E(l.who || 'Admin')} ${l.role === 'admin' ? '👑' : ''}</b>
+                     <span style="color:var(--mut)">${dmy(l.t)} ${hm(l.t)}</span>
+                 </div>
+                 <div style="color:var(--mut)">
+                     Giá cũ → Giá mới: <b style="color:var(--g)">${fm(l.gia)} ${x.unit}</b>
+                 </div>
+                 <div style="color:var(--mut);margin-top:2px;font-style:italic">
+                     Nguồn: ${E(l.source || 'Không rõ')}
+                 </div>
+             </div>
+         `).join("")}
+     </div>` : `<p class="empty">Chưa có lịch sử cập nhật cho sản phẩm này.</p>`}
+ </section>`;
+
  main.innerHTML=`<button class="bk" data-act="back">← Quay lại danh sách</button>
  <div class="dh"><span class="tag">${cn?cn[1]:""}</span> <span class="tag">${E(p&&!nat?p:"Toàn quốc")}</span><h2>${E(x.name)}</h2>`+
- (r?`<div class="big"><b><span class="nu" data-v="${x.price}">${fm(x.price)}</span> <small>${E(x.unit)}</small></b>${x.ref?`<span class="cg fl">Giá tham khảo</span>`:`<span class="cg ${c.c}">${c.a} ${fm(Math.abs(c.d))} (${sgn(c.p)}%) so với ${pl(x).toLowerCase()}</span>`}</div>${x.ref?`<p class="stl">Loại này chưa có nguồn công bố giá hằng ngày nên đang hiển thị giá tham khảo theo mặt bằng chợ đầu mối.</p>`:x.t<D0()?`<p class="stl">Chưa có giá mới hôm nay. Đang hiển thị giá gần nhất, ngày ${dmy(x.t)}.</p>`:""}</div>${x.ref?"":`
+ (r?`
+ <!-- TÍNH NĂNG 1: INLINE EDIT -->
+ <div class="big" style="display:flex;align-items:center;gap:10px">
+     <b><span class="nu" data-v="${x.price}">${fm(x.price)}</span> <small>${E(x.unit)}</small></b>
+     ${ADMIN ? `<button class="edit-inline-btn" data-id="${x.id}" style="background:none;border:none;cursor:pointer;font-size:18px;padding:0" title="Sửa giá nhanh">✏️</button>` : ''}
+     <div class="inline-edit-box" style="display:none;align-items:center;gap:6px">
+         <input type="number" class="inline-price-input" value="${x.price}" style="width:100px;padding:4px;border:1px solid #ccc;border-radius:4px;font-size:14px">
+         <button class="save-inline-btn" data-id="${x.id}" style="background:var(--g);color:white;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px">Lưu</button>
+         <button class="cancel-inline-btn" style="background:none;border:none;color:var(--mut);cursor:pointer;font-size:12px">Hủy</button>
+     </div>
+ </div>
+ ${x.ref?`<span class="cg fl">Giá tham khảo</span>`:`<span class="cg ${c.c}">${c.a} ${fm(Math.abs(c.d))} (${sgn(c.p)}%) so với ${pl(x).toLowerCase()}</span>`}
+ ${x.ref?`<p class="stl">Loại này chưa có nguồn công bố giá hằng ngày nên đang hiển thị giá tham khảo theo mặt bằng chợ đầu mối.</p>`:x.t<D0()?`<p class="stl">Chưa có giá mới hôm nay. Đang hiển thị giá gần nhất, ngày ${dmy(x.t)}.</p>`:""}</div>${x.ref?"":`
  <div class="cmp"><div class="card"><span>${dl(x.t)}</span><b>${fm(x.price)}</b></div><div class="card"><span>${pl(x)}</span><b>${pv(x)}</b></div><div class="card"><span>Chênh lệch</span><b class="${c.c}">${c.d>0?"+":c.d<0?"−":""}${fm(Math.abs(c.d))}</b></div></div>
  <div class="sb"><div class="seg" role="group">${[["day","Ngày"],["week","Tuần"],["month","Tháng"],["year","Năm"]].map(([k,n])=>`<button data-g="${k}" aria-pressed="${S.g===k}">${n}</button>`).join("")}</div><span id="cp"></span></div>
  <div class="cv"></div><div class="st" id="st"></div>`}`:`<p class="em" style="margin:8px 0 0">Chưa có giá cập nhật cho loại cây này${p?" tại "+E(p):""}.</p></div>`)+
@@ -900,7 +948,8 @@ function viewDetail(a){
  `<section class="rs"><h3>Thông tin tra cứu</h3><div class="inf"><div class="card"><span>Nhóm</span><b>${cn?cn[1].replace(" & "," và "):""}</b></div><div class="card"><span>Đơn vị giá</span><b>${E(x.unit)}</b></div><div class="card"><span>Vùng trồng chính</span><b>${zt(x.z)}</b></div><div class="card"><span>${L}</span><b>${mtxt(x.mo)}</b></div></div></section>
  <section class="rs"><h3>Lịch ${L.toLowerCase()}</h3>${x.mo?`<div class="mo">${[...Array(12)].map((_,i)=>`<span class="${s.has(i+1)?"on":""}${i+1===cur?" now":""}">T${i+1}</span>`).join("")}</div><p class="lg">Ô xanh: ${L.toLowerCase()}. Viền đen: tháng hiện tại.</p>`:`<p class="lg">Chưa có lịch cho loại cây này.</p>`}</section>
  <section class="ab"><h3>Yếu tố ảnh hưởng đến giá</h3><p>${BLURB[x.cat]||""}</p></section>
- <section class="rs"><h3>Cây cùng nhóm</h3>${C.filter(y=>y.cat===x.cat&&y.id!==x.id).slice(0,10).map(y=>`<button class="rl" data-id="${E(y.id)}">${E(y.name)}</button>`).join("")}</section>`;
+ <section class="rs"><h3>Cây cùng nhóm</h3>${C.filter(y=>y.cat===x.cat&&y.id!==x.id).slice(0,10).map(y=>`<button class="rl" data-id="${E(y.id)}">${E(y.name)}</button>`).join("")}</section>
+ ${auditHtml}`;
  if(r&&!x.ref)chart(x,h);if(a){main.className="dt";setTimeout(()=>main.className="",900);cnt()}
  window.tcnsSocial&&window.tcnsSocial(x0,r,p,!!nat);}
 function head(){
@@ -911,6 +960,42 @@ function head(){
 }
 function show(a){head();S.id?viewDetail(a):viewList(a)}
 main.addEventListener("click",e=>{
+ // Xử lý nút Inline Edit
+ const editBtn = e.target.closest(".edit-inline-btn");
+ if (editBtn) {
+     const box = editBtn.parentElement.querySelector(".inline-edit-box");
+     const priceSpan = editBtn.parentElement.querySelector(".nu");
+     priceSpan.style.display = "none";
+     editBtn.style.display = "none";
+     box.style.display = "flex";
+     box.querySelector(".inline-price-input").focus();
+     return;
+ }
+ const cancelBtn = e.target.closest(".cancel-inline-btn");
+ if (cancelBtn) {
+     const box = cancelBtn.parentElement;
+     const parent = box.parentElement;
+     box.style.display = "none";
+     parent.querySelector(".nu").style.display = "inline";
+     parent.querySelector(".edit-inline-btn").style.display = "inline";
+     return;
+ }
+ const saveBtn = e.target.closest(".save-inline-btn");
+ if (saveBtn) {
+     const input = saveBtn.parentElement.querySelector(".inline-price-input");
+     const newPrice = parseInt(input.value);
+     if (isNaN(newPrice) || newPrice <= 0) { alert("Giá không hợp lệ"); return; }
+     const cid = saveBtn.dataset.id;
+     const c = C.find(x => x.id === cid);
+     const a = getAR();
+     a.push({ id: "a" + Date.now(), cid: c.id, cay: c.name, unit: c.unit, tinh: "", gia: newPrice, ngay: fd(new Date()), source: "Cập nhật nhanh (Inline)" });
+     setAR(a);
+     addLOG({ role: "admin", who: "Admin", cid: c.id, cay: c.name, tinh: "", gia: newPrice, ngay: fd(new Date()), source: "Cập nhật nhanh (Inline)", unit: c.unit });
+     load(true);
+     alert("Đã lưu giá mới!");
+     return;
+ }
+
  const t=e.target.closest("[data-act],[data-id],[data-cat],[data-g],[data-p]");if(!t)return;const d=t.dataset;
  if(d.id){S.id=d.id;S.g="day";show(1);scrollTo(0,0)}
  else if(d.act==="back"){S.id=null;show(1)}
@@ -950,10 +1035,42 @@ const view=()=>{
  say("");
  if(on){renderAR();renderLG()}
 };
-sel("#pc",C.map(c=>[c.id,c.name+" ("+c.unit+")"]));
+// THAY THẾ LOGIC CHỌN SẢN PHẨM BẰNG COMBOBOX TÌM KIẾM
+const pcSearch = $("#pc-search");
+const pcList = $("#pc-list");
+const pcHidden = $("#pc");
+const renderPcList = (query = "") => {
+    pcList.innerHTML = "";
+    const q = query.toLowerCase();
+    const filtered = C.filter(c => c.name.toLowerCase().includes(q));
+    if (filtered.length === 0) {
+        pcList.innerHTML = '<li style="padding:10px;color:#888">Không tìm thấy</li>';
+    } else {
+        filtered.forEach(c => {
+            const li = document.createElement("li");
+            li.textContent = c.name + " (" + c.unit + ")";
+            li.style.cssText = "padding:10px;cursor:pointer;border-bottom:1px solid #eee;font-size:14px";
+            li.onmouseenter = () => li.style.background = "#f0f0f0";
+            li.onmouseleave = () => li.style.background = "#fff";
+            li.onclick = () => {
+                pcSearch.value = c.name;
+                pcHidden.value = c.id;
+                pcList.style.display = "none";
+                pu(); // Cập nhật đơn vị
+            };
+            pcList.appendChild(li);
+        });
+    }
+};
+pcSearch.addEventListener("focus", () => { renderPcList(pcSearch.value); pcList.style.display = "block"; });
+pcSearch.addEventListener("input", (e) => { renderPcList(e.target.value); pcList.style.display = "block"; });
+document.addEventListener("click", (e) => { if (!pcSearch.contains(e.target) && !pcList.contains(e.target)) pcList.style.display = "none"; });
+pcHidden.value = C[0].id;
+pcSearch.value = C[0].name;
+
 sel("#pv",Object.values(PV).flat().map(p=>[p,p]));
-const pu=()=>{const c=C.find(x=>x.id===$("#pc").value);$("#pu").textContent=c?c.unit:"đ/kg"};
-$("#pc").addEventListener("change",pu);pu();
+const pu=()=>{const c=C.find(x=>x.id===pcHidden.value);$("#pu").textContent=c?c.unit:"đ/kg"};
+pcHidden.addEventListener("change",pu);pu();
 $("#mb").addEventListener("click",()=>{
  const u=window.tcnsCurUser&&window.tcnsCurUser();
  if(!u){window.tcnsOpenAuth&&window.tcnsOpenAuth("in");return}
@@ -995,7 +1112,7 @@ $("#mf").addEventListener("submit",async e=>{e.preventDefault();if(busy)return;
    if(!$("#pd").value)throw new Error("Chọn ngày áp dụng.");
    if(src.length<3)throw new Error("Ghi rõ nơi mua bán hoặc nguồn giá.");
    if(!$("#pk").checked)throw new Error("Cần tick xác nhận giá chính xác trước khi gửi.");
-   const c=C.find(x=>x.id===$("#pc").value),tinh=$("#pv").value,ngay=$("#pd").value;
+   const c=C.find(x=>x.id===pcHidden.value),tinh=$("#pv").value,ngay=$("#pd").value;
    const logRec={role:ADMIN?"admin":"member",who:who||"thành viên",cid:c.id,cay:c.name,tinh,gia:price,ngay,source:src,unit:c.unit};
    if(ADMIN){
     const a=getAR();a.push({id:"a"+Date.now(),cid:c.id,cay:c.name,unit:c.unit,tinh,gia:price,ngay,source:src});
