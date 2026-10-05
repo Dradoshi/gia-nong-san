@@ -196,12 +196,10 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .pwform input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px}
 .pwform button{background:var(--k);color:#fff;border:0;border-radius:8px;padding:8px;font-weight:700}
 .mini{font-size:11px;color:var(--mut);margin:4px 0 0}
-/* ==== User bar in header ==== */
 .ubar{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:#b9c4bd;flex-wrap:wrap}
 .ubar b{color:#fff;font-weight:600}
 .ubar button{background:transparent;border:1px solid #3a4a41;color:#fff;border-radius:6px;padding:5px 11px;font-size:11.5px;font-weight:600;min-height:30px}
 .ubar button:hover{border-color:var(--g);color:#4ade80}
-/* ==== Auth / Report / Admin modals ==== */
 .aw{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;overflow:auto}
 .aw.on{display:flex}
 .ac{background:#fff;border-radius:14px;width:min(440px,100%);max-height:92vh;overflow:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
@@ -222,7 +220,6 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .ac .msg.er{color:var(--dn)}.ac .msg.ok{color:var(--g)}
 .ac .foot{font-size:12px;color:var(--mut);text-align:center;margin:12px 0 0}
 .ac .foot a{color:var(--g);font-weight:600;text-decoration:none}
-/* ==== Social block on detail page ==== */
 .soc{margin:14px 16px 0;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff}
 .soc h3{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .soc h3 .cnt{background:var(--gl);color:var(--g);border-radius:99px;padding:1px 9px;font-size:11.5px;font-weight:700}
@@ -339,7 +336,6 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
    <p class="upd">Cập nhật lần cuối: 05/10/2026</p>
   </section>
 
-<!-- Modal đăng nhập / đăng ký -->
 <div class="aw" id="aw" hidden role="dialog" aria-label="Đăng nhập hoặc đăng ký">
  <div class="ac">
   <h2 id="atitle">Đăng nhập</h2>
@@ -368,7 +364,6 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
  </div>
 </div>
 
-<!-- Modal báo cáo giá sai -->
 <div class="aw" id="rw" hidden role="dialog" aria-label="Báo cáo giá sai">
  <div class="ac">
   <h2>Báo cáo giá sai</h2>
@@ -388,7 +383,6 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
  </div>
 </div>
 
-<!-- Modal admin xem báo cáo -->
 <div class="aw" id="arw" hidden role="dialog" aria-label="Báo cáo giá sai">
  <div class="ac" style="width:min(720px,100%)">
   <h2>Báo cáo giá sai <span id="arwcnt" style="color:var(--mut);font-size:14px"></span></h2>
@@ -442,7 +436,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 const DEBUG=true;
 const log=(...a)=>{if(DEBUG)console.log("[tcns]",...a)};
 
-const VERSION="2026.10.05-03";
+const VERSION="2026.10.05-04";
 const CONFIG={
  DATA_URL:"https://raw.githubusercontent.com/Dradoshi/gia-nong-san/main/prices.json",
  SHOW_REF:true,
@@ -479,7 +473,6 @@ const CONFIG={
  ]};
 const $=s=>document.querySelector(s),main=$("#main");
 
-/* ===== Quản trị cục bộ (dialog giá admin cũ) ===== */
 let ADMIN=0;
 const getAR=()=>{try{return JSON.parse(localStorage.getItem(CONFIG.ADMIN_KEY)||"[]")}catch(e){return[]}};
 const setAR=a=>{try{localStorage.setItem(CONFIG.ADMIN_KEY,JSON.stringify(a))}catch(e){}};
@@ -870,7 +863,17 @@ sel("#pc",C.map(c=>[c.id,c.name+" ("+c.unit+")"]));
 sel("#pv",Object.values(PV).flat().map(p=>[p,p]));
 const pu=()=>{const c=C.find(x=>x.id===$("#pc").value);$("#pu").textContent=c?c.unit:"đ/kg"};
 $("#pc").addEventListener("change",pu);pu();
-$("#mb").addEventListener("click",()=>{$("#pd").value=new Date().toISOString().slice(0,10);view();md.showModal()});
+$("#mb").addEventListener("click",()=>{
+ const u=window.tcnsCurUser&&window.tcnsCurUser();
+ if(!u){window.tcnsOpenAuth&&window.tcnsOpenAuth("in");return}
+ if(u.role!=="admin"){
+  alert("Chỉ tài khoản quản trị mới được cập nhật giá.\n\nBạn có thể:\n• 👍 Vote \"Thấy đúng\" ở cuối trang chi tiết cây\n• 💬 Bình luận giá bạn biết\n• 🚩 Báo cáo nếu thấy giá sai");
+  return;
+ }
+ tk="__supabase_admin__";ADMIN=1;who=u.username||"admin";
+ $("#pd").value=new Date().toISOString().slice(0,10);
+ view();md.showModal();
+});
 $("#mx").addEventListener("click",()=>md.close());
 $("#admList").addEventListener("click",e=>{const b=e.target.closest("[data-del]");if(!b)return;
   if(!confirm("Xóa mục giá này?"))return;
@@ -892,13 +895,7 @@ $("#mf").addEventListener("submit",async e=>{e.preventDefault();if(busy)return;
  busy=true;mo.disabled=true;
  try{
   if(!tk){
-   const u=$("#me").value.trim(),pw=$("#mp").value;
-   if(!u||!pw)throw new Error("Nhập tài khoản và mật khẩu.");
-   if(!$("#ma").checked)throw new Error("Cần đồng ý Điều khoản sử dụng để tiếp tục.");
-   if(checkAdmin(u,pw)){
-    tk="__admin__";ADMIN=1;who=u;$("#mp").value="";view();say("Đã đăng nhập quản trị. Giá bạn nhập sẽ được lưu cục bộ và ưu tiên hiển thị.","ok");return;
-   }
-   throw new Error("Sai tài khoản hoặc mật khẩu.");
+   throw new Error("Vui lòng đăng nhập qua nút Đăng nhập / Đăng ký ở đầu trang.");
   }else{
    const price=parseFloat($("#pp").value),src=$("#ps").value.trim();
    if(!(price>0))throw new Error("Nhập giá lớn hơn 0.");
@@ -918,7 +915,8 @@ $("#mf").addEventListener("submit",async e=>{e.preventDefault();if(busy)return;
  }catch(x){say(x.message||"Có lỗi, thử lại sau.","er")}
  finally{busy=false;mo.disabled=false}
 });
-md.addEventListener("close",()=>{tk=null;ADMIN=0;who="";abBadge();$("#mp").value="";$("#pwMsg").textContent=""});}
+md.addEventListener("close",()=>{tk=null;ADMIN=0;who="";abBadge();$("#mp").value="";$("#pwMsg").textContent=""});
+document.addEventListener("tcns:auth-change",()=>{if(md.open)md.close()});}
 
 /* ================== USER FEATURES (Supabase) ================== */
 ;(function(){
@@ -948,6 +946,7 @@ async function initAuth(){
  sb.auth.onAuthStateChange(async(_e,s)=>{
   cur=s?await loadProfile(s.user.id):null;
   hdr();refreshSocial();
+  document.dispatchEvent(new Event("tcns:auth-change"));
  });
 }
 
@@ -961,6 +960,12 @@ function hdr(){
  }else{
   ub.innerHTML=`<span>Chưa đăng nhập</span><button id="uli">Đăng nhập / Đăng ký</button>`;
   $("#uli").onclick=()=>openAuth("in");
+ }
+ const mb=document.getElementById("mb");
+ if(mb){
+  if(cur&&cur.role==="admin"){mb.textContent="👑 Cập nhật giá (Quản trị)";mb.style.background="linear-gradient(135deg,#f2b705,#d92d20)";}
+  else if(cur){mb.textContent="Bạn là thành viên — hãy vote 👍 ở trang chi tiết";mb.style.background="var(--g)";}
+  else{mb.textContent="Đăng nhập để cập nhật giá";mb.style.background="var(--g)";}
  }
 }
 
@@ -1187,6 +1192,8 @@ $("#arwx").onclick=()=>{const w=$("#arw");w.classList.remove("on");w.hidden=true
 $("#arw").onclick=e=>{if(e.target===$("#arw"))$("#arwx").click()};
 
 initAuth();
+window.tcnsOpenAuth=openAuth;
+window.tcnsCurUser=()=>cur;
 })();
 })();
 </script>
