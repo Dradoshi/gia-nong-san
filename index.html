@@ -13,6 +13,7 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#fff;color:var(--k);font-size:14px;line-height:1.45;padding:0 env(safe-area-inset-right,0) 0 env(safe-area-inset-left,0)}
+body.modal-open{overflow:hidden;position:fixed;width:100%;left:0;right:0}
 button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 :focus-visible{outline:2px solid var(--g);outline-offset:2px}
 .w{max-width:1000px;margin:0 auto;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
@@ -200,9 +201,9 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .ubar b{color:#fff;font-weight:600}
 .ubar button{background:transparent;border:1px solid #3a4a41;color:#fff;border-radius:6px;padding:5px 11px;font-size:11.5px;font-weight:600;min-height:30px}
 .ubar button:hover{border-color:var(--g);color:#4ade80}
-.aw{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;overflow:auto}
+.aw{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-start;justify-content:center;z-index:100;padding:max(20px,env(safe-area-inset-top,0px)) 16px 20px;overflow-y:auto;overscroll-behavior:contain}
 .aw.on{display:flex}
-.ac{background:#fff;border-radius:14px;width:min(440px,100%);max-height:92vh;overflow:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.ac{background:#fff;border-radius:14px;width:min(440px,100%);max-height:90vh;overflow:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto 0}
 .ac h2{margin:0 0 6px;font-size:20px}
 .ac .sub{color:var(--mut);font-size:12.5px;margin:0 0 14px;line-height:1.5}
 .ac .tabs{display:flex;gap:4px;margin:0 0 14px;border-bottom:1px solid var(--line);overflow:visible;padding:0}
@@ -258,7 +259,20 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .cm .kid{margin-top:8px;margin-left:16px;padding-left:10px;border-left:2px solid var(--gl);display:grid;gap:6px}
 .cm .kid .cm{background:#fafbfa;border-color:#eef2ef;padding:8px 10px;font-size:12.5px}
 .empty{color:var(--mut);font-size:12.5px;padding:8px 0;font-style:italic}
-@media(max-width:600px){.soc{margin-left:12px;margin-right:12px;padding:10px}.rp{margin-left:0}}
+#fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;flex-direction:column;gap:8px;align-items:flex-end;pointer-events:none}
+#fab button{pointer-events:auto}
+#fabTop{background:var(--k);color:#fff;border:0;border-radius:50%;width:42px;height:42px;font-size:18px;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer;transition:transform .2s,opacity .2s}
+#fabTop:hover{transform:translateY(-2px)}
+#fabTop[hidden]{display:none}
+#fabPrice{background:linear-gradient(135deg,#f2b705,#d92d20);color:#fff;border:0;border-radius:99px;padding:10px 16px;font-weight:700;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer;transition:transform .2s}
+#fabPrice:hover{transform:translateY(-2px)}
+#fabPrice[hidden]{display:none}
+#fabReport{background:#fff;color:var(--dn);border:1px solid var(--dn);border-radius:99px;padding:8px 14px;font-weight:700;font-size:12.5px;box-shadow:0 6px 20px rgba(0,0,0,.15);cursor:pointer;transition:transform .2s}
+#fabReport:hover{transform:translateY(-2px);background:#fff5f4}
+#fabReport[hidden]{display:none}
+#fabCnt{margin-left:6px;background:var(--dn);color:#fff;border-radius:99px;padding:1px 7px;font-size:10.5px;display:inline-block;min-width:14px;text-align:center}
+#fabCnt:empty{display:none}
+@media(max-width:600px){.soc{margin-left:12px;margin-right:12px;padding:10px}.rp{margin-left:0}#fab{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}}
 </style>
 </head>
 <body>
@@ -392,6 +406,12 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
  </div>
 </div>
 
+<div id="fab">
+ <button id="fabPrice" hidden>👑 Cập nhật giá</button>
+ <button id="fabReport" hidden>🚩 Báo cáo<span id="fabCnt"></span></button>
+ <button id="fabTop" hidden aria-label="Về đầu trang">↑</button>
+</div>
+
 <dialog id="md" aria-label="Thành viên cập nhật giá"><form id="mf" novalidate>
  <h3 id="mt">Đăng nhập thành viên</h3>
  <div id="lg" style="display:grid;gap:10px">
@@ -436,7 +456,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 const DEBUG=true;
 const log=(...a)=>{if(DEBUG)console.log("[tcns]",...a)};
 
-const VERSION="2026.10.05-04";
+const VERSION="2026.10.05-05";
 const CONFIG={
  DATA_URL:"https://raw.githubusercontent.com/Dradoshi/gia-nong-san/main/prices.json",
  SHOW_REF:true,
@@ -478,7 +498,6 @@ const getAR=()=>{try{return JSON.parse(localStorage.getItem(CONFIG.ADMIN_KEY)||"
 const setAR=a=>{try{localStorage.setItem(CONFIG.ADMIN_KEY,JSON.stringify(a))}catch(e){}};
 const getPW=()=>{try{const s=localStorage.getItem(CONFIG.ADMIN_KEY_PW);if(s)return JSON.parse(s)}catch(e){}return{u:CONFIG.ADMIN.user,p:CONFIG.ADMIN.pass}};
 const setPW=o=>{try{localStorage.setItem(CONFIG.ADMIN_KEY_PW,JSON.stringify(o))}catch(e){}};
-const checkAdmin=(u,p)=>{const o=getPW();return u===o.u&&p===o.p};
 const getLOG=()=>{try{return JSON.parse(localStorage.getItem(CONFIG.ADMIN_KEY_LOG)||"[]")}catch(e){return[]}};
 const setLOG=a=>{try{localStorage.setItem(CONFIG.ADMIN_KEY_LOG,JSON.stringify(a.slice(-500)))}catch(e){}};
 const addLOG=o=>{const a=getLOG();a.push({...o,id:"L"+Date.now()+"_"+Math.random().toString(36).slice(2,6),t:Date.now()});setLOG(a)};
@@ -870,9 +889,12 @@ $("#mb").addEventListener("click",()=>{
   alert("Chỉ tài khoản quản trị mới được cập nhật giá.\n\nBạn có thể:\n• 👍 Vote \"Thấy đúng\" ở cuối trang chi tiết cây\n• 💬 Bình luận giá bạn biết\n• 🚩 Báo cáo nếu thấy giá sai");
   return;
  }
+ window.scrollTo(0,0);
  tk="__supabase_admin__";ADMIN=1;who=u.username||"admin";
  $("#pd").value=new Date().toISOString().slice(0,10);
- view();md.showModal();
+ view();
+ document.body.classList.add("modal-open");
+ md.showModal();
 });
 $("#mx").addEventListener("click",()=>md.close());
 $("#admList").addEventListener("click",e=>{const b=e.target.closest("[data-del]");if(!b)return;
@@ -894,9 +916,8 @@ $("#pwDo").addEventListener("click",()=>{const cur=getPW(),msg=$("#pwMsg");msg.t
 $("#mf").addEventListener("submit",async e=>{e.preventDefault();if(busy)return;
  busy=true;mo.disabled=true;
  try{
-  if(!tk){
-   throw new Error("Vui lòng đăng nhập qua nút Đăng nhập / Đăng ký ở đầu trang.");
-  }else{
+  if(!tk){throw new Error("Vui lòng đăng nhập qua nút Đăng nhập / Đăng ký ở đầu trang.")}
+  else{
    const price=parseFloat($("#pp").value),src=$("#ps").value.trim();
    if(!(price>0))throw new Error("Nhập giá lớn hơn 0.");
    if(!$("#pd").value)throw new Error("Chọn ngày áp dụng.");
@@ -915,7 +936,7 @@ $("#mf").addEventListener("submit",async e=>{e.preventDefault();if(busy)return;
  }catch(x){say(x.message||"Có lỗi, thử lại sau.","er")}
  finally{busy=false;mo.disabled=false}
 });
-md.addEventListener("close",()=>{tk=null;ADMIN=0;who="";abBadge();$("#mp").value="";$("#pwMsg").textContent=""});
+md.addEventListener("close",()=>{tk=null;ADMIN=0;who="";abBadge();$("#mp").value="";$("#pwMsg").textContent="";document.body.classList.remove("modal-open")});
 document.addEventListener("tcns:auth-change",()=>{if(md.open)md.close()});}
 
 /* ================== USER FEATURES (Supabase) ================== */
@@ -930,6 +951,9 @@ const fm=n=>Math.round(n).toLocaleString("vi-VN");
 const $=s=>document.querySelector(s);
 const tago=ms=>{const d=(Date.now()-new Date(ms).getTime())/1000;
  return d<60?"vừa xong":d<3600?Math.floor(d/60)+" phút trước":d<86400?Math.floor(d/3600)+" giờ trước":d<604800?Math.floor(d/86400)+" ngày trước":new Date(ms).toLocaleDateString("vi-VN")};
+
+function lockBody(){document.body.classList.add("modal-open")}
+function unlockBody(){setTimeout(()=>{if(!document.querySelector(".aw.on")&&!document.getElementById("md").open)document.body.classList.remove("modal-open")},50)}
 
 async function loadProfile(uid){
  for(let i=0;i<6;i++){
@@ -947,6 +971,7 @@ async function initAuth(){
   cur=s?await loadProfile(s.user.id):null;
   hdr();refreshSocial();
   document.dispatchEvent(new Event("tcns:auth-change"));
+  updateFab&&updateFab();
  });
 }
 
@@ -970,8 +995,8 @@ function hdr(){
 }
 
 const aw=$("#aw");
-function openAuth(t){aw.hidden=false;aw.classList.add("on");setTab(t||"in")}
-function closeAuth(){aw.classList.remove("on");aw.hidden=true;["li-m","up-m"].forEach(i=>{const e=$("#"+i);if(e){e.textContent="";e.className="msg"}})}
+function openAuth(t){window.scrollTo(0,0);aw.hidden=false;aw.classList.add("on");lockBody();setTab(t||"in")}
+function closeAuth(){aw.classList.remove("on");aw.hidden=true;unlockBody();["li-m","up-m"].forEach(i=>{const e=$("#"+i);if(e){e.textContent="";e.className="msg"}})}
 function setTab(t){
  const isIn=t==="in";
  $("#atitle").textContent=isIn?"Đăng nhập":"Đăng ký";
@@ -1016,12 +1041,13 @@ $("#li-go").onclick=doLogin;$("#up-go").onclick=doRegister;
 const rw=$("#rw");let rwCtx=null;
 function openReport(ctx){
  if(!cur){openAuth("in");return}
+ window.scrollTo(0,0);
  rwCtx=ctx;
  $("#rwsub").textContent=ctx.crop+" · "+(ctx.prov||"Toàn quốc")+(ctx.price?" · "+fm(ctx.price):"");
  $("#rw-r").value="";$("#rw-n").value="";$("#rw-m").textContent="";$("#rw-m").className="msg";
- rw.hidden=false;rw.classList.add("on");
+ rw.hidden=false;rw.classList.add("on");lockBody();
 }
-function closeReport(){rw.classList.remove("on");rw.hidden=true;rwCtx=null}
+function closeReport(){rw.classList.remove("on");rw.hidden=true;unlockBody();rwCtx=null}
 $("#rw-x").onclick=closeReport;rw.onclick=e=>{if(e.target===rw)closeReport()};
 $("#rw-go").onclick=async()=>{
  if(!rwCtx)return;
@@ -1161,7 +1187,8 @@ window.tcnsSocial=function(x0,r,p,nat){
 
 async function openAdminReports(){
  const w=$("#arw"),list=$("#arwlist"),cnt=$("#arwcnt");
- w.hidden=false;w.classList.add("on");
+ window.scrollTo(0,0);
+ w.hidden=false;w.classList.add("on");lockBody();
  list.innerHTML='<p class="empty">Đang tải...</p>';
  const {data,error}=await sb.from("reports").select("*").order("created_at",{ascending:false}).limit(300);
  if(error){list.innerHTML='<p class="empty">Lỗi: '+E(error.message)+'</p>';return}
@@ -1181,17 +1208,40 @@ async function openAdminReports(){
  list.querySelectorAll("[data-rj]").forEach(b=>b.onclick=async()=>{
   await sb.from("reports").update({status:"ok"}).eq("id",+b.dataset.rj);
   b.textContent="✓ Đã xử lý";b.disabled=true;
+  updateFab&&updateFab();
  });
  list.querySelectorAll("[data-rd]").forEach(b=>b.onclick=async()=>{
   if(!confirm("Xóa báo cáo này?"))return;
   await sb.from("reports").delete().eq("id",+b.dataset.rd);
   openAdminReports();
+  updateFab&&updateFab();
  });
 }
-$("#arwx").onclick=()=>{const w=$("#arw");w.classList.remove("on");w.hidden=true};
+$("#arwx").onclick=()=>{const w=$("#arw");w.classList.remove("on");w.hidden=true;unlockBody()};
 $("#arw").onclick=e=>{if(e.target===$("#arw"))$("#arwx").click()};
 
-initAuth();
+/* ==== Nút nổi ==== */
+const fab=$("#fab"),fabTop=$("#fabTop"),fabPrice=$("#fabPrice"),fabReport=$("#fabReport");
+fabTop.onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+fabPrice.onclick=()=>{const mb=document.getElementById("mb");if(mb)mb.click()};
+fabReport.onclick=()=>openAdminReports();
+window.updateFab=function(){
+ if(!fab)return;
+ const admin=cur&&cur.role==="admin";
+ const scrolled=window.scrollY>200;
+ fabTop.hidden=!scrolled;
+ fabPrice.hidden=!admin;
+ fabReport.hidden=!admin;
+ if(admin){
+  sb.from("reports").select("id",{count:"exact",head:true}).eq("status","new").then(({count})=>{
+   const c=$("#fabCnt");if(c)c.textContent=count?String(count):"";
+  }).catch(()=>{});
+ }
+};
+let lastY=0;addEventListener("scroll",()=>{const y=scrollY;if(Math.abs(y-lastY)>30){window.updateFab&&window.updateFab();lastY=y}},{passive:true});
+setInterval(()=>window.updateFab&&window.updateFab(),60000);
+
+initAuth().then(()=>window.updateFab&&window.updateFab());
 window.tcnsOpenAuth=openAuth;
 window.tcnsCurUser=()=>cur;
 })();
