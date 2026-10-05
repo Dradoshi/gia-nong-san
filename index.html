@@ -314,18 +314,6 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .logtbl .who{font-weight:700}
 .logtbl .who.a{color:var(--flt)}
 .logtbl .who.m{color:var(--g)}
-
-/* Fix lỗi giao diện bình luận */
-.cm {
-    background-color: #ffffff !important;
-    color: #111111 !important;
-}
-.cm .who {
-    color: #111111 !important;
-}
-.cm .tx {
-    color: #111111 !important;
-}
 </style>
 </head>
 <body>
@@ -1341,11 +1329,15 @@ function renderComment(c,all,likes){
  const kids=all.filter(x=>x.parent===c.id).sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
  const la=likes[c.id]||[],liked=cur&&la.includes(cur.id);
  const canDel=cur&&(cur.id===c.uid||cur.role==="admin");
- // ĐÃ SỬA: Đổi class "hd" thành "cm-hd" để tránh xung đột màu nền đen
- return `<div class="cm" data-cid="${c.id}">
-  <div class="cm-hd"><span class="who">${E(c.profile?.name||"Người dùng")}</span>${c.profile?.role==="admin"?'<span class="bd">👑 Quản trị</span>':""}<span class="tm">${tago(c.created_at)}</span></div>
-  <div class="tx">${E(c.tx)}</div>
-  <div class="acts">
+ // FIX TRIỆT ĐỂ: Ép style trực tiếp vào HTML sinh ra để chống mọi xung đột CSS
+ return `<div class="cm" style="background:#ffffff !important; color:#111111 !important; border:1px solid #e1e8e3 !important; border-radius:8px; padding:10px 12px; font-size:13px; margin-bottom:8px; animation:cin .3s ease;" data-cid="${c.id}">
+  <div style="display:flex; gap:8px; align-items:baseline; margin-bottom:4px; flex-wrap:wrap; background:transparent !important;" class="cm-hd">
+      <span style="font-weight:700; color:#111111 !important; font-size:12.5px;" class="who">${E(c.profile?.name||"Người dùng")}</span>
+      ${c.profile?.role==="admin"?'<span style="background:linear-gradient(135deg,#f2b705,#d92d20); color:#fff; border-radius:4px; padding:1px 6px; font-size:10px; font-weight:700; margin-left:4px;" class="bd">👑 Quản trị</span>':""}
+      <span style="color:#5f6b64; font-size:11px; margin-left:auto;" class="tm">${tago(c.created_at)}</span>
+  </div>
+  <div style="white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.55; color:#111111 !important;" class="tx">${E(c.tx)}</div>
+  <div style="margin-top:8px; display:flex; gap:12px; font-size:11.5px; align-items:center; flex-wrap:wrap;" class="acts">
    <button class="lk${liked?" on":""}" data-like="${c.id}">👍 ${la.length||""} Hữu ích</button>
    <button data-reply="${c.id}">Trả lời</button>
    ${canDel?`<button data-del="${c.id}">Xóa</button>`:""}
@@ -1423,10 +1415,13 @@ async function openAdminReports(){
  const uids=[...new Set(arr.map(r=>r.uid))];
  const {data:ps}=await sb.from("profiles").select("id,name").in("id",uids);
  const pm={};for(const p of (ps||[]))pm[p.id]=p.name||"thành viên";
- list.innerHTML=arr.map(r=>`<div class="cm">
-  <div class="cm-hd"><span class="who">${E(pm[r.uid]||"thành viên")}</span><span class="tm">${tago(r.created_at)}${r.status==="ok"?" · ✓ đã xử lý":""}</span></div>
-  <div class="tx"><b>${E(r.crop)}</b> · ${E(r.prov||"Toàn quốc")}${r.price?" · "+fm(r.price):""}<br><b>Lý do:</b> ${E(r.reason)}${r.note?"<br><b>Chi tiết:</b> "+E(r.note):""}</div>
-  <div class="acts">
+ list.innerHTML=arr.map(r=>`<div class="cm" style="background:#ffffff !important; color:#111111 !important; border:1px solid #e1e8e3 !important; border-radius:8px; padding:10px 12px; font-size:13px; margin-bottom:8px;">
+  <div style="display:flex; gap:8px; align-items:baseline; margin-bottom:4px; flex-wrap:wrap; background:transparent !important;" class="cm-hd">
+      <span style="font-weight:700; color:#111111 !important; font-size:12.5px;" class="who">${E(pm[r.uid]||"thành viên")}</span>
+      <span style="color:#5f6b64; font-size:11px; margin-left:auto;" class="tm">${tago(r.created_at)}${r.status==="ok"?" · ✓ đã xử lý":""}</span>
+  </div>
+  <div style="white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.55; color:#111111 !important;" class="tx"><b>${E(r.crop)}</b> · ${E(r.prov||"Toàn quốc")}${r.price?" · "+fm(r.price):""}<br><b>Lý do:</b> ${E(r.reason)}${r.note?"<br><b>Chi tiết:</b> "+E(r.note):""}</div>
+  <div style="margin-top:8px; display:flex; gap:12px; font-size:11.5px; align-items:center; flex-wrap:wrap;" class="acts">
    ${r.status==="new"?`<button data-rj="${r.id}">Đánh dấu đã xử lý</button>`:""}
    <button data-rd="${r.id}">Xóa</button>
   </div>
