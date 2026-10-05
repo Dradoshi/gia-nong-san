@@ -198,8 +198,10 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .vrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .vb{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 13px;font-weight:600;font-size:13px;min-height:38px}
 .vb:hover{border-color:var(--g)}
-.vb.on{background:var(--gl);border-color:var(--g);color:var(--g)}
-.vb.dn.on{background:#fde0dd;border-color:var(--dn);color:var(--dn)}
+/* FIX: Nút Thấy đúng (Upvote) khi được chọn có nền xanh lá */
+.vb.on{background-color:var(--g)!important;color:#fff!important;border-color:var(--g)!important}
+/* FIX: Nút Thấy sai (Downvote) khi được chọn có nền đỏ */
+.vb.dn.on{background-color:var(--dn)!important;color:#fff!important;border-color:var(--dn)!important}
 .vb i{font-style:normal;font-weight:700;font-variant-numeric:tabular-nums}
 .vb[disabled]{opacity:.5;cursor:not-allowed}
 .rp{margin-left:auto;border:1px solid var(--dn);background:#fff;color:var(--dn);border-radius:99px;padding:7px 13px;font-weight:600;font-size:12.5px;min-height:38px}
@@ -212,11 +214,12 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .cf button[disabled]{opacity:.5;cursor:not-allowed}
 .cl{display:grid;gap:8px}
 .cm{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;font-size:13px;animation:cin .3s ease}
-.cm .hd{display:flex;gap:8px;align-items:baseline;margin-bottom:4px;flex-wrap:wrap}
-.cm .who{font-weight:700;color:var(--k);font-size:12.5px}
+/* FIX: Đổi tên class tiêu đề bình luận để không bị dính màu đen của header trang */
+.cm-hd{display:flex;gap:8px;align-items:baseline;margin-bottom:4px;flex-wrap:wrap;background:none!important;color:inherit!important;padding:0!important}
+.cm-hd .who{font-weight:700;color:#111111!important;font-size:12.5px}
 .cm .bd{background:linear-gradient(135deg,#f2b705,#d92d20);color:#fff;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px}
-.cm .tm{color:var(--mut);font-size:11px;margin-left:auto}
-.cm .tx{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55}
+.cm-hd .tm{color:var(--mut);font-size:11px;margin-left:auto}
+.cm .tx{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;color:#111111!important}
 .cm .acts{margin-top:8px;display:flex;gap:12px;font-size:11.5px;align-items:center;flex-wrap:wrap}
 .cm .acts button{border:0;background:none;color:var(--mut);font-weight:600;padding:2px 0;min-height:auto}
 .cm .acts button:hover{color:var(--dn)}
@@ -553,11 +556,6 @@ const $=s=>document.querySelector(s),main=$("#main");
 
 let ADMIN=0;
 // XÓA CÁC HÀM LOCALSTORAGE CŨ, THAY BẰNG SUPABASE
-// const getAR=... -> Đã xóa
-// const setAR=... -> Đã xóa
-// const getLOG=... -> Đã xóa
-// const setLOG=... -> Đã xóa
-// const addLOG=... -> Đã xóa
 
 const E=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const fm=n=>Math.round(n).toLocaleString("vi-VN");
@@ -1343,8 +1341,9 @@ function renderComment(c,all,likes){
  const kids=all.filter(x=>x.parent===c.id).sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
  const la=likes[c.id]||[],liked=cur&&la.includes(cur.id);
  const canDel=cur&&(cur.id===c.uid||cur.role==="admin");
+ // ĐÃ SỬA: Đổi class "hd" thành "cm-hd" để tránh xung đột màu nền đen
  return `<div class="cm" data-cid="${c.id}">
-  <div class="hd"><span class="who">${E(c.profile?.name||"Người dùng")}</span>${c.profile?.role==="admin"?'<span class="bd">👑 Quản trị</span>':""}<span class="tm">${tago(c.created_at)}</span></div>
+  <div class="cm-hd"><span class="who">${E(c.profile?.name||"Người dùng")}</span>${c.profile?.role==="admin"?'<span class="bd">👑 Quản trị</span>':""}<span class="tm">${tago(c.created_at)}</span></div>
   <div class="tx">${E(c.tx)}</div>
   <div class="acts">
    <button class="lk${liked?" on":""}" data-like="${c.id}">👍 ${la.length||""} Hữu ích</button>
@@ -1425,7 +1424,7 @@ async function openAdminReports(){
  const {data:ps}=await sb.from("profiles").select("id,name").in("id",uids);
  const pm={};for(const p of (ps||[]))pm[p.id]=p.name||"thành viên";
  list.innerHTML=arr.map(r=>`<div class="cm">
-  <div class="hd"><span class="who">${E(pm[r.uid]||"thành viên")}</span><span class="tm">${tago(r.created_at)}${r.status==="ok"?" · ✓ đã xử lý":""}</span></div>
+  <div class="cm-hd"><span class="who">${E(pm[r.uid]||"thành viên")}</span><span class="tm">${tago(r.created_at)}${r.status==="ok"?" · ✓ đã xử lý":""}</span></div>
   <div class="tx"><b>${E(r.crop)}</b> · ${E(r.prov||"Toàn quốc")}${r.price?" · "+fm(r.price):""}<br><b>Lý do:</b> ${E(r.reason)}${r.note?"<br><b>Chi tiết:</b> "+E(r.note):""}</div>
   <div class="acts">
    ${r.status==="new"?`<button data-rj="${r.id}">Đánh dấu đã xử lý</button>`:""}
