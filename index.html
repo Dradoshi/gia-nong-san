@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>banggianongsan
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
@@ -192,7 +192,7 @@ const log=(...a)=>{if(DEBUG)console.log("[tcns]",...a)};
 
 const VERSION="2026.10.04-08";
 const CONFIG={
- DATA_URL:"", /* link prices.json do bot tạo (xem hướng dẫn). Khi có link này trang chỉ đọc dữ liệu từ bot, không tự quét các trang nguồn nữa */
+ DATA_URL:"https://raw.githubusercontent.com/Dradoshi/gia-nong-san/main/prices.json", /* link prices.json do bot tạo (xem hướng dẫn). Khi có link này trang chỉ đọc dữ liệu từ bot, không tự quét các trang nguồn nữa */
  SHOW_REF:true, /* false = ẩn giá "Tham khảo" ước lượng, cây chưa có giá thật sẽ hiện "Chưa có giá" */
 
  VERSION_URL:"version.json",
