@@ -312,21 +312,16 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .logtbl .who.a{color:var(--flt)}
 .logtbl .who.m{color:var(--g)}
 
-.pwform{display:grid;gap:10px;margin:0}
-.pwform input{padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;width:100%;transition:border-color .18s,box-shadow .18s}
-.pwform input:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(31,143,70,.13)}
-.pwform button{background:var(--k);color:#fff;border:0;border-radius:8px;padding:11px;font-weight:700;font-size:13px;transition:background .15s,transform .15s}
-.pwform button:hover{background:#000;transform:translateY(-1px)}
-.pwform .mini{font-size:11px;color:var(--mut);margin:0;line-height:1.5}
-.pwform .mini code{background:#f1f3f2;padding:1px 6px;border-radius:4px;font-size:10.5px}
-
-@media(max-width:600px){
-#md{width:calc(100vw - 16px);max-height:94vh}
-#md .mhd{padding:16px 18px 12px}
-#md .mbody{padding:16px 18px 4px}
-#md .mfoot{padding:10px 18px 14px}
-#md .mfoot button{padding:11px 18px;font-size:13px;flex:1}
-.fld input:not([type=checkbox]):not([type=radio]),.fld select{padding:12px 13px;font-size:16px}
+/* Fix lỗi giao diện bình luận */
+.cm {
+    background-color: #ffffff !important;
+    color: #111111 !important;
+}
+.cm .who {
+    color: #111111 !important;
+}
+.cm .tx {
+    color: #111111 !important;
 }
 </style>
 </head>
@@ -503,16 +498,6 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
      <div class="logwrap"><table class="logtbl"><thead><tr><th>Lúc</th><th>Ai</th><th>Cây</th><th>Tỉnh</th><th>Giá</th><th></th></tr></thead><tbody id="lgList"></tbody></table></div>
      <button type="button" id="lgClear" style="margin:10px 14px 12px;border:1px solid var(--dn);background:#fff;color:var(--dn);border-radius:8px;padding:8px 12px;font-weight:700;font-size:12px;width:calc(100% - 28px)">Xóa tất cả nhật ký</button>
     </details>
-    <details><summary>Đổi mật khẩu quản trị</summary>
-     <div class="pwform" style="padding:12px 14px">
-      <label style="display:grid;gap:5px;font-size:12px;color:var(--mut);font-weight:600">Mật khẩu hiện tại<input id="pwc" type="password" autocomplete="current-password"></label>
-      <label style="display:grid;gap:5px;font-size:12px;color:var(--mut);font-weight:600">Mật khẩu mới (tối thiểu 6 ký tự)<input id="pwn" type="password" autocomplete="new-password"></label>
-      <label style="display:grid;gap:5px;font-size:12px;color:var(--mut);font-weight:600">Nhập lại mật khẩu mới<input id="pw2" type="password" autocomplete="new-password"></label>
-      <button type="button" id="pwDo">Đổi mật khẩu</button>
-      <p class="mini" id="pwMsg"></p>
-      <p class="mini">Quên mật khẩu? Mở DevTools → Application → Local Storage → xóa khóa <code>tcns_admin_pw</code> để khôi phục mặc định.</p>
-     </div>
-    </details>
    </div>
   </div>
   <p id="mm" role="status"></p>
@@ -524,6 +509,11 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 </form></dialog>
 </div>
 <script>
+// Khởi tạo Supabase toàn cục
+const SUPABASE_URL = "https://jttdjudqdgupxokbrrgx.supabase.co";
+const SUPABASE_ANON = "sb_publishable_OPr0CkADPxV6hCakVGfZoA_ClnL7Mdt";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
 (()=>{
 const DEBUG=true;
 const log=(...a)=>{if(DEBUG)console.log("[tcns]",...a)};
@@ -537,10 +527,6 @@ const CONFIG={
  SOURCE:"banggianongsan.com; nongdanviet.vn; giaca.nsvl.com.vn; vietfood.org.vn; dichvu.cesti.gov.vn; nhachannuoi.vn; nongthonviet.vn; thoibaotaichinhvietnam.vn; vov.vn",
  WORKER:"",
  MEMBER_API:"",
- ADMIN:{user:"admin",pass:"123456789"},
- ADMIN_KEY:"tcns_admin_prices_v1",
- ADMIN_KEY_PW:"tcns_admin_pw",
- ADMIN_KEY_LOG:"tcns_admin_log",
  LIVE:[
    {url:"https://nongdanviet.vn/gia-ca-phe",cay:"Cà phê Robusta",nhom:"cn",fmt:"tbl"},
    {url:"https://nongdanviet.vn/gia-ho-tieu",cay:"Hồ tiêu",nhom:"cn",fmt:"tbl"},
@@ -566,13 +552,12 @@ const CONFIG={
 const $=s=>document.querySelector(s),main=$("#main");
 
 let ADMIN=0;
-const getAR=()=>{try{return JSON.parse(localStorage.getItem(CONFIG.ADMIN_KEY)||"[]")}catch(e){return[]}};
-const setAR=a=>{try{localStorage.setItem(CONFIG.ADMIN_KEY,JSON.stringify(a))}catch(e){}};
-const getPW=()=>{try{const s=localStorage.getItem(CONFIG.ADMIN_KEY_PW);if(s)return JSON.parse(s)}catch(e){}return{u:CONFIG.ADMIN.user,p:CONFIG.ADMIN.pass}};
-const setPW=o=>{try{localStorage.setItem(CONFIG.ADMIN_KEY_PW,JSON.stringify(o))}catch(e){}};
-const getLOG=()=>{try{return JSON.parse(localStorage.getItem(CONFIG.ADMIN_KEY_LOG)||"[]")}catch(e){return[]}};
-const setLOG=a=>{try{localStorage.setItem(CONFIG.ADMIN_KEY_LOG,JSON.stringify(a.slice(-500)))}catch(e){}};
-const addLOG=o=>{const a=getLOG();a.push({...o,id:"L"+Date.now()+"_"+Math.random().toString(36).slice(2,6),t:Date.now()});setLOG(a)};
+// XÓA CÁC HÀM LOCALSTORAGE CŨ, THAY BẰNG SUPABASE
+// const getAR=... -> Đã xóa
+// const setAR=... -> Đã xóa
+// const getLOG=... -> Đã xóa
+// const setLOG=... -> Đã xóa
+// const addLOG=... -> Đã xóa
 
 const E=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const fm=n=>Math.round(n).toLocaleString("vi-VN");
@@ -765,7 +750,18 @@ async function rowsNow(force){
   log("Fetched rows:",all.length,"từ",results.filter(r=>r&&r.length).length+"/"+CONFIG.LIVE.length,"nguồn");
   if(all.length){lv=keep(avg(all));ls("tcns_f","0")}else{lf=1;ls("tcns_f",String(T));try{lv=JSON.parse(c)}catch(e){}}}
  OFF=lf&&!sh.length?1:0;FT=sh.length?T:(+ls("tcns_t")||T);
- const admin=getAR().map(o=>({ngay:o.ngay,cay:o.cay||C.find(x=>x.id===o.cid)?.name||"",tinh:o.tinh||"",donvi:o.unit||"đ/kg",gia:o.gia}));
+
+ // LẤY DỮ LIỆU ADMIN TỪ SUPABASE
+ const { data: adminData, error: adminErr } = await sb.from('admin_prices').select('*');
+ if (adminErr) console.error("Lỗi lấy giá admin:", adminErr);
+ const admin = (adminData || []).map(o => ({
+     ngay: o.ngay,
+     cay: o.cay || C.find(x=>x.id===o.cid)?.name || "",
+     tinh: o.tinh || "",
+     donvi: o.unit || "đ/kg",
+     gia: o.gia
+ }));
+
  const out=sh.length||(lv&&lv.length)?SNAP.concat(BASEX(),admin,sh,lv||[]):SNAP.concat(BASEX(),admin);
  if(DEBUG)log("rowsNow →",out.length,"dòng");
  return out}
@@ -894,29 +890,36 @@ function chart(x,h){
  gr.addColorStop(0,"rgba(31,143,70,.25)");gr.addColorStop(1,"rgba(31,143,70,0)");
  CH=new Chart(ctx,{type:"line",data:{labels:lb,datasets:[{data:v,borderColor:"#1f8f46",backgroundColor:gr,fill:true,tension:.3,borderWidth:2,pointRadius:a.length>40?0:3,pointHoverRadius:5}]},
   options:{maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:i=>fm(i.parsed.y)+" "+x.unit}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:8}},y:{ticks:{callback:n=>fm(n)}}}}})}
-function viewDetail(a){
+async function viewDetail(a){
  const x0=C.find(i=>i.id===S.id);if(!x0){S.id=null;return viewList()}
  const{p}=sel(),A=DATA[x0.id]||{};let r=p&&px(x0.id,p),nat=false;if(!r){r=px(x0.id,"");nat=!!(p&&r)}
  const h=r&&(p&&!nat?A[p]:A[""]),x={...x0,...(r||{})},c=r&&chg(x),cn=CATS.find(k=>k[0]===x.cat),s=mset(x.mo),cur=new Date().getMonth()+1,L=x.cat==="hc"?"Cao điểm tiêu thụ":"Mùa thu hoạch";
  $("#hh").innerHTML="";HK="";main.className="";
 
- // TÍNH NĂNG 3: LỊCH SỬ CHỈNH SỬA (AUDIT TRAIL)
- const logs = getLOG().filter(l => l.cid === x.id).reverse().slice(0, 10);
+ // TÍNH NĂNG 3: LỊCH SỬ CHỈNH SỬA (AUDIT TRAIL) TỪ SUPABASE
+ const { data: logs, error: logErr } = await sb.from('price_logs')
+     .select('*')
+     .eq('cid', x.id)
+     .order('created_at', { ascending: false })
+     .limit(10);
+ 
+ if (logErr) console.error("Lỗi lấy log:", logErr);
+ 
  const auditHtml = `
  <section class="rs" style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
      <h3 style="display:flex;justify-content:space-between;align-items:center">
          Lịch sử cập nhật giá
          <span style="font-size:11px;font-weight:400;color:var(--mut)">Chỉ hiển thị 10 lần gần nhất</span>
      </h3>
-     ${logs.length ? `<div style="display:grid;gap:8px;font-size:12.5px">
+     ${logs && logs.length ? `<div style="display:grid;gap:8px;font-size:12.5px">
          ${logs.map(l => `
              <div style="background:#fafbfa;border:1px solid var(--line);border-radius:8px;padding:8px 10px">
                  <div style="display:flex;justify-content:space-between;margin-bottom:4px">
                      <b style="color:var(--k)">${E(l.who || 'Admin')} ${l.role === 'admin' ? '👑' : ''}</b>
-                     <span style="color:var(--mut)">${dmy(l.t)} ${hm(l.t)}</span>
+                     <span style="color:var(--mut)">${dmy(l.created_at)} ${hm(l.created_at)}</span>
                  </div>
                  <div style="color:var(--mut)">
-                     Giá cũ → Giá mới: <b style="color:var(--g)">${fm(l.gia)} ${x.unit}</b>
+                     Giá: <b style="color:var(--g)">${fm(l.gia)} ${x.unit}</b>
                  </div>
                  <div style="color:var(--mut);margin-top:2px;font-style:italic">
                      Nguồn: ${E(l.source || 'Không rõ')}
@@ -959,7 +962,7 @@ function head(){
    :(err?"Không tải được dữ liệu giá — đang dùng dữ liệu tĩnh":"Chưa có dữ liệu giá — đang dùng dữ liệu tĩnh"))+`</span>`;
 }
 function show(a){head();S.id?viewDetail(a):viewList(a)}
-main.addEventListener("click",e=>{
+main.addEventListener("click",async e=>{
  // Xử lý nút Inline Edit
  const editBtn = e.target.closest(".edit-inline-btn");
  if (editBtn) {
@@ -987,12 +990,13 @@ main.addEventListener("click",e=>{
      if (isNaN(newPrice) || newPrice <= 0) { alert("Giá không hợp lệ"); return; }
      const cid = saveBtn.dataset.id;
      const c = C.find(x => x.id === cid);
-     const a = getAR();
-     a.push({ id: "a" + Date.now(), cid: c.id, cay: c.name, unit: c.unit, tinh: "", gia: newPrice, ngay: fd(new Date()), source: "Cập nhật nhanh (Inline)" });
-     setAR(a);
-     addLOG({ role: "admin", who: "Admin", cid: c.id, cay: c.name, tinh: "", gia: newPrice, ngay: fd(new Date()), source: "Cập nhật nhanh (Inline)", unit: c.unit });
+     
+     // LƯU LÊN SUPABASE
+     await sb.from('admin_prices').insert({ cid: c.id, cay: c.name, unit: c.unit, tinh: "", gia: newPrice, ngay: fd(new Date()), source: "Cập nhật nhanh (Inline)" });
+     await sb.from('price_logs').insert({ role: "admin", who: "Admin", cid: c.id, cay: c.name, tinh: "", gia: newPrice, ngay: fd(new Date()), source: "Cập nhật nhanh (Inline)", unit: c.unit });
+     
      load(true);
-     alert("Đã lưu giá mới!");
+     alert("Đã lưu giá mới lên hệ thống!");
      return;
  }
 
@@ -1020,11 +1024,30 @@ checkUpdate();
 {const md=$("#md"),mm=$("#mm"),mo=$("#mo"),mhint=$("#mhint");let tk=null,busy=false,who="";
 const say=(t,c)=>{mm.textContent=t;mm.className=c||""};
 const sel=(id,arr)=>{$(id).innerHTML=arr.map(a=>`<option value="${E(a[0])}">${E(a[1])}</option>`).join("")};
-const fmtAR=r=>{const c=C.find(x=>x.id===r.cid);return `<div><span><b>${E(c?c.name:r.cay)}</b> · ${E(r.tinh||"Toàn quốc")} · ${fm(r.gia)} · ${dmy(pd(r.ngay))}</span><button type="button" data-del="${E(r.id)}" aria-label="Xóa">✕</button></div>`};
-const renderAR=()=>{const a=getAR();$("#acn").textContent=a.length;$("#admList").innerHTML=a.length?a.map(fmtAR).join(""):'<div style="color:var(--mut);border:0;text-align:center;padding:14px">Chưa có giá quản trị nào.</div>'};
-const fmtLG=r=>{const c=C.find(x=>x.id===r.cid);return `<tr><td>${hm(r.t)}<br>${dmy(r.t)}</td><td><span class="who ${r.role==="admin"?"a":"m"}">${E(r.role==="admin"?"👑 admin":r.who||"thành viên")}</span></td><td><b>${E(c?c.name:r.cay)}</b></td><td>${E(r.tinh||"Toàn quốc")}</td><td>${fm(r.gia)}</td><td><button type="button" data-lg="${E(r.id)}" aria-label="Xóa">✕</button></td></tr>`};
-const renderLG=()=>{const a=getLOG().slice().reverse();$("#lgn").textContent=a.length;$("#lgList").innerHTML=a.length?a.map(fmtLG).join(""):'<tr><td colspan="6" style="color:var(--mut);text-align:center;padding:14px">Chưa có lượt cập nhật nào.</td></tr>'};
-const view=()=>{
+
+// HÀM RENDER ADMIN PRICES TỪ SUPABASE
+const renderAR = async () => {
+    const { data, error } = await sb.from('admin_prices').select('*').order('created_at', { ascending: false });
+    if (error) { console.error(error); return; }
+    $("#acn").textContent = data.length;
+    $("#admList").innerHTML = data.length ? data.map(r => {
+        const c = C.find(x => x.id === r.cid);
+        return `<div><span><b>${E(c ? c.name : r.cay)}</b> · ${E(r.tinh || "Toàn quốc")} · ${fm(r.gia)} · ${dmy(r.ngay)}</span><button type="button" data-del="${r.id}" aria-label="Xóa">✕</button></div>`;
+    }).join("") : '<div style="color:var(--mut);border:0;text-align:center;padding:14px">Chưa có giá quản trị nào.</div>';
+};
+
+// HÀM RENDER LOGS TỪ SUPABASE
+const renderLG = async () => {
+    const { data, error } = await sb.from('price_logs').select('*').order('created_at', { ascending: false }).limit(50);
+    if (error) { console.error(error); return; }
+    $("#lgn").textContent = data.length;
+    $("#lgList").innerHTML = data.length ? data.map(r => {
+        const c = C.find(x => x.id === r.cid);
+        return `<tr><td>${hm(r.created_at)}<br>${dmy(r.created_at)}</td><td><span class="who ${r.role === "admin" ? "a" : "m"}">${E(r.role === "admin" ? "👑 admin" : r.who || "thành viên")}</span></td><td><b>${E(c ? c.name : r.cay)}</b></td><td>${E(r.tinh || "Toàn quốc")}</td><td>${fm(r.gia)}</td><td><button type="button" data-lg="${r.id}" aria-label="Xóa">✕</button></td></tr>`;
+    }).join("") : '<tr><td colspan="6" style="color:var(--mut);text-align:center;padding:14px">Chưa có lượt cập nhật nào.</td></tr>';
+};
+
+const view=async()=>{
  const on=!!tk;
  $("#lg").hidden=on;
  $("#pf").hidden=!on;
@@ -1033,7 +1056,7 @@ const view=()=>{
  mo.textContent=on?"Gửi giá":"Đăng nhập";
  $("#admBox").hidden=!ADMIN;
  say("");
- if(on){renderAR();renderLG()}
+ if(on){ await renderAR(); await renderLG(); }
 };
 // THAY THẾ LOGIC CHỌN SẢN PHẨM BẰNG COMBOBOX TÌM KIẾM
 const pcSearch = $("#pc-search");
@@ -1086,54 +1109,69 @@ $("#mb").addEventListener("click",()=>{
  md.showModal();
 });
 $("#mx").addEventListener("click",()=>md.close());
-$("#admList").addEventListener("click",e=>{const b=e.target.closest("[data-del]");if(!b)return;
-  if(!confirm("Xóa mục giá này?"))return;
-  setAR(getAR().filter(r=>r.id!==b.dataset.del));renderAR();load(true)});
-$("#admClear").addEventListener("click",()=>{if(!confirm("Xóa TẤT CẢ giá do quản trị viên nhập?"))return;setAR([]);renderAR();load(true)});
-$("#lgList").addEventListener("click",e=>{const b=e.target.closest("[data-lg]");if(!b)return;
-  if(!confirm("Xóa mục nhật ký này?"))return;
-  setLOG(getLOG().filter(r=>r.id!==b.dataset.lg));renderLG()});
-$("#lgClear").addEventListener("click",()=>{if(!confirm("Xóa TẤT CẢ nhật ký cập nhật giá?"))return;setLOG([]);renderLG()});
-$("#pwDo").addEventListener("click",()=>{const cur=getPW(),msg=$("#pwMsg");msg.textContent="";msg.style.color="";
-  const c=$("#pwc").value,n=$("#pwn").value,n2=$("#pw2").value;
-  if(c!==cur.p)return msg.textContent="Mật khẩu hiện tại không đúng.",msg.style.color="var(--dn)";
-  if(n.length<6)return msg.textContent="Mật khẩu mới tối thiểu 6 ký tự.",msg.style.color="var(--dn)";
-  if(n!==n2)return msg.textContent="Nhập lại mật khẩu không khớp.",msg.style.color="var(--dn)";
-  setPW({u:cur.u,p:n});$("#pwc").value="";$("#pwn").value="";$("#pw2").value="";
-  addLOG({role:"admin",who:cur.u,cay:"(đổi mật khẩu)",tinh:"",gia:0,cid:"",ngay:fd(new Date()),source:"change-pw"});
-  renderLG();msg.textContent="Đã đổi mật khẩu quản trị.",msg.style.color="var(--g)"});
-$("#mf").addEventListener("submit",async e=>{e.preventDefault();if(busy)return;
- busy=true;mo.disabled=true;
- try{
-  if(!tk){throw new Error("Vui lòng đăng nhập qua nút Đăng nhập / Đăng ký ở đầu trang.")}
-  else{
-   const price=parseFloat($("#pp").value),src=$("#ps").value.trim();
-   if(!(price>0))throw new Error("Nhập giá lớn hơn 0.");
-   if(!$("#pd").value)throw new Error("Chọn ngày áp dụng.");
-   if(src.length<3)throw new Error("Ghi rõ nơi mua bán hoặc nguồn giá.");
-   if(!$("#pk").checked)throw new Error("Cần tick xác nhận giá chính xác trước khi gửi.");
-   const c=C.find(x=>x.id===pcHidden.value),tinh=$("#pv").value,ngay=$("#pd").value;
-   const logRec={role:ADMIN?"admin":"member",who:who||"thành viên",cid:c.id,cay:c.name,tinh,gia:price,ngay,source:src,unit:c.unit};
-   if(ADMIN){
-    const a=getAR();a.push({id:"a"+Date.now(),cid:c.id,cay:c.name,unit:c.unit,tinh,gia:price,ngay,source:src});
-    setAR(a);addLOG(logRec);renderAR();renderLG();
-    $("#pp").value="";$("#ps").value="";$("#pk").checked=false;
-    say("Đã lưu giá quản trị. Trang sẽ tự cập nhật.","ok");
+$("#admList").addEventListener("click",async e=>{
+    const b=e.target.closest("[data-del]");if(!b)return;
+    if(!confirm("Xóa mục giá này?"))return;
+    await sb.from('admin_prices').delete().eq('id', b.dataset.del);
+    await renderAR();
     load(true);
-   }
-  }
- }catch(x){say(x.message||"Có lỗi, thử lại sau.","er")}
- finally{busy=false;mo.disabled=false}
+});
+$("#admClear").addEventListener("click",async()=>{
+    if(!confirm("Xóa TẤT CẢ giá do quản trị viên nhập?"))return;
+    await sb.from('admin_prices').delete().neq('id', 0);
+    await renderAR();
+    load(true);
+});
+$("#lgList").addEventListener("click",async e=>{
+    const b=e.target.closest("[data-lg]");if(!b)return;
+    if(!confirm("Xóa mục nhật ký này?"))return;
+    await sb.from('price_logs').delete().eq('id', b.dataset.lg);
+    await renderLG();
+});
+$("#lgClear").addEventListener("click",async()=>{
+    if(!confirm("Xóa TẤT CẢ nhật ký cập nhật giá?"))return;
+    await sb.from('price_logs').delete().neq('id', 0);
+    await renderLG();
+});
+
+$("#mf").addEventListener("submit",async e=>{
+    e.preventDefault();if(busy)return;
+    busy=true;mo.disabled=true;
+    try{
+        if(!tk){throw new Error("Vui lòng đăng nhập qua nút Đăng nhập / Đăng ký ở đầu trang.")}
+        else{
+            const price=parseFloat($("#pp").value),src=$("#ps").value.trim();
+            if(!(price>0))throw new Error("Nhập giá lớn hơn 0.");
+            if(!$("#pd").value)throw new Error("Chọn ngày áp dụng.");
+            if(src.length<3)throw new Error("Ghi rõ nơi mua bán hoặc nguồn giá.");
+            if(!$("#pk").checked)throw new Error("Cần tick xác nhận giá chính xác trước khi gửi.");
+            const c=C.find(x=>x.id===pcHidden.value),tinh=$("#pv").value,ngay=$("#pd").value;
+            
+            // LƯU LÊN SUPABASE
+            const { error: err1 } = await sb.from('admin_prices').insert({ 
+                cid: c.id, cay: c.name, unit: c.unit, tinh, gia: price, ngay, source: src 
+            });
+            if (err1) throw err1;
+
+            const { error: err2 } = await sb.from('price_logs').insert({ 
+                role: ADMIN ? "admin" : "member", who: who || "thành viên", cid: c.id, cay: c.name, tinh, gia: price, ngay, source: src, unit: c.unit 
+            });
+            if (err2) throw err2;
+
+            $("#pp").value="";$("#ps").value="";$("#pk").checked=false;
+            say("Đã lưu giá lên hệ thống. Trang sẽ tự cập nhật.","ok");
+            await renderAR(); await renderLG();
+            load(true);
+        }
+    }catch(x){say(x.message||"Có lỗi, thử lại sau.","er")}
+    finally{busy=false;mo.disabled=false}
 });
 md.addEventListener("close",()=>{tk=null;ADMIN=0;who="";$("#mp").value="";$("#pwMsg").textContent="";document.body.classList.remove("modal-open")});
 document.addEventListener("tcns:auth-change",()=>{if(md.open)md.close()});}
 
 /* ================== USER FEATURES (Supabase) ================== */
 ;(function(){
-const SUPABASE_URL="https://jttdjudqdgupxokbrrgx.supabase.co";
-const SUPABASE_ANON="sb_publishable_OPr0CkADPxV6hCakVGfZoA_ClnL7Mdt";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
-
+// Supabase đã được khởi tạo toàn cục ở trên, không cần khởi tạo lại
 let cur=null;
 const E=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const fm=n=>Math.round(n).toLocaleString("vi-VN");
