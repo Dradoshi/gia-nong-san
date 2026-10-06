@@ -13,7 +13,7 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#fff;color:var(--k);font-size:14px;line-height:1.45;padding:0 env(safe-area-inset-right,0) 0 env(safe-area-inset-left,0)}
-body.modal-open{overflow:hidden;position:fixed;width:100%;left:0;right:0}
+body.modal-open{overflow:hidden}
 button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 :focus-visible{outline:2px solid var(--g);outline-offset:2px}
 .w{max-width:1000px;margin:0 auto;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
@@ -174,7 +174,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .ubar button:hover{border-color:var(--g);color:#4ade80}
 .aw{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-start;justify-content:center;z-index:100;padding:max(20px,env(safe-area-inset-top,0px)) 16px 20px;overflow-y:auto;overscroll-behavior:contain}
 .aw.on{display:flex}
-.ac{background:#fff;border-radius:14px;width:min(440px,100%);max-height:90vh;overflow:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto 0}
+.ac{background:#fff;border-radius:14px;width:min(440px,100%);max-height:90vh;overflow:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:0}
 .ac h2{margin:0 0 6px;font-size:20px}
 .ac .sub{color:var(--mut);font-size:12.5px;margin:0 0 14px;line-height:1.5}
 .ac .tabs{display:flex;gap:4px;margin:0 0 14px;border-bottom:1px solid var(--line);overflow:visible;padding:0}
@@ -204,6 +204,11 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .vb.dn.on{background-color:var(--dn)!important;color:#fff!important;border-color:var(--dn)!important}
 .vb i{font-style:normal;font-weight:700;font-variant-numeric:tabular-nums}
 .vb[disabled]{opacity:.5;cursor:not-allowed}
+.vb{color:var(--g);border-color:var(--g)}
+.vb:hover:not(.on):not([disabled]){background:var(--gl);border-color:var(--g)}
+.vb.dn{color:var(--dn);border-color:var(--dn)}
+.vb.dn:hover:not(.on):not([disabled]){background:#fff1f0;border-color:var(--dn)}
+.vb.dn:focus-visible{outline-color:var(--dn)}
 .rp{margin-left:auto;border:1px solid var(--dn);background:#fff;color:var(--dn);border-radius:99px;padding:7px 13px;font-weight:600;font-size:12.5px;min-height:38px}
 .rp:hover{background:#fff5f4}
 .cf{display:grid;gap:6px;margin:10px 0 12px}
@@ -250,7 +255,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 /* ===== DIALOG CẬP NHẬT GIÁ — thiết kế lại ===== */
 #md{border:0;border-radius:16px;padding:0;width:min(540px,calc(100vw - 24px));max-height:92vh;color:var(--k);box-shadow:0 20px 60px rgba(0,0,0,.35)}
 #md::backdrop{background:rgba(0,0,0,.55);backdrop-filter:blur(2px)}
-#md form{padding:0;display:flex;flex-direction:column;max-height:92vh}
+#md form{padding:0;display:flex;flex-direction:column;max-height:inherit}
 #md .mhd{padding:18px 22px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2;border-radius:16px 16px 0 0}
 #md .mhd h3{margin:0;font-size:17px;font-weight:800;color:var(--k);line-height:1.3}
 #md .mhd .mhint{margin:4px 0 0;font-size:12.5px;color:var(--mut);line-height:1.5}
@@ -1087,12 +1092,11 @@ $("#mb").addEventListener("click",()=>{
   alert("Chỉ tài khoản quản trị mới được cập nhật giá.\n\nBạn có thể:\n• 👍 Vote \"Thấy đúng\" ở cuối trang chi tiết cây\n• 💬 Bình luận giá bạn biết\n• 🚩 Báo cáo nếu thấy giá sai");
   return;
  }
- window.scrollTo(0,0);
  tk="__supabase_admin__";ADMIN=1;who=u.username||"admin";
  $("#pd").value=new Date().toISOString().slice(0,10);
  view();
  document.body.classList.add("modal-open");
- md.showModal();
+ md.showModal();TCPlace(md,true);
 });
 $("#mx").addEventListener("click",()=>md.close());
 $("#admList").addEventListener("click",async e=>{
@@ -1208,7 +1212,7 @@ function hdr(){
 }
 
 const aw=$("#aw");
-function openAuth(t){window.scrollTo(0,0);aw.hidden=false;aw.classList.add("on");lockBody();setTab(t||"in")}
+function openAuth(t){aw.hidden=false;aw.classList.add("on");lockBody();setTab(t||"in");TCPlace(aw)}
 function closeAuth(){aw.classList.remove("on");aw.hidden=true;unlockBody();["li-m","up-m"].forEach(i=>{const e=$("#"+i);if(e){e.textContent="";e.className="msg"}})}
 function setTab(t){
  const isIn=t==="in";
@@ -1254,11 +1258,10 @@ $("#li-go").onclick=doLogin;$("#up-go").onclick=doRegister;
 const rw=$("#rw");let rwCtx=null;
 function openReport(ctx){
  if(!cur){openAuth("in");return}
- window.scrollTo(0,0);
  rwCtx=ctx;
  $("#rwsub").textContent=ctx.crop+" · "+(ctx.prov||"Toàn quốc")+(ctx.price?" · "+fm(ctx.price):"");
  $("#rw-r").value="";$("#rw-n").value="";$("#rw-m").textContent="";$("#rw-m").className="msg";
- rw.hidden=false;rw.classList.add("on");lockBody();
+ rw.hidden=false;rw.classList.add("on");lockBody();TCPlace(rw);
 }
 function closeReport(){rw.classList.remove("on");rw.hidden=true;unlockBody();rwCtx=null}
 $("#rw-x").onclick=closeReport;rw.onclick=e=>{if(e.target===rw)closeReport()};
@@ -1405,8 +1408,7 @@ window.tcnsSocial=function(x0,r,p,nat){
 
 async function openAdminReports(){
  const w=$("#arw"),list=$("#arwlist"),cnt=$("#arwcnt");
- window.scrollTo(0,0);
- w.hidden=false;w.classList.add("on");lockBody();
+ w.hidden=false;w.classList.add("on");lockBody();TCPlace(w);
  list.innerHTML='<p class="empty">Đang tải...</p>';
  const {data,error}=await sb.from("reports").select("*").order("created_at",{ascending:false}).limit(300);
  if(error){list.innerHTML='<p class="empty">Lỗi: '+E(error.message)+'</p>';return}
@@ -1466,6 +1468,20 @@ window.tcnsOpenAuth=openAuth;
 window.tcnsCurUser=()=>cur;
 })();
 })();
+</script>
+<script>
+/* Đặt popup vào vùng đang nhìn thấy của iframe (không phụ thuộc chiều cao iframe) */
+window.TCPlace=function(ov,dlg){
+ const box=dlg?ov:ov.querySelector(".ac");if(!box)return;
+ const pt=dlg?0:(parseFloat(getComputedStyle(ov).paddingTop)||0);
+ const put=()=>{const v=box.__v||{top:0,h:innerHeight};
+  box.style.maxHeight=Math.max(240,v.h-24)+"px";
+  const y=Math.round(v.top+Math.max(12,(v.h-box.offsetHeight)/2));
+  if(dlg){box.style.margin="0 auto";box.style.top=y+"px";box.style.bottom="auto"}else{box.style.margin=Math.max(0,y-pt)+"px 0 0";ov.scrollTop=0}};
+ const go=r=>{box.__v=r&&r.height>60?{top:r.top,h:r.height}:{top:0,h:innerHeight};put()};
+ try{const io=new IntersectionObserver(es=>{io.disconnect();go(es[0].intersectionRect)});io.observe(document.documentElement)}catch(e){go(null)}
+ if(!box.__ro&&window.ResizeObserver){box.__ro=new ResizeObserver(put);box.__ro.observe(box)}
+};
 </script>
 </body>
 </html>
