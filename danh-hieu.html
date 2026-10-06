@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Danh hiệu và quyền hạn</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--g:#1f8f46;--dn:#d92d20;--k:#111;--mut:#5f6b64;--line:#e1e8e3;--gl:#e9f6ee;font-family:"Be Vietnam Pro",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;color:var(--k);font-size:14px;line-height:1.45;background:#fff}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}
+.w{max-width:900px;margin:0 auto;padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+.hd{background:var(--k);color:#fff;padding:calc(18px + env(safe-area-inset-top,0px)) 16px 14px}
+.hd a{color:#4ade80;font-size:12.5px;font-weight:600;text-decoration:none;cursor:pointer}
+.hd h1{margin:6px 0 2px;font-size:22px;font-weight:800}.hd p{margin:0;font-size:12.5px;color:#b9c4bd}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:4px 16px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+.tb{white-space:nowrap;border:0;background:none;padding:10px 12px;font-weight:500;color:var(--mut);border-bottom:3px solid transparent}
+.tb[aria-pressed=true]{color:var(--k);font-weight:700;border-bottom-color:var(--g)}
+.pg{padding:14px 16px}
+.bd{display:inline-block;color:#fff;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+.me{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:16px;background:var(--gl)}
+.me b.n{font-size:16px}.bar{height:8px;background:#fff;border-radius:9px;overflow:hidden;margin:10px 0 6px;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--g);border-radius:9px}
+.mut{color:var(--mut);font-size:12.5px}
+.rk{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:12px 12px 12px 0;border-left:6px solid var(--c);margin-bottom:10px;border-radius:0 12px 12px 0;background:#fff;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.rk.cur{background:var(--gl);box-shadow:0 0 0 2px var(--c)}
+.rk .em{font-size:30px;text-align:center;line-height:1.2}
+.rk h3{margin:0 0 2px;font-size:15px;font-weight:800;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ch{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ch span{font-size:12px;background:#f3f6f4;border:1px solid var(--line);border-radius:99px;padding:3px 10px}
+.ch span.y{background:#fff7dd;border-color:#f2d36b}
+.top{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.top .no{width:26px;font-weight:800;color:var(--mut);text-align:center}.top .nm{flex:1;min-width:0;font-weight:600;overflow-wrap:anywhere}
+h2{font-size:15px;margin:20px 0 8px;font-weight:800}
+table{width:100%;border-collapse:collapse;font-size:12.5px}th,td{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}
+td input[type=number]{width:62px;padding:5px;border:1px solid var(--line);border-radius:6px}
+.btn{border:1px solid var(--g);background:var(--g);color:#fff;border-radius:8px;padding:8px 14px;font-weight:700}
+.btn.o{background:#fff;color:var(--g)}.btn.r{background:#fff;color:var(--dn);border-color:var(--dn)}
+.q{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:8px}
+.cm{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.cm .a{display:flex;gap:8px;margin-top:8px}
+.mb{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.mb span.nm{flex:1;min-width:120px;font-weight:600}.mb select{padding:5px;border:1px solid var(--line);border-radius:6px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--k);color:#fff;padding:9px 16px;border-radius:99px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="w">
+ <header class="hd">
+  <a id="back">← Về trang tra cứu giá</a>
+  <h1>Danh hiệu và quyền hạn</h1>
+  <p>Đóng góp giá chính xác để thăng hạng. Hạng càng cao, càng được tự sửa giá mà không cần chờ duyệt.</p>
+ </header>
+ <nav class="tabs" id="tabs"></nav>
+ <main class="pg" id="pg">Đang tải…</main>
+</div>
+<div id="toast" role="status"></div>
+<script>
+const HOME_URL="./";  // đổi thành tên file trang chính nếu cần, vd "tra-cuu-nong-san.html"
+const sb=supabase.createClient("https://jttdjudqdgupxokbrrgx.supabase.co","sb_publishable_OPr0CkADPxV6hCakVGfZoA_ClnL7Mdt");
+const $=s=>document.querySelector(s),E=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let R=[],me=null,tab="rk";
+const rk=k=>R.find(r=>r.key===k);
+const badge=k=>{const r=rk(k);return r?`<span class="bd" style="background:${r.color}">${r.emoji} ${E(r.name)}</span>`:""};
+const toast=t=>{const e=$("#toast");e.textContent=t;e.className="on";setTimeout(()=>e.className="",2400)};
+const isAdm=()=>me&&me.role==="admin";
+const canRev=()=>isAdm()||(me&&rk(me.rank_key)?.can_review);
+$("#back").onclick=()=>{history.length>1&&document.referrer?history.back():location.href=HOME_URL};
+
+async function init(){
+ const {data:{session}}=await sb.auth.getSession();
+ if(session){const {data}=await sb.from("profiles").select("*").eq("id",session.user.id).maybeSingle();me=data}
+ const {data}=await sb.from("ranks").select("*").order("sort");R=data||[];
+ draw();
+}
+function draw(){
+ const T=[["rk","🏅 Danh hiệu"],["top","🏆 Vinh danh"]];if(canRev())T.push(["adm","⚙️ Quản lý"]);
+ $("#tabs").innerHTML=T.map(([k,n])=>`<button class="tb" data-t="${k}" aria-pressed="${tab===k}">${n}</button>`).join("");
+ document.querySelectorAll(".tb").forEach(b=>b.onclick=()=>{tab=b.dataset.t;draw()});
+ ({rk:vRank,top:vTop,adm:vAdm})[tab]();
+}
+const perms=r=>[r.auto_approve?'<span class="y">✍️ Tự sửa giá, không cần duyệt</span>':"<span>⏳ Gửi giá, chờ duyệt</span>",
+ `<span>📅 ${r.daily_limit>=9999?"Không giới hạn":r.daily_limit+" lần/ngày"}</span>`,
+ r.can_review?"<span>🛡️ Duyệt giá thành viên</span>":"",r.can_delete?"<span>🗑️ Xóa giá sai</span>":""].join("");
+
+function vRank(){
+ let top="";
+ if(me){
+  const cur=rk(me.rank_key),nx=R.find(r=>cur&&r.sort>cur.sort&&r.key!=="than_nong");
+  const pct=nx?Math.min(100,Math.round(me.accepted/nx.min_accepted*100)):100;
+  top=`<div class="me"><b class="n">${E(me.name||me.username)}</b> ${cur?badge(me.rank_key):'<span class="mut">Chưa có danh hiệu: gửi giá đầu tiên để nhận 🌱 Tập sự</span>'}
+  <div class="bar"><i style="width:${pct}%"></i></div>
+  <div class="mut">${me.accepted} giá đúng · chính xác ${me.accuracy}%${nx?` · cần ${nx.min_accepted} giá đúng và ≥${nx.min_accuracy}% để lên ${nx.emoji} ${E(nx.name)}`:" · bạn đã ở hạng cao nhất"}</div></div>`;
+ }
+ $("#pg").innerHTML=top+R.map(r=>`<section class="rk${me&&me.rank_key===r.key?" cur":""}" style="--c:${r.color}">
+  <div class="em">${r.emoji}</div><div><h3>${E(r.name)}${me&&me.rank_key===r.key?'<span class="bd" style="background:#1f8f46">Hạng của bạn</span>':""}</h3>
+  <div class="mut">${r.key==="than_nong"?"Chỉ admin trao để vinh danh":`Từ ${r.min_accepted} giá đúng · chính xác ≥ ${r.min_accuracy}%`}</div>
+  <div class="mut">${E(r.perks)}</div><div class="ch">${perms(r)}</div></div></section>`).join("");
+}
+async function vTop(){
+ $("#pg").innerHTML="Đang tải…";
+ const {data}=await sb.from("profiles").select("name,username,rank_key,accepted,accuracy").not("rank_key","is",null).order("accepted",{ascending:false}).limit(20);
+ $("#pg").innerHTML=(data&&data.length)?data.map((p,i)=>`<div class="top"><span class="no">${i<3?["🥇","🥈","🥉"][i]:i+1}</span><span class="nm">${E(p.name||p.username)}</span>${badge(p.rank_key)}<span class="mut">${p.accepted} giá · ${p.accuracy}%</span></div>`).join(""):'<p class="mut">Chưa có ai trên bảng. Gửi giá đầu tiên để được vinh danh 🌱</p>';
+}
+async function vAdm(){
+ const pg=$("#pg");pg.innerHTML="Đang tải…";
+ const {data:pend}=await sb.from("contributions").select("*").eq("status","pending").order("created_at").limit(50);
+ const ids=[...new Set((pend||[]).map(x=>x.uid))],nm={};
+ if(ids.length){const {data}=await sb.from("profiles").select("id,name,username,rank_key").in("id",ids);(data||[]).forEach(p=>nm[p.id]=p)}
+ let h=`<h2 style="margin-top:0">Giá chờ duyệt (${(pend||[]).length})</h2>`+((pend||[]).map(c=>`<div class="cm"><b>${E(nm[c.uid]?.name||nm[c.uid]?.username||"thành viên")}</b> ${badge(nm[c.uid]?.rank_key)}<br>
+  ${E(c.cay)} · ${E(c.tinh||"Toàn quốc")} · <b>${Number(c.gia).toLocaleString("vi-VN")} ${E(c.unit||"")}</b> · ${E(c.ngay||"")}<br><span class="mut">Nguồn: ${E(c.source)}</span>
+  <div class="a"><button class="btn" data-ok="${c.id}">Duyệt</button><button class="btn r" data-no="${c.id}">Từ chối</button></div></div>`).join("")||'<p class="mut">Không có giá nào chờ duyệt.</p>');
+ if(isAdm()){
+  h+=`<h2>Cấu hình danh hiệu</h2><div style="overflow-x:auto"><table><tr><th>Hạng</th><th>Giá đúng</th><th>% đúng</th><th>/ngày</th><th>Tự sửa</th><th>Duyệt</th><th>Xóa</th></tr>${R.map(r=>`<tr data-k="${r.key}"><td>${r.emoji} ${E(r.name)}</td>
+   <td><input type="number" data-f="min_accepted" value="${r.min_accepted}"></td><td><input type="number" data-f="min_accuracy" value="${r.min_accuracy}"></td><td><input type="number" data-f="daily_limit" value="${r.daily_limit}"></td>
+   ${["auto_approve","can_review","can_delete"].map(f=>`<td><input type="checkbox" data-f="${f}" ${r[f]?"checked":""}></td>`).join("")}</tr>`).join("")}</table></div>
+  <p><button class="btn" id="svR">Lưu cấu hình</button> <button class="btn o" id="rc">Tính lại danh hiệu</button></p>
+  <h2>Thành viên</h2><input class="q" id="mq" placeholder="Tìm theo tên hiển thị…"><div id="ml"></div>`;
+ }
+ pg.innerHTML=h;
+ pg.querySelectorAll("[data-ok],[data-no]").forEach(b=>b.onclick=async()=>{
+  const {error}=await sb.rpc("review_contribution",{p_id:+(b.dataset.ok||b.dataset.no),p_ok:!!b.dataset.ok});
+  error?toast(error.message):(toast("Đã xử lý"),vAdm())});
+ if(!isAdm())return;
+ $("#svR").onclick=async()=>{
+  for(const tr of pg.querySelectorAll("tr[data-k]")){const o={};tr.querySelectorAll("[data-f]").forEach(i=>o[i.dataset.f]=i.type==="checkbox"?i.checked:+i.value);
+   const {error}=await sb.from("ranks").update(o).eq("key",tr.dataset.k);if(error)return toast(error.message)}
+  toast("Đã lưu cấu hình")};
+ $("#rc").onclick=async()=>{const {error}=await sb.rpc("recalc_ranks");toast(error?error.message:"Đã tính lại danh hiệu")};
+ const find=async()=>{
+  let q=sb.from("profiles").select("id,name,username,rank_key,rank_locked,edit_banned,role").limit(15);
+  const t=$("#mq").value.trim();if(t)q=q.ilike("name","%"+t+"%");
+  const {data}=await q;
+  $("#ml").innerHTML=(data||[]).map(p=>`<div class="mb" data-id="${p.id}"><span class="nm">${E(p.name||p.username)}${p.role==="admin"?" 👑":""}</span>
+   <select data-s>${'<option value="">Tự động theo điểm</option>'+R.map(r=>`<option value="${r.key}" ${p.rank_locked&&p.rank_key===r.key?"selected":""}>${r.emoji} ${E(r.name)}</option>`).join("")}</select>
+   <label class="mut"><input type="checkbox" data-b ${p.edit_banned?"checked":""}> Khóa sửa giá</label></div>`).join("");
+  $("#ml").querySelectorAll(".mb").forEach(row=>{
+   const id=row.dataset.id;
+   row.querySelector("[data-s]").onchange=async e=>{const v=e.target.value;
+    const {error}=await sb.from("profiles").update(v?{rank_key:v,rank_locked:true}:{rank_locked:false}).eq("id",id);
+    if(!error&&!v)await sb.rpc("recalc_ranks");toast(error?error.message:"Đã cập nhật danh hiệu")};
+   row.querySelector("[data-b]").onchange=async e=>{const {error}=await sb.from("profiles").update({edit_banned:e.target.checked}).eq("id",id);toast(error?error.message:"Đã cập nhật")};
+  });
+ };
+ let tm;$("#mq").oninput=()=>{clearTimeout(tm);tm=setTimeout(find,300)};find();
+}
+init();
+</script>
+</body>
+</html>
