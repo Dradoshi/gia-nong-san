@@ -917,8 +917,9 @@ async function viewDetail(a){
                      Giá: <b style="color:var(--g)">${fm(l.gia)} ${x.unit}</b>
                  </div>
                  <div style="color:var(--mut);margin-top:2px;font-style:italic">
-                     \1
-                  ${VT[l.id]?`<div style="margin-top:4px;font-size:11.5px;color:var(--mut)">Cộng đồng: 👍 ${VT[l.id].u} · 👎 ${VT[l.id].d}</div>`:""}
+                     Nguồn: ${E(l.source || 'Không rõ')}
+                 </div>
+                 ${VT[l.id]?`<div style="margin-top:4px;font-size:11.5px;color:var(--mut)">Cộng đồng: 👍 ${VT[l.id].u} · 👎 ${VT[l.id].d}</div>`:""}
              </div>
          `).join("")}
      </div>` : `<p class="empty">Chưa có lịch sử cập nhật cho sản phẩm này.</p>`}
