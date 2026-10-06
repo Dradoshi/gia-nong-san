@@ -1153,7 +1153,7 @@ $("#mf").addEventListener("submit",async e=>{
     }catch(x){say(x.message||"Có lỗi, thử lại sau.","er")}
     finally{busy=false;mo.disabled=false}
 });
-md.addEventListener("close",()=>{tk=null;ADMIN=0;who="";$("#mp").value="";$("#pwMsg").textContent="";document.body.classList.remove("modal-open")});
+md.addEventListener("close",()=>{document.body.classList.remove("modal-open");tk=null;ADMIN=0;who="";const mp=$("#mp");if(mp)mp.value="";const pm=$("#pwMsg");if(pm)pm.textContent=""});
 document.addEventListener("tcns:auth-change",()=>{if(md.open)md.close()});}
 
 /* ================== USER FEATURES (Supabase) ================== */
