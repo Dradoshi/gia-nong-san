@@ -910,7 +910,7 @@ async function viewDetail(a){
          ${logs.map(l => `
              <div style="background:#fafbfa;border:1px solid var(--line);border-radius:8px;padding:8px 10px">
                  <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-                     <b style="color:var(--k)">${E(l.who || 'Admin')} ${l.role === 'admin' ? '👑' : window.tcRkb({rank_key:RKM[l.uid]})}</b>
+                     <b style="color:var(--k)">${E(l.who || 'Admin')} ${l.role === 'admin' ? (window.tcRkb({rank_key:'than_nong'})||'👑') : window.tcRkb({rank_key:RKM[l.uid]})}</b>
                      <span style="color:var(--mut)">${dmy(l.created_at)} ${hm(l.created_at)}</span>
                  </div>
                  <div style="color:var(--mut)">
@@ -1100,29 +1100,31 @@ $("#mb").addEventListener("click",()=>{
  md.showModal();TCPlace(md,true);
 });
 $("#mx").addEventListener("click",()=>md.close());
+window.tcArm=b=>{
+ if(b.dataset.arm){clearTimeout(b._t);delete b.dataset.arm;b.textContent=b._tx;b.style.color=b._c;return true}
+ b._tx=b.textContent;b._c=b.style.color;b.dataset.arm="1";b.textContent="Chắc chắn xóa?";b.style.color="#d92d20";
+ b._t=setTimeout(()=>{delete b.dataset.arm;b.textContent=b._tx;b.style.color=b._c},3500);return false};
+const delOk=(r,ok,one)=>{
+ if(r.error){say("Không xóa được: "+r.error.message,"er");return false}
+ if(one&&!(r.data&&r.data.length)){say("Không xóa được: tài khoản chưa có quyền xóa trên Supabase. Hãy chạy danh-hieu-v3.sql.","er");return false}
+ say(ok,"ok");return true};
 $("#admList").addEventListener("click",async e=>{
     const b=e.target.closest("[data-del]");if(!b)return;
-    if(!confirm("Xóa mục giá này?"))return;
-    await sb.from('admin_prices').delete().eq('id', b.dataset.del);
-    await renderAR();
-    load(true);
+    if(!window.tcArm(b))return;
+    if(delOk(await sb.from('admin_prices').delete().eq('id', b.dataset.del).select('id'),"Đã xóa mục giá.",1)){await renderAR();load(true)}
 });
-$("#admClear").addEventListener("click",async()=>{
-    if(!confirm("Xóa TẤT CẢ giá do quản trị viên nhập?"))return;
-    await sb.from('admin_prices').delete().neq('id', 0);
-    await renderAR();
-    load(true);
+$("#admClear").addEventListener("click",async e=>{
+    if(!window.tcArm(e.currentTarget))return;
+    if(delOk(await sb.from('admin_prices').delete().neq('id', 0).select('id'),"Đã xóa tất cả giá quản trị.",0)){await renderAR();load(true)}
 });
 $("#lgList").addEventListener("click",async e=>{
     const b=e.target.closest("[data-lg]");if(!b)return;
-    if(!confirm("Xóa mục nhật ký này?"))return;
-    await sb.from('price_logs').delete().eq('id', b.dataset.lg);
-    await renderLG();
+    if(!window.tcArm(b))return;
+    if(delOk(await sb.from('price_logs').delete().eq('id', b.dataset.lg).select('id'),"Đã xóa mục nhật ký.",1))await renderLG();
 });
-$("#lgClear").addEventListener("click",async()=>{
-    if(!confirm("Xóa TẤT CẢ nhật ký cập nhật giá?"))return;
-    await sb.from('price_logs').delete().neq('id', 0);
-    await renderLG();
+$("#lgClear").addEventListener("click",async e=>{
+    if(!window.tcArm(e.currentTarget))return;
+    if(delOk(await sb.from('price_logs').delete().neq('id', 0).select('id'),"Đã xóa tất cả nhật ký.",0))await renderLG();
 });
 
 $("#mf").addEventListener("submit",async e=>{
@@ -1188,6 +1190,7 @@ async function initAuth(){
  });
 }
 
+window.tcV2=async()=>{if(window.TC_V2===undefined){const a=await sb.from("votes").select("lid").limit(1),b=await sb.from("price_logs").select("uid").limit(1);window.TC_V2=!a.error&&!b.error}return window.TC_V2};
 window.tcRanks=async()=>{if(!window.TC_RANKS){const {data}=await sb.from("ranks").select("key,name,emoji,color").order("sort");window.TC_RANKS=data||[]}return window.TC_RANKS};
 const rkb=window.tcRkb=p=>{const r=(window.TC_RANKS||[]).find(x=>x.key===(p&&p.rank_key));return r?` <span title="${E(r.name)}" style="background:${r.color};color:#fff;border-radius:99px;padding:1px 8px;font-size:10.5px;font-weight:700;margin-left:4px;white-space:nowrap">${r.emoji} ${E(r.name)}</span>`:""};
 function hdr(){
@@ -1276,8 +1279,9 @@ $("#rw-go").onclick=async()=>{
  setTimeout(()=>{closeReport();refreshSocial()},900);
 };
 
-const vq=(q,lid)=>lid?q.eq("lid",lid):q.is("lid",null);
+const vq=(q,lid)=>window.TC_V2?(lid?q.eq("lid",lid):q.is("lid",null)):q;
 async function getVote(cid,prov,lid){
+ await window.tcV2();
  const {data}=await vq(sb.from("votes").select("uid,dir").eq("cid",cid).eq("prov",prov||""),lid);
  const arr=data||[],up=arr.filter(v=>v.dir>0).length,dn=arr.filter(v=>v.dir<0).length;
  const mine=cur?(arr.find(v=>v.uid===cur.id)?.dir||0):0;
@@ -1285,11 +1289,14 @@ async function getVote(cid,prov,lid){
 }
 async function doVote(cid,prov,dir,lid){
  if(!cur){openAuth("in");return}
+ await window.tcV2();
  const f=q=>vq(q.eq("cid",cid).eq("prov",prov||"").eq("uid",cur.id),lid);
  const {data:ex}=await f(sb.from("votes").select("dir")).maybeSingle();
- if(ex&&ex.dir===dir)await f(sb.from("votes").delete());
- else if(ex)await f(sb.from("votes").update({dir}));
- else await sb.from("votes").insert({cid,prov:prov||"",uid:cur.id,dir,lid:lid||null});
+ let er=null;
+ if(ex&&ex.dir===dir)er=(await f(sb.from("votes").delete())).error;
+ else if(ex)er=(await f(sb.from("votes").update({dir}))).error;
+ else{const row={cid,prov:prov||"",uid:cur.id,dir};if(window.TC_V2)row.lid=lid||null;er=(await sb.from("votes").insert(row)).error}
+ if(er)console.error("vote",er);
  refreshSocial();
 }
 async function listC(cid){
@@ -1316,8 +1323,7 @@ async function addC(cid,parent,tx){
 }
 async function delC(id){
  if(!cur)return;
- if(!confirm("Xóa bình luận này?"))return;
- await sb.from("comments").delete().eq("id",id);
+ const {error}=await sb.from("comments").delete().eq("id",id);if(error)alert("Không xóa được: "+error.message);
  refreshSocial();
 }
 async function likeC(id){
@@ -1337,7 +1343,7 @@ function renderComment(c,all,likes){
  return `<div class="cm" style="background:#ffffff !important; color:#111111 !important; border:1px solid #e1e8e3 !important; border-radius:8px; padding:10px 12px; font-size:13px; margin-bottom:8px; animation:cin .3s ease;" data-cid="${c.id}">
   <div style="display:flex; gap:8px; align-items:baseline; margin-bottom:4px; flex-wrap:wrap; background:transparent !important;" class="cm-hd">
       <span style="font-weight:700; color:#111111 !important; font-size:12.5px;" class="who">${E(c.profile?.name||"Người dùng")}</span>
-      ${c.profile?.role==="admin"?'<span style="background:linear-gradient(135deg,#f2b705,#d92d20); color:#fff; border-radius:4px; padding:1px 6px; font-size:10px; font-weight:700; margin-left:4px;" class="bd">👑 Quản trị</span>':window.tcRkb(c.profile||{})}
+      ${c.profile?.role==="admin"?'<span style="background:linear-gradient(135deg,#f2b705,#d92d20); color:#fff; border-radius:4px; padding:1px 6px; font-size:10px; font-weight:700; margin-left:4px;" class="bd">👑 Quản trị</span>'+window.tcRkb({rank_key:"than_nong"}):window.tcRkb(c.profile||{})}
       <span style="color:#5f6b64; font-size:11px; margin-left:auto;" class="tm">${tago(c.created_at)}</span>
   </div>
   <div style="white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.55; color:#111111 !important;" class="tx">${E(c.tx)}</div>
@@ -1357,9 +1363,13 @@ async function renderSocial(){
  if(!socCtx)return;
  const box=$("#socbox");if(!box)return;
  const {cid,crop,prov,price,date,isReal}=socCtx;
- const {data:ll}=await sb.from("price_logs").select("id,uid,who,role,created_at,gia").eq("cid",cid).eq("tinh",prov||"").order("created_at",{ascending:false}).limit(1);
-  const L=ll&&ll[0]&&Number(ll[0].gia)===Number(price)?ll[0]:null,lid=L?L.id:null,own=!!(cur&&L&&L.uid&&L.uid===cur.id);
-  let lb="";if(L){let ap=null;if(L.uid){const {data}=await sb.from("profiles").select("rank_key").eq("id",L.uid).maybeSingle();ap=data}lb=L.role==="admin"?" 👑":window.tcRkb(ap||{})}
+ const v2=await window.tcV2();
+  let L=null;
+  if(v2&&isReal&&date){let q=sb.from("price_logs").select("*").eq("cid",cid).eq("ngay",fd(new Date(date)));if(prov)q=q.eq("tinh",prov);
+   const {data:ll}=await q.order("created_at",{ascending:false}).limit(1);L=ll&&ll[0]||null}
+  const lid=L?L.id:null,own=!!(cur&&L&&L.uid&&L.uid===cur.id);
+  let lb="";if(L){let ap=null;if(L.uid){const {data}=await sb.from("profiles").select("rank_key").eq("id",L.uid).maybeSingle();ap=data}
+   lb=L.role==="admin"?(window.tcRkb({rank_key:"than_nong"})||" 👑"):window.tcRkb(ap||{})}
   const v=await getVote(cid,prov,lid);
  const all=await listC(cid);
  const likes=await listLikes(all.map(c=>c.id));
@@ -1368,6 +1378,7 @@ async function renderSocial(){
   <div class="soc">
    <h3>${lid?"Đánh giá bản cập nhật này":"Đánh giá mức giá này"}</h3>
     ${lid?`<p style="font-size:12px;color:var(--mut);margin:0 0 8px">Cập nhật bởi <b style="color:var(--k)">${E(L.who||"Admin")}</b>${lb} · ${tago(L.created_at)}.${L.uid&&L.role!=="admin"?" Chênh lệch 3 phiếu sẽ chốt đúng/sai và tính vào danh hiệu của người cập nhật.":""}${own?" Bạn không thể tự vote cho cập nhật của mình.":""}</p>`:""}
+    ${!v2&&cur&&cur.role==="admin"?'<p style="font-size:11.5px;color:#b42318;margin:0 0 8px">⚠️ Quản trị: chưa chạy danh-hieu-v2.sql nên vote chưa gắn với từng lần cập nhật giá.</p>':""}
    <div class="vrow">
     <button class="vb${v.mine>0?" on":""}" data-vote="up" ${!isReal||own?"disabled":""}>👍 Thấy đúng <i>${v.up||""}</i></button>
     <button class="vb dn${v.mine<0?" on":""}" data-vote="dn" ${!isReal||own?"disabled":""}>👎 Thấy sai <i>${v.dn||""}</i></button>
@@ -1388,7 +1399,7 @@ async function renderSocial(){
  const st=box.querySelector("#cmsend");if(st)st.onclick=async()=>{
   const t=box.querySelector("#cmtx").value;if(await addC(cid,null,t)){box.querySelector("#cmtx").value="";refreshSocial()}};
  box.querySelectorAll("[data-like]").forEach(b=>b.onclick=()=>likeC(+b.dataset.like));
- box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>delC(+b.dataset.del));
+ box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(window.tcArm(b))delC(+b.dataset.del)});
  box.querySelectorAll("[data-reply]").forEach(b=>b.onclick=()=>{
   const f=box.querySelector(`[data-reply-for="${b.dataset.reply}"]`);
   f.classList.toggle("on");if(f.classList.contains("on"))f.querySelector("textarea").focus();
@@ -1439,7 +1450,7 @@ async function openAdminReports(){
   window.updateFab&&window.updateFab();
  });
  list.querySelectorAll("[data-rd]").forEach(b=>b.onclick=async()=>{
-  if(!confirm("Xóa báo cáo này?"))return;
+  if(!window.tcArm(b))return;
   await sb.from("reports").delete().eq("id",+b.dataset.rd);
   openAdminReports();
   window.updateFab&&window.updateFab();
