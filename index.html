@@ -106,6 +106,41 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer;-webkit-tap
 .lg a{color:var(--g);font-weight:600}.lg{margin:8px 0 0;font-size:12px;color:var(--mut)}
 .rl{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;margin:0 6px 6px 0}
 .rl:hover{border-color:var(--g)}
+/* ===== Minh họa SVG theo nhóm cây trồng (trang chi tiết) ===== */
+.hv{position:relative;overflow:hidden;contain:paint;margin:10px 16px 0;height:clamp(132px,13.5vw + 32px,190px);border-radius:14px;border:1px solid var(--line);background:linear-gradient(180deg,var(--b1),var(--b2))}
+.hv>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hv-ns{--b1:#fff7d9;--b2:#ffe9a6}
+.hv-qa{--b1:#e7f6ee;--b2:#fdebd2}
+.hv-cn{--b1:#f4eee4;--b2:#dfead6}
+.hv-rm{--b1:#eaf7ec;--b2:#d3edd0}
+.hv-dl{--b1:#fff2e6;--b2:#ffe0c8}
+.hv-lm{--b1:#e4f2ef;--b2:#cfe7d9}
+.hv-hc{--b1:#fde9f1;--b2:#fff1d6}
+.hv svg [class^="hv-"]{transform-box:fill-box}
+.hv-sw{transform-origin:50% 100%;animation:hvsw 3.8s ease-in-out infinite alternate;animation-delay:var(--dl,0s)}
+.hv-lf{transform-origin:0% 50%}
+.hv-ct{transform-origin:50% 50%}
+.hv-fy{animation:hvfy 3.6s ease-in-out infinite;animation-delay:var(--dl,0s)}
+.hv-dr{animation:hvdr 16s ease-in-out infinite alternate;animation-delay:var(--dl,0s)}
+.hv-pu{transform-origin:50% 50%;animation:hvpu 3s ease-in-out infinite}
+.hv-rot{transform-origin:50% 50%;animation:hvrot 48s linear infinite}
+.hv-fall{opacity:0;transform-origin:50% 50%;animation:hvfall var(--du,7s) linear infinite;animation-delay:var(--dl,0s)}
+.hv-st{transform-origin:50% 100%;animation:hvst 3.2s ease-in-out infinite;animation-delay:var(--dl,0s)}
+@keyframes hvsw{from{transform:rotate(calc(var(--r,3deg)*-1))}to{transform:rotate(var(--r,3deg))}}
+@keyframes hvfy{0%,100%{transform:translateY(0)}50%{transform:translateY(var(--dy,-5px))}}
+@keyframes hvdr{from{transform:translateX(calc(var(--dx,28px)*-1))}to{transform:translateX(var(--dx,28px))}}
+@keyframes hvpu{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.14)}}
+@keyframes hvrot{to{transform:rotate(360deg)}}
+@keyframes hvfall{0%{transform:translate(0,-10px) rotate(0);opacity:0}12%{opacity:.95}100%{transform:translate(var(--fx,26px),165px) rotate(220deg);opacity:0}}
+@keyframes hvst{0%{transform:translateY(6px) scaleY(.8);opacity:0}30%{opacity:.85}100%{transform:translateY(-14px) scaleY(1.1);opacity:0}}
+.hvs{position:absolute;left:10px;top:10px;display:flex;align-items:center;gap:10px;padding:7px 11px 7px 12px;border-radius:12px;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(17,17,17,.07);box-shadow:0 4px 14px rgba(17,17,17,.08)}
+.hvs small{display:block;font-size:11px;line-height:1.2;color:var(--mut)}
+.hvs b{display:block;font-size:13.5px;line-height:1.25;font-variant-numeric:tabular-nums}
+.hvs svg{display:block;flex:0 0 auto}
+.hvl{stroke-dasharray:1;animation:dr 1.1s .2s ease-out both}
+.tag .ti{width:13px;height:13px;vertical-align:-2px;margin-right:4px}
+@media(max-width:600px){.hv{margin:10px 12px 0;border-radius:12px}.hvs{left:8px;top:8px;padding:6px 9px;gap:8px}.hvs small{font-size:10.5px}.hvs b{font-size:12.5px}}
+@media(max-width:420px){.hvs small{display:none}.hvs{padding:5px 8px}.hvs svg{width:64px;height:20px}}
 .ft{margin:16px 16px 0;font-size:11.5px;color:var(--mut);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(pointer:coarse){.tb,.seg button,.ck{min-height:44px}.ck input{width:20px;height:20px}.rl{min-height:40px;padding:8px 14px}.hc{min-height:36px}.sl,.q{min-height:44px;font-size:16px}.q{-webkit-appearance:none;appearance:none}.rf{min-height:40px}}
 @media(prefers-reduced-motion:reduce){*,:before,:after{animation:none!important;transition:none!important}.tk{overflow-x:auto}.tkt{width:auto}}
@@ -881,6 +916,570 @@ function chart(x,h){
  gr.addColorStop(0,"rgba(31,143,70,.25)");gr.addColorStop(1,"rgba(31,143,70,0)");
  CH=new Chart(ctx,{type:"line",data:{labels:lb,datasets:[{data:v,borderColor:"#1f8f46",backgroundColor:gr,fill:true,tension:.3,borderWidth:2,pointRadius:a.length>40?0:3,pointHoverRadius:5}]},
   options:{maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:i=>fm(i.parsed.y)+" "+x.unit}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:8}},y:{ticks:{callback:n=>fm(n)}}}}})}
+/* ===== Minh họa SVG theo nhóm cây trồng (trang chi tiết) ===== */
+const hvIc=(()=>{
+ const W=d=>`<svg class="ti" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+ const M={
+  ns:W('<path d="M8 15V5M8 5C6 4.5 5 3 5 1c2 .5 3 2 3 4zm0 0c2-.5 3-2 3-4-2 .5-3 2-3 4zM8 9C6 8.5 5 7 5 5M8 9c2-.5 3-2 3-4M8 12c-2-.5-3-2-3-4M8 12c2-.5 3-2 3-4"/>'),
+  qa:W('<path d="M8 4.5C7 3.5 4 3 3 6s1 7 3 7.5c1 .2 1.5-.4 2-.4s1 .6 2 .4c2-.5 4-4.5 3-7.5S9 3.5 8 4.5z"/><path d="M8 4.5C8 3 8.5 2 10 1.5"/>'),
+  cn:W('<ellipse cx="8" cy="8" rx="4.4" ry="6.2" transform="rotate(30 8 8)"/><path d="M5.6 3.6c3 1.4 0 4.2 2.4 5.6s.8 2.6.6 3.6"/>'),
+  rm:W('<path d="M8 14.5V8M8 8C8 5 6 3.5 3 3.5 3 6.5 5 8 8 8zm0 2.2c0-2.5 1.8-4 5-4 0 3-2 4.5-5 4z"/>'),
+  dl:W('<path d="M3 5.5c4-2.2 9 0 10 8-4-1-8-3.2-10-8z"/><path d="M3 5.5C2.5 4.3 3 3 4.6 2.5"/>'),
+  lm:W('<path d="M8 1.5 3.5 8h2L3 12.2h10L10.5 8h2z"/><path d="M8 12.2v2.3"/>'),
+  hc:W('<circle cx="8" cy="8" r="1.7"/><path d="M8 6.3C6.5 4 7 2.2 8 1.6c1 .6 1.5 2.4 0 4.7zM8 9.7c1.5 2.3 1 4.1 0 4.7-1-.6-1.5-2.4 0-4.7zM6.3 8C4 6.5 2.2 7 1.6 8c.6 1 2.4 1.5 4.7 0zM9.7 8c2.3 1.5 4.1 1 4.7 0-.6-1-2.4-1.5-4.7 0z"/>')
+ };
+ return k=>M[k]||"";
+})();
+
+const hvHero=(()=>{
+const W=1200,H=170;
+const Q=v=>Math.round(v*10)/10;
+const RN=i=>{const t=Math.sin(i*127.1+311.7)*43758.5453;return t-Math.floor(t)};
+const SW=(i,r)=>`style="--r:${Q(r*(.6+RN(i)*.8))}deg;--dl:${Q(-RN(i+5)*4)}s"`;
+const el=(x,y,rx,ry,f,r,ex)=>`<ellipse cx="${Q(x)}" cy="${Q(y)}" rx="${Q(rx)}" ry="${Q(ry)}" fill="${f}"${r?` transform="rotate(${Q(r)} ${Q(x)} ${Q(y)})"`:""}${ex||""}/>`;
+const ci=(x,y,r,f,ex)=>`<circle cx="${Q(x)}" cy="${Q(y)}" r="${Q(r)}" fill="${f}"${ex||""}/>`;
+const pa=(d,f,ex)=>`<path d="${d}" fill="${f}"${ex||""}/>`;
+const st=(d,c,w,ex)=>`<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${ex||""}/>`;
+const bl=(x,y,a,l,w,f)=>`<path transform="translate(${Q(x)} ${Q(y)}) rotate(${Q(a)})" d="M0 0C${Q(l*.3)} ${Q(-w)} ${Q(l*.75)} ${Q(-w*.8)} ${Q(l)} 0C${Q(l*.75)} ${Q(w*.8)} ${Q(l*.3)} ${Q(w)} 0 0Z" fill="${f}"/>`;
+const arc=(x,y,a,l,bend,drop)=>{const r=a*Math.PI/180,ex=x+Math.cos(r)*l,ey=y+Math.sin(r)*l+(drop||0);return `M${Q(x)} ${Q(y)}Q${Q(x+Math.cos(r)*l*.55)} ${Q(y+Math.sin(r)*l*.55-bend)} ${Q(ex)} ${Q(ey)}`};
+const HEART="M0 0C-6-6-12-1-8 5L0 12L8 5C12-1 6-6 0 0Z";
+
+/* ---------- nền: trời, mây, nắng, đồi, đất ---------- */
+const CLD=(x,y,s,o,i)=>`<g class="hv-dr" style="--dl:${-i*3}s;--dx:${i%2?-30:30}px" opacity="${o}"><g transform="translate(${x} ${y}) scale(${s})"><ellipse rx="26" ry="9" fill="#fff"/><ellipse cx="-11" cy="-6" rx="13" ry="10" fill="#fff"/><ellipse cx="9" cy="-9" rx="15" ry="12" fill="#fff"/></g></g>`;
+const SUN=(x,y,r,c)=>`<g transform="translate(${x} ${y})"><circle r="${Q(r*1.8)}" fill="${c}" opacity=".2" class="hv-pu"/><g class="hv-rot">${[...Array(10)].map((_,k)=>`<line x1="${Q(r*1.3)}" x2="${Q(r*1.68)}" stroke="${c}" stroke-width="2.4" stroke-linecap="round" transform="rotate(${k*36})"/>`).join("")}</g><circle r="${r}" fill="${c}"/></g>`;
+const BG=c=>{c=c||{};
+ let s=c.sun===0?"":SUN(c.sx||760,c.sy||38,14,c.sc||"#f6b73c");
+ s+=CLD(130,32,1.1,.9,1)+CLD(450,54,.8,.85,2)+CLD(930,30,.9,.9,3)+CLD(1080,56,.7,.8,4)+CLD(610,26,.6,.75,5);
+ s+=pa("M0 104Q150 72 330 100T660 90T980 100T1200 82V170H0Z",c.h1||"#bcdcc6")
+  +pa("M0 120Q200 98 420 116T800 110T1200 112V170H0Z",c.h2||"#9fd09a")
+  +`<rect y="124" width="1200" height="46" fill="${c.g||"#86bb4a"}"/>`
+  +`<rect y="150" width="1200" height="20" fill="${c.g2||"#6fa23d"}" opacity=".5"/>`;
+ if(c.fur)for(const y of [136,152,168])s+=`<path d="M0 ${y}H1200" stroke="${c.fur}" stroke-width="2" opacity=".35"/>`;
+ return (c.pre||"")+s};
+
+/* ---------- bố cục ---------- */
+const put=(s,x,y,k,an,i)=>`<g transform="translate(${Q(x)} ${Q(y)}) scale(${Q(k)})">${an?`<g class="hv-sw" ${SW(i,2)}>${s}</g>`:s}</g>`;
+let UID=0;
+const row=(d,o,y,k,step,op,sd,an,sh)=>{const id="hvr"+(UID++),NV=4;let defs="";const oo=d===D.tree&&o&&o.f?{...o,f:{...o.f,n:Math.min(o.f.n||10,5)}}:d===D.bare?{...o,nf:2}:o;
+ for(let v=0;v<NV;v++)defs+=`<g id="${id}_${v}">${d(sd*7+v*13+1,oo).replace(/ class="hv-fy"( style="[^"]*")?/g,"")}</g>`;
+ let r="",n=0;for(let x=-30+RN(sd)*step;x<W+40;x+=step*(.8+RN(sd+n)*.5),n++){const j=sd+n;
+  r+=put((sh?el(0,0,sh,3.2,"#000",0,' opacity=".13"'):"")+`<use href="#${id}_${n%NV}"${RN(j+55)>.5?' transform="scale(-1 1)"':""}/>`,x,y+RN(j+99)*6,k*(.88+RN(j+7)*.26),an,j)}
+ return `<defs>${defs}</defs><g opacity="${op}">${r}</g>`};
+const RS=1.3,HS=1.35;
+const SCENE=(d,o,c)=>{c=c||{};const rows=c.rows||[[130,.5,24,.7,0],[147,.78,36,.92,1],[167,1.1,54,1,1]];
+ return {b1:c.b1||"#cfe9ff",b2:c.b2||"#f4f8e4",svg:BG(c)+(c.mid||"")+rows.map((r,k)=>row(d,o,r[0]+2,r[1]*RS,r[2]*(c.st||1)*1.12,r[3],k*100+(c.seed||0),!!r[4],r[5])).join("")+(c.hero||[]).map((h,k)=>put((h[5]?"":el(0,0,22,4,"#000",0,' opacity=".16"'))+(h[5]||d)(k+7,o),h[0],h[1]+2,h[2]*HS,!!h[3],k+3)).join("")+(c.post||"")}};
+
+const D={};
+/* ===== cây lương thực ===== */
+D.rice=(i,o)=>{let s="";for(let k=0;k<4;k++){const a=(k-1.5)*7+(RN(i*9+k)-.5)*5,h=44+RN(i*7+k)*14,l=k%2?-1:1;
+ s+=`<g transform="rotate(${Q(a)})">`+st(`M0 0Q${l*2} ${Q(-h*.55)} ${l*5} ${Q(-h)}`,o.g?"#a3bf55":"#66ae42",1.8)
+ +(o.g?st(`M${l*5} ${Q(-h)}Q${l*17} ${Q(-h-9)} ${l*23} ${Q(-h+14)}`,"#e6bb32",5.2,' stroke-dasharray="3 1.8"'):"")
+ +st(`M0 -6Q${l*16} ${Q(-h*.6)} ${l*27} ${Q(-h*.3)}`,o.g?"#b4c862":"#5aa638",2.2)
+ +st(`M0 -3Q${-l*12} ${Q(-h*.45)} ${-l*20} ${Q(-h*.2)}`,o.g?"#b4c862":"#6dba47",1.8)+`</g>`}return s};
+D.corn=(i,o)=>{const h=80+RN(i)*14;let s=st(`M0 0V${-h}`,"#7db548",4.6);
+ for(let k=0;k<6;k++){const y=-8-k*(h-18)/6,l=k%2?-1:1,L=38-k*2.4,d=`M0 ${Q(y)}Q${Q(l*L*.65)} ${Q(y-15)} ${Q(l*L)} ${Q(y+9)}`;s+=st(d,"#58a038",5.4)+st(d,"#9ccf6e",1.1)}
+ const cob=(x,y,r)=>`<g transform="translate(${Q(x)} ${Q(y)}) rotate(${r})">`+el(0,0,4.6,11.5,"#6aa944")+el(0,-7,3,4.6,"#f2c335")+st("M0 -11Q1 -15 3 -17","#a98a4a",1)+`</g>`;
+ return s+cob(6,-h*.52,16)+(RN(i+3)>.4?cob(-6,-h*.38,-14):"")+st(`M0 ${-h}l-7 -12M0 ${-h}l0 -16M0 ${-h}l7 -12M0 ${-h}l-3 -14M0 ${-h}l3 -14`,"#d6bf62",1.3)};
+D.cane=(i,o)=>{let s="";for(let k=0;k<3;k++){const x=(k-1)*7,h=84+RN(i*3+k)*16,t=(k-1)*3,p=`M${x} 0L${t} ${Q(-h)}`;
+ s+=st(p,o.c||"#6e3f7c",5)+st(p,"#c7a3cf",5,' stroke-dasharray=".8 8.2" opacity=".35"');
+ for(let j=0;j<6;j++){const l=j%2?-1:1;s+=st(`M${t} ${Q(-h+2)}Q${Q(t+l*17)} ${Q(-h-16)} ${Q(t+l*34)} ${Q(-h+j*3)}`,"#6fb24a",3)}}return s};
+const P7=(x,y,r,k,f)=>[-60,-40,-20,0,20,40,60].map(a=>`<ellipse cy="${Q(-k*.55)}" rx="${Q(k*.15)}" ry="${Q(k*.55)}" fill="${f}" transform="translate(${Q(x)} ${Q(y)}) rotate(${a+r})"/>`).join("");
+D.cassava=(i)=>{const x1=Q((RN(i)-.5)*8),p=`M0 0L${x1} -66`;return st(p,"#8f6b49",4.4)+st(p,"#d3b58c",4.4,' stroke-dasharray=".8 9" opacity=".8"')+st(`M${x1} -50L-18 -58M${x1} -58L0 -76M${x1} -52L18 -56`,"#9a7a52",1.4)+P7(-18,-58,-20,22,"#3f9d4c")+P7(0,-76,0,24,"#4aa957")+P7(18,-56,20,22,"#3f9d4c")};
+D.taro=(i,o)=>{let s="";for(let k=0;k<4;k++){const a=(k-1.5)*17,h=32+RN(i*5+k)*16,x=Math.sin(a*Math.PI/180)*h*.8,y=-Math.cos(a*Math.PI/180)*h;
+ s+=st(`M0 0L${Q(x)} ${Q(y)}`,"#78b05c",2.4)+`<g transform="translate(${Q(x)} ${Q(y)}) rotate(${Q(a*.7)})">`+pa("M0 2C-20 0-30-24 0-40C30-24 20 0 0 2Z",o.c||"#3f9d52")+st("M0 0V-34M0-8L-10-20M0-8L10-20M0-18L-8-28M0-18L8-28","#a6d68f",1)+`</g>`}return s};
+D.canna=(i)=>{let s=st("M0 0V-60","#6aa84f",3.5);for(let k=0;k<5;k++){const l=k%2?-1:1;s+=bl(0,-8-k*10,l>0?-35:-145,30,6.5,k%2?"#4c9a45":"#58a84c")}return s+bl(0,-62,-60,10,3,"#e63b2e")+bl(0,-62,-90,10,3,"#f05a28")+bl(0,-62,-120,10,3,"#e63b2e")};
+D.bean=(i,o)=>{const lc=o.lc||"#4caf50";let s="";
+ const lf=(x,y,r)=>`<g transform="translate(${x} ${y}) rotate(${r})">${el(-4.2,-3,3.8,5.6,lc,-10)}${el(4.2,-3,3.8,5.6,lc,10)}${el(0,-9,4.2,6.4,lc)}</g>`;
+ [[-20,-6,-20],[-8,-5,-5],[8,-5,6],[20,-6,22],[-14,-16,-12],[0,-18,0],[14,-16,12],[-6,-28,-6],[8,-28,8],[0,-38,0]].forEach(p=>s+=lf(p[0],p[1],p[2]));
+ if(!o.nop)for(let k=0;k<6;k++){const x=-19+k*7.6+(RN(i+k)-.5)*4,y=-8-(k%3)*9;s+=st(`M${Q(x)} ${y}q3 7 1 ${o.pl||12}`,o.p||"#8bc34a",o.pw||3.2)}
+ return s+(o.fl?[[-12,-24],[10,-20],[0,-34]].map(p=>ci(p[0],p[1],2.2,o.fl)).join(""):"")};
+D.sesame=(i)=>{let s=st("M0 0V-74","#7ab04e",2.6);for(let k=0;k<7;k++){const y=-10-k*9,l=k%2?-1:1;s+=bl(0,y,l>0?-30:-150,14-k,3.2,"#58a63e")+(k>1?el(l*3,y-3,2.2,4.2,"#a6b968"):"")}return s+ci(1,-76,2.6,"#f4e8f0")};
+D.swp=(i)=>{let s="";for(let k=0;k<12;k++){const x=-28+k*5+(RN(i+k)-.5)*5,y=-4-RN(i+k*3)*10;s+=`<path transform="translate(${Q(x)} ${Q(y)}) rotate(${Q((RN(k+i)-.5)*60)})" d="${HEART}" fill="${k%3?"#5cae49":"#4a9c3d"}"/>`}return st("M-30 -3Q-10 -10 30 -2","#7cb85a",1.6)+s};
+D.gourd=(i,o)=>{let s=st("M-34 -3Q-10 -12 36 -2","#6fae50",1.6);[[-26,-7,9],[-8,-9,11],[14,-8,10],[30,-6,8]].forEach((p,k)=>s+=ci(p[0],p[1],p[2],k%2?"#4a9f4a":"#3f9444")+st(`M${p[0]} ${p[1]}v-${p[2]-2}`,"#8ccf84",.8));
+ const x=Q((RN(i)-.5)*14);
+ switch(o.k){
+  case"wm":s+=el(x,-13,17,13,"#3e9547")+[-10,-4,3,9].map(d=>st(`M${x+d*.9} -24Q${x+d*1.6} -13 ${x+d*.9} -2`,"#1d6a2b",2.2)).join("")+el(x-5,-18,5,2.6,"#fff",-20,' opacity=".25"');break;
+  case"mel":s+=ci(x,-13,13,"#d4d98a")+ci(x,-13,12,"none",' stroke="#a3ab56" stroke-width="1.4" stroke-dasharray="2.4 2.4"')+st(`M${x-8} -13H${x+8}M${x} -22V-4`,"#a3ab56",1,' opacity=".7"');break;
+  case"yel":s+=el(x,-11,14,11,"#f1d24c")+el(x-4,-15,5,2.6,"#fff",-20,' opacity=".35"');break;
+  case"pump":s+=el(x,-10,17,12,"#f08a1c")+[-8,0,8].map(d=>st(`M${x+d} -21Q${x+d*1.4} -10 ${x+d} 1`,"#c96a0e",1.4)).join("")+`<rect x="${x-1.6}" y="-24" width="3.2" height="6" rx="1" fill="#6b5a2a"/>`;break;
+  case"wax":s+=el(x,-12,17,11,"#8fc07b")+el(x,-12,15,9,"#e6efe0",0,' opacity=".55"');break;
+  default:s+=el(x,-8,17,6,"#4a9440",-8)+el(x+16,-12,3,2.4,"#f2c814");}
+ return s};
+const BL=(x,y,rx,ry,f,r,hl)=>el(x,y,rx,ry,f,r)+el(x-rx*.25,y-ry*.35,rx*.45,ry*.3,hl||"#fff",r,' opacity=".22"');
+D.pile=(i,o)=>{const P=[[0,-5],[-13,-3],[13,-3],[-6,-13],[7,-13],[0,-21]];let s="";
+ P.forEach((p,k)=>{const x=p[0],y=p[1],r=(RN(i+k)-.5)*40;
+  switch(o.k){
+   case"sweet":s+=BL(x,y,11,5.8,"#a63f62",r+8)+st(`M${x-6} ${y}q4-2 9 0`,"#c97a8e",1);break;
+   case"potato":s+=BL(x,y,8.5,6.3,"#d4ad72",r)+ci(x-2,y-1,.9,"#a98450")+ci(x+3,y+1,.9,"#a98450");break;
+   case"cassava":s+=`<g transform="translate(${x} ${y}) rotate(${Q(r*1.4)})"><path d="M-12-3.6Q0-6 12-3.6L14 0 12 3.6Q0 6-12 3.6Z" fill="#8c6340"/><ellipse cx="12.5" rx="1.8" ry="3.4" fill="#f1e6cd"/></g>`;break;
+   case"taro":s+=BL(x,y,8.5,7.5,"#8a6a4b",r)+st(`M${x-6} ${y-2}h12M${x-6} ${y+2}h12`,"#5c4530",.9,' opacity=".7"');break;
+   case"ginger":s+=BL(x,y,9,5,"#dcb978",r)+BL(x+7,y-4,5,3.6,"#d0ab69",r+30)+BL(x-7,y-3,5,3.2,"#d0ab69",r-30)+st(`M${x-3} ${y-2}v4M${x+2} ${y-2}v4`,"#a98650",.8);break;
+   case"turmeric":s+=BL(x,y,9,4.6,"#e7a02a",r)+BL(x+7,y-3,5,3.2,"#e09a22",r+30)+st(`M${x-3} ${y-2}v4M${x+2} ${y-2}v4`,"#b9760f",.8);break;
+   case"peanut":s+=BL(x,y,8,4.4,"#d9b37a",r)+st(`M${x} ${y-4}v8`,"#b8925a",.8);break;
+   case"garlic":s+=`<g transform="translate(${x} ${y})">`+pa("M0-9C4-6 9-2 9 3 9 8 5 10 0 10-5 10-9 8-9 3-9-2-4-6 0-9Z","#f6efe0",' stroke="#dcccaa" stroke-width=".8"')+st("M0-8Q-4 0 0 10M0-8Q4 0 0 10","#dcccaa",.7)+`</g>`;break;
+   case"onion":s+=BL(x,y,9,8,o.c||"#d9a441",r)+st(`M${x} ${y-8}q-1-4 1-6`,"#c9a24a",1.2);break;
+   case"shallot":s+=BL(x,y,6.2,7.2,"#9a4a63",r)+st(`M${x} ${y-7}q0-3 1-5`,"#b38a5a",1);break;
+   default:s+=BL(x,y,8,6,o.c||"#caa26a",r)}});
+ return s};
+
+/* ===== cây thân gỗ, trái cây ===== */
+const SHP={
+ round:[[0,-62,32],[-28,-42,26],[28,-44,26],[-14,-78,24],[16,-80,22],[0,-48,30]],
+ wide:[[0,-50,34],[-36,-38,26],[36,-38,26],[-20,-62,28],[22,-64,28],[0,-36,30]],
+ vase:[[0,-26,38],[0,-44,31],[0,-62,24],[0,-78,16]],
+ dense:[[0,-56,30],[-18,-40,22],[18,-40,22],[0,-80,22],[-10,-96,15],[10,-96,15]],
+ tall:[[0,-112,18],[-12,-100,13],[12,-98,14],[0,-86,13]]};
+const FR={
+ round:(o,i)=>ci(0,0,o.r||6,o.c)+ci(-2,-2,Math.max(1,(o.r||6)*.28),"#fff",' opacity=".45"')+(o.top?st("M0 -5q1-3 3-3","#4a6b2a",1.3):""),
+ oval:(o,i)=>st("M0-8q1-3 3-4","#3b6b2a",1.4)+el(0,0,5.2,7.6,o.c,18)+el(2,3,3,4,o.c2||o.c,18,' opacity=".6"')+el(-1.8,-2,1.6,3,"#fff",18,' opacity=".3"'),
+ pear:(o,i)=>pa("M0-9C4-9 4-3 7 2 9 7 5 10 0 10-5 10-9 7-7 2-4-3-4-9 0-9Z",o.c)+el(-2,-1,1.6,3.4,"#fff",0,' opacity=".25"'),
+ spiky:(o,i)=>st("M0-16V-8","#6b5a2a",1.8)+`<ellipse rx="8.6" ry="11" fill="${o.c}" stroke="#6e6f22" stroke-width="3" stroke-dasharray="1.6 3.2"/>`+el(-2,-2,4.5,6.5,o.c,0,' opacity=".8"'),
+ cluster:(o,i)=>{let s=st("M0-14V-3",o.st||"#7a5a30",1.4);[[0,-2],[-4,-6],[4,-6],[-6,0],[6,0],[-2,3],[3,3],[0,-9]].forEach((p,k)=>s+=ci(p[0],p[1],3.5,o.c)+(o.hair?"":ci(p[0]-1,p[1]-1,.9,"#fff",' opacity=".35"')));return o.hair?s+`<g stroke="${o.hair}" stroke-width=".9" stroke-linecap="round">${[[-7,-2],[7,-2],[-5,-8],[5,-8],[0,-12],[-7,3],[7,3],[0,6]].map(p=>`<path d="M${p[0]} ${p[1]}l${p[0]>0?2:-2} ${p[1]<-5?-2:1}"/>`).join("")}</g>`:s},
+ trunk:(o,i)=>el(0,0,11,16,o.c,8)+`<ellipse rx="11" ry="16" fill="none" stroke="${o.c2||"#6c8a2c"}" stroke-width="3" stroke-dasharray="1.2 3.6" transform="rotate(8)"/>`+el(-3,-5,4,7,"#fff",8,' opacity=".18"'),
+ pod:(o,i)=>el(0,0,5.4,11,o.c,10)+[-2,0,2].map(d=>st(`M${d*1.4} -9Q${d*2.2} 0 ${d*1.4} 9`,o.c2,.9)).join(""),
+ cashew:(o,i)=>pa("M0-9C5-9 6-3 8 3 9 8 5 11 0 11-5 11-9 8-8 3-6-3-5-9 0-9Z",o.c)+`<path d="M-3 11q3 4 8 1 2-1 1-4-3 2-5 2z" fill="#7a7a5a" transform="translate(0 -1)"/>`+el(-2,-2,1.6,3.5,"#fff",0,' opacity=".3"'),
+ tam:(o,i)=>st("M0-8q4 8 1 16",o.c,5)+st("M0-8q4 8 1 16",o.c2||"#8a6a46",5,' stroke-dasharray=".9 4.5"'),
+ star:(o,i)=>st("M0-8Q0 0 0 8",o.c,6)+st("M0-8Q0 0 0 8","#b5a82a",6,' stroke-dasharray="1 3" opacity=".6"')};
+D.tree=(i,o)=>{const sh=o.sh||"round",c=o.c||["#2f9e55","#3aae62","#2a9150"],B=SHP[sh]||SHP.round;let s="";
+ if(sh==="tall"){s+=pa("M-3.4 0L-2.2 -112H2.2L3.8 0Z",o.tr||"#d9d3c1")+st("M-1 -10L-1.4 -90M1.6 -30L1.2 -100","#8c8570",.9)+st("M-1.4 -92Q-10 -80 -8 -60","#6aa05a",1.4)+st("M1.4 -88Q10 -76 9 -56","#6aa05a",1.4)}
+ else s+=pa("M-6 4Q-4 -22 -3 -44H4Q5 -22 8 4Z",o.tr||"#7a4b2a");
+ if(sh==="vase"){[[0,-26,40,12],[0,-44,33,11],[0,-61,26,10],[0,-77,17,8],[0,-88,8,6]].forEach((e,k)=>s+=el(e[0],e[1],e[2],e[3],c[k%3])+el(e[0],e[1]-3,e[2]*.8,e[3]*.55,c[(k+1)%3],0,' opacity=".6"'))}
+ else B.forEach((b,k)=>s+=ci(b[0],b[1],b[2],c[k%c.length]));
+ B.forEach((b,k)=>s+=ci(b[0]-b[2]*.25,b[1]-b[2]*.3,b[2]*.55,c[(k+1)%c.length],' opacity=".35"'));
+ const f=o.f;if(f){const fn=FR[f.k]||FR.round;
+  if(f.k==="trunk"||f.k==="pod"){for(let k=0;k<(f.n||3);k++)s+=`<g transform="translate(${(k%2?1:-1)*(8+RN(i+k)*6)} ${-14-k*9})">${fn(f,i+k)}</g>`}
+  else for(let k=0;k<(f.n||10);k++){const b=B[Math.floor(RN(i*13+k)*B.length)],a=Math.PI*(.15+RN(i*7+k)*.75),x=b[0]+Math.cos(a)*b[2]*.9*(RN(i+k*3)>.5?1:-1),y=Math.min(-22,b[1]+Math.sin(a)*b[2]*.85);
+   s+=`<g transform="translate(${Q(x)} ${Q(y)})"><g class="hv-fy" ${f.fy===0?"":`style="--dl:${Q(-RN(i+k)*3.4)}s;--dy:-3px"`}>${fn(f,i+k)}</g></g>`}}
+ return s};
+D.bare=(i,o)=>{let s=pa("M-5 4Q-3 -20 -2 -40H3Q4 -20 7 4Z","#5b3a26");const br=[[-2,-38,-34,-72],[1,-34,30,-66],[0,-46,-8,-90],[1,-44,18,-88],[-1,-30,-46,-52],[2,-28,44,-48]];
+ br.forEach(b=>s+=st(`M${b[0]} ${b[1]}Q${(b[0]+b[2])/2} ${b[3]+14} ${b[2]} ${b[3]}`,"#5b3a26",2.2));
+ br.forEach((b,k)=>{for(let j=0;j<(o.nf||4);j++){const x=b[2]+(RN(i+k*5+j)-.5)*22,y=b[3]+(RN(i+k*9+j)-.5)*20;s+=FL5(x,y,5.2+RN(i+j)*1.8,o.pc,o.cc)}});return s};
+const FL5=(x,y,r,pf,cf)=>`<g transform="translate(${Q(x)} ${Q(y)})">${[0,72,144,216,288].map(a=>`<ellipse cy="${Q(-r*.62)}" rx="${Q(r*.46)}" ry="${Q(r*.62)}" fill="${pf}" transform="rotate(${a})"/>`).join("")}<circle r="${Q(r*.26)}" fill="${cf}"/></g>`;
+D.palm=(i,o)=>{const L=RN(i)*14-7;let s=st(`M0 0Q${Q(L*.6)} -46 ${Q(L)} -92`,"#9a8460",7)+st(`M0 0Q${Q(L*.6)} -46 ${Q(L)} -92`,"#6d5b3c",7,' stroke-dasharray=".9 5" opacity=".7"');
+ for(const a of [-188,-166,-146,-124,-100,-76,-54,-32,-12,8]){const d=arc(L,-92,a,56,12,a<-100&&a>-170?4:18);s+=st(d,"#2f8f3e",2.4)+st(d,"#3fa04c",10,' stroke-dasharray="1.4 2.6" opacity=".9"')}
+ if(o.nut==="oil")[[-6,-88],[2,-86],[8,-90],[-1,-92]].forEach(p=>s+=el(L+p[0],p[1],5,6.4,"#d9591f")+el(L+p[0]-1,p[1]-2,1.6,2.6,"#fff",0,' opacity=".3"'));
+ else[[-7,-90],[1,-88],[8,-91],[-2,-94],[4,-84]].forEach(p=>s+=ci(L+p[0],p[1],6.4,o.nut||"#7a9a3a")+ci(L+p[0]-1.8,p[1]-2,1.8,"#fff",' opacity=".3"'));return s};
+D.banana=(i,o)=>{let s=pa("M-7 0L-5 -46H5L8 0Z","#a9ca7d")+st("M-4 -6L-3 -40M3 -10L4 -34","#6d8a45",1.2,' opacity=".7"');
+ for(const a of [-168,-134,-102,-70,-40,-10]){const d=arc(0,-46,a,50,16,a<-100?10:22);s+=st(d,"#5aa648",12)+st(d,"#8cc66f",1.2)}
+ s+=st("M0 -46Q8 -40 7 -28","#7a8f3a",2.6)+el(8,-20,4.2,7.4,"#7b2e5f",6);
+ for(let h=0;h<3;h++)for(let f=0;f<4;f++){const x=3+f*2.8-h*.6,y=-38+h*7;s+=st(`M${Q(x)} ${y}q${4+h} 8 ${1+h*.6} 15`,o.y?"#e8cf3a":"#a9c93f",4.6)}return s};
+D.papaya=(i)=>{let s=st("M0 0L0 -60","#a3b574",6)+st("M0 0L0 -60","#6f8348",6,' stroke-dasharray=".8 6" opacity=".7"');
+ for(const a of [-170,-135,-100,-65,-30,-8]){const x=Math.cos(a*Math.PI/180)*30,y=-62+Math.sin(a*Math.PI/180)*20;s+=st(`M0 -60L${Q(x)} ${Q(y)}`,"#7aae58",1.8)+P7(x,y,a+90,15,"#4fa84a")}
+ return s+el(-4,-52,4.6,8.4,"#a6cb4e",-8)+el(5,-50,4.4,8,"#e8a22e",10)+el(0,-44,4,7.4,"#a6cb4e")};
+D.pine=(i)=>{let s=el(0,0,20,4,"#000",0,' opacity=".13"')+`<rect x="-3" y="-60" width="6" height="64" fill="#8a6a46"/>`;for(let k=0;k<5;k++)s+=pa(`M0 ${-118+k*18}L${22-k*0}  ${-92+k*20}H${-22}Z`,k%2?"#2c7a48":"#35905a");return s};
+
+
+/* ===== cây đặc thù ===== */
+D.dragon=(i)=>{let s=`<rect x="-4" y="-50" width="8" height="50" fill="#a8a8a2"/><rect x="-4" y="-50" width="3" height="50" fill="#c9c9c3"/>`;
+ for(const a of [-175,-150,-125,-100,-80,-55,-30,-5]){const d=arc(0,-52,a,34,16,a<-100&&a>-170?22:30);s+=st(d,"#4fa84a",7)+st(d,"#86cf72",1.6,' stroke-dasharray="3 2.6"')}
+ [[-26,-34],[22,-38],[-12,-22],[10,-26]].forEach(p=>{s+=el(p[0],p[1],6.4,8.4,"#e0245e")+bl(p[0],p[1]-6,-100,6,2,"#7cc46a")+bl(p[0]-1,p[1]-1,-170,6,2,"#7cc46a")+bl(p[0]+1,p[1]-1,-10,6,2,"#7cc46a")});return s};
+D.pineapple=(i)=>{let s="";for(const a of [-160,-140,-120,-100,-80,-60,-40,-20])s+=bl(0,-6,a,30,2.6,"#6f9b4a");
+ s+=el(0,-18,9,12,"#e4a826")+st("M-7-24l14 14M-8-18l14 14M-3-28l12 12M7-26l-14 14M8-18l-14 14M3-28l-12 12","#b87a14",.9,' opacity=".8"');
+ for(const a of [-120,-105,-90,-75,-60])s+=bl(0,-29,a,13,2.2,"#4f8a3a");return s};
+D.coffee=(i,o)=>{const Ls=[[0,-18,31,10,"#1e6b3b"],[0,-33,26,10,"#237a43"],[0,-47,20,9,"#2a8a4e"],[0,-60,13,8,"#35a05a"]];let s=`<rect x="-2" y="-14" width="4" height="14" fill="#6b4a2f"/>`;
+ Ls.forEach(e=>s+=el(e[0],e[1],e[2],e[3],e[4])+el(-e[2]*.3,e[1]-3,e[2]*.45,e[3]*.4,"#5cc27a",0,' opacity=".35"'));
+ for(let k=0;k<16;k++){const L=Ls[k%4],a=RN(i*17+k)*Math.PI*2;s+=ci(Math.cos(a)*L[2]*.86,L[1]+Math.sin(a)*L[3]*.7,2.5,k%5?"#d32f2f":(k%2?"#9ccc65":"#f2a21d"))}return s};
+D.pepper=(i,o)=>{let s=`<rect x="-5" y="-96" width="10" height="96" fill="#8c6a52"/><rect x="-5" y="-96" width="3.4" height="96" fill="#a8856a"/>`;
+ for(let k=0;k<12;k++){const y=-92+k*7.4,x=(k%2?1:-1)*(RN(i+k)*5+3);s+=el(x,y,12,7.2,k%3?"#2c7a3c":"#3a9048",(RN(k+i)-.5)*40)+el(x-3,y-2,5,2.6,"#6fcf84",0,' opacity=".3"')}
+ for(let k=0;k<9;k++){const y=-84+k*8,x=(k%2?1:-1)*(10+RN(i*3+k)*4);s+=st(`M${Q(x)} ${y}q${x>0?2:-2} 8 ${x>0?1:-1} 12`,k%4===0?"#d6452c":"#9ccc65",2.6,' stroke-dasharray="1.6 1.2"')}return s};
+D.rubber=(i)=>{let s=pa("M-4.4 0L-3.4 -94H3.4L4.6 0Z","#cdc2b0")+pa("M-4.4 0L-3.4 -94H-1.4L-2 0Z","#b3a794",' opacity=".7"');
+ s+=st("M-4 -22L4 -38","#7a6850",1.2)+st("M-4 -26L4 -42","#7a6850",1.2)+st("M0 -32V-24","#f4f0e0",1.2)+`<path d="M-3-22H3L2-18H-2Z" fill="#6b4f33"/>`;
+ [[0,-106,20,10],[-12,-98,13,8],[12,-98,14,8],[0,-92,14,7]].forEach((e,k)=>s+=el(e[0],e[1],e[2],e[3],k%2?"#2c7a45":"#34894f"));return s};
+D.bamboo=(i)=>{let s="";for(let k=0;k<6;k++){const x=(k-2.5)*5.6,h=92+RN(i*7+k)*26,t=(k-2.5)*3.2,p=`M${Q(x)} 0L${Q(x+t)} ${Q(-h)}`;
+ s+=st(p,k%2?"#86b84c":"#7aae42",4)+st(p,"#4f7a2c",4,' stroke-dasharray=".9 11" opacity=".9"');
+ for(let j=0;j<3;j++)s+=bl(x+t,-h+j*8,t>0?-20-j*20:-160+j*20,22,3,"#5da140")}return s};
+D.acacia=(i)=>pa("M-3 0L-2 -70H2L3 0Z","#c9bfa8")+el(0,-76,17,40,"#2a7a45")+el(-5,-84,8,22,"#3a9558",0,' opacity=".6"')+el(6,-62,9,18,"#348a4e",0,' opacity=".7"');
+D.melal=(i)=>{let s=pa("M-4 0Q-3 -40 -2 -92H3Q4 -40 6 0Z","#e6dcc4")+st("M-2 -10Q1 -20-2 -30M2 -40Q-1 -52 2 -64","#b79f78",1.2);[[0,-96,15,9],[-10,-86,10,7],[10,-84,11,7]].forEach((e,k)=>s+=el(e[0],e[1],e[2],e[3],k%2?"#6aa05a":"#58934c"));return s};
+D.rattan=(i)=>{let s=st("M0 0Q6 -30-4 -62","#8a6a3a",3)+st("M0 0Q6 -30-4 -62","#5a4426",3,' stroke-dasharray=".9 5"');for(const a of[-170,-140,-110,-80,-50,-20]){const d=arc(-4,-62,a,38,10,a<-100?4:14);s+=st(d,"#3f8f3e",2)+st(d,"#4fa04c",8,' stroke-dasharray="1.4 2.4"')}return s};
+D.cotton=(i)=>{let s=st("M0 0V-40","#7a6a40",2);[[-14,-12],[12,-16],[-10,-26],[10,-30],[0,-38]].forEach((p,k)=>s+=el(p[0],p[1],8,5,"#4f9a45",(k-2)*14));
+ [[-8,-14],[8,-22],[-6,-30],[4,-12]].forEach(p=>s+=ci(p[0]-2,p[1],3.4,"#fff")+ci(p[0]+2,p[1],3.4,"#fff")+ci(p[0],p[1]-3,3.4,"#fff")+st(`M${p[0]-5} ${p[1]+2}L${p[0]} ${p[1]+4}L${p[0]+5} ${p[1]+2}`,"#6b4a2a",1.4));return s};
+D.tobacco=(i)=>{let s=st("M0 0V-70","#7bb34a",3);for(let k=0;k<8;k++){const y=-6-k*8,l=k%2?-1:1;s+=el(l*13,y-2,15,6,k%3?"#58a83c":"#68b84a",l*-14)+st(`M0 ${y}L${l*24} ${y-5}`,"#a6d68a",.8)}return s+[[-3,-74],[2,-78],[0,-72]].map(p=>ci(p[0],p[1],2.2,"#f2a6b8")).join("")};
+D.reed=(i)=>{let s="";for(let k=0;k<9;k++){const a=-90+(k-4)*8+(RN(i+k)-.5)*5,d=arc((k-4)*.8,0,a,70+RN(i*3+k)*20,4,6);s+=st(d,"#5fa646",1.8)}return s};
+D.mulb=(i)=>{let s="";[[-16,-8,-20],[0,-6,0],[16,-8,20],[-10,-20,-14],[8,-22,12],[0,-32,0]].forEach((p,k)=>s+=`<path transform="translate(${p[0]} ${p[1]}) rotate(${p[2]}) scale(1.2)" d="${HEART}" fill="${k%2?"#4a9b45":"#3f8f3e"}"/>`);return s+[[-10,-10],[8,-14],[-4,-26]].map(p=>el(p[0],p[1],2.4,3.6,"#3d1f3f")).join("")};
+D.straw=(i)=>{let s="";[[-12,-5],[0,-8],[12,-5],[-6,-14],[6,-14]].forEach((p,k)=>s+=el(p[0],p[1],6,4.4,"#3f9a45",(k-2)*14));return s+[[-10,-4],[8,-3],[0,-6]].map(p=>pa(`M${p[0]-3} ${p[1]}Q${p[0]} ${p[1]-5} ${p[0]+3} ${p[1]}Q${p[0]+2} ${p[1]+4} ${p[0]} ${p[1]+5}Q${p[0]-2} ${p[1]+4} ${p[0]-3} ${p[1]}Z`,"#e0243c")+ci(p[0],p[1],.5,"#ffe08a")).join("")};
+D.arti=(i)=>{let s="";for(let a=-70;a<=70;a+=20)s+=bl(0,-4,-90+a*.9,36,6,(a/20)%2?"#8bb08a":"#7aa07a");[[-5,-40],[6,-46]].forEach(p=>s+=st(`M${p[0]} -20L${p[0]} ${p[1]}`,"#7aa07a",2)+ci(p[0],p[1],6,"#8fa860")+ci(p[0],p[1]-1,5,"none",' stroke="#6e8a48" stroke-width="1.2" stroke-dasharray="2 2"'));return s};
+D.gin=(i,o)=>{let s=st("M0 0V-46","#79a94f",2);[-1,1].forEach((l,j)=>{const y=-34-j*3;s+=st(`M0 ${y}L${l*14} ${y-8}`,"#79a94f",1.4)+[-50,-25,0,25,50].map(a=>bl(l*14,y-8,-90+a+(l<0?-12:12),15,3.6,"#4f9d4c")).join("")});
+ s+=[-40,-10,20].map(a=>bl(0,-46,-90+a,15,3.6,"#58a84f")).join("");return s+(o.bc?[[-3,-48],[2,-50],[0,-53],[-4,-52],[4,-47]].map(p=>ci(p[0],p[1],2.1,o.bc)).join(""):"")};
+D.aloe=(i)=>{let s="";for(let a=-80;a<=80;a+=20)s+=bl(0,-4,-90+a*.9,34,5.6,(a/20)%2?"#6eb36a":"#58a560");return s};
+D.head=(i,o)=>{let s="";const k=o.k;
+ if(k==="cab"){[-18,0,18].forEach((x,j)=>s+=el(x,-4,11,6,"#79b058",(j-1)*18));s+=ci(0,-14,14,"#98cf74")+st("M0-27V-2M-8-24Q-13-14-8-4M8-24Q13-14 8-4","#6aa047",1.1)+el(-5,-20,4,2.4,"#fff",-30,' opacity=".25"')}
+ else if(k==="napa"){s+=el(-9,-18,7,20,"#86bf63",-12)+el(9,-18,7,20,"#86bf63",12)+el(0,-22,9,22,"#cfe79b")+st("M0-40V-4M-4-36Q-6-20-3-6M4-36Q6-20 3-6","#a8cf74",1)+el(-5,-40,5,3,"#8fc66a",-20)+el(5,-40,5,3,"#8fc66a",20)}
+ else if(k==="kohl"){for(const a of [-60,-30,0,30,60])s+=st(`M0-16L${Q(Math.sin(a*Math.PI/180)*14)} -32`,"#9cd07a",1.6)+el(Math.sin(a*Math.PI/180)*16,-35,6,3.4,"#5aa14a",a);s+=ci(0,-12,11,o.c||"#bfe28f")+el(-4,-16,3.6,2.4,"#fff",-30,' opacity=".3"')}
+ else if(k==="cauli"){[-18,-9,0,9,18].forEach(a=>s+=bl(0,-6,-90+a*3.2,24,5.4,"#69a94c"));[[0,-14],[-8,-12],[8,-12],[-4,-20],[5,-20],[0,-26],[-12,-17],[12,-17]].forEach(p=>s+=ci(p[0],p[1],6.4,"#f2ecd2"))}
+ else{[-60,-30,0,30,60].forEach(a=>s+=bl(0,-4,-90+a*1.3,22,4.8,"#4f9a45"));s+=st("M0-2V-14","#a5cf7f",4);[[0,-22],[-8,-18],[8,-18],[-4,-28],[5,-28],[0,-32],[-12,-22],[12,-22]].forEach(p=>s+=ci(p[0],p[1],6.4,"#3b8a38")+ci(p[0]-2,p[1]-2,2,"#58aa52",' opacity=".7"'))}
+ return s};
+D.root=(i,o)=>{let s="";for(let k=0;k<7;k++){const a=-90+(k-3)*13;s+=o.fe?st(arc(0,-3,a,34,6,6),o.lc||"#4fae52",1.8)+st(arc(0,-3,a,34,6,6),"#79c97c",5,' stroke-dasharray="1.2 2.4" opacity=".8"'):bl(0,-3,a,26,4.2,o.lc||"#4fae52")}
+ return s+el(0,-1,6.5,3.4,o.c||"#f08a24")+el(-2,-2,2.4,1,"#fff",0,' opacity=".3"')};
+D.ros=(i,o)=>{let s="";const c=o.c||"#8fce6a",c2=o.c2||"#6fb84f";
+ if(o.up){for(let a=-70;a<=70;a+=20)s+=bl(0,-2,-90+a*.8,o.L||34,5.4,(a/20)%2?c:c2);return s+st("M0 -2V-12","#e7f0c8",3)}
+ for(let k=0;k<9;k++){const a=-180+k*22.5;s+=el(Math.cos(a*Math.PI/180)*10,-8+Math.sin(a*Math.PI/180)*3.4,8,10,k%2?c:c2,a+90)}
+ return s+el(0,-10,8,9,c)+el(0,-12,4.6,5,o.c3||"#b5e08e")};
+D.kang=(i)=>{let s="";for(let k=0;k<7;k++){const a=-90+(k-3)*10,x=Math.cos(a*Math.PI/180)*30,y=Math.sin(a*Math.PI/180)*34;s+=st(`M0 0L${Q(x)} ${Q(y)}`,"#8ac26a",1.8)+`<path transform="translate(${Q(x)} ${Q(y)}) rotate(${Q(a+(k%2?-20:20))})" d="M0 0C4-5 11-5 14 0 11 4 4 4 0 0Z" fill="#4aa545"/>`}return s};
+const GB="M0-9C4-6 9-2 9 3 9 8 5 10 0 10-5 10-9 8-9 3-9-2-4-6 0-9Z";
+D.all=(i,o)=>{let s="";
+ if(o.k==="leek"){s+=`<rect x="-3.4" y="-26" width="6.8" height="26" rx="2" fill="#f3f6e8"/>`;for(let a=-60;a<=60;a+=20)s+=bl(0,-24,-90+a*.8,26,4.2,"#4a9b52");return s}
+ if(o.k==="garlic"){for(let a=-50;a<=50;a+=20)s+=bl(0,-6,-90+a,32,2.8,"#6cb35a");return s+pa(GB,"#f6efe0",' transform="translate(-6 -2)" stroke="#dcccaa" stroke-width=".8"')+pa(GB,"#f6efe0",' transform="translate(7 -1)" stroke="#dcccaa" stroke-width=".8"')}
+ if(o.k==="onion"){s+=BL(0,-8,9,8,o.c||"#d9a441",0);for(let a=-30;a<=30;a+=30)s+=st(`M${a*.18} -14Q${a*.4} -28 ${a} -42`,"#5aae50",2.4);return s}
+ const he=o.k==="he",n=he?14:9;
+ for(let k=0;k<n;k++){const x=(k-n/2)*2.4,t=(RN(i+k)-.5)*10,h=30+RN(i*3+k)*14;s+=st(`M${Q(x)} 0L${Q(x+t)} ${Q(-h)}`,he?"#5aa845":"#4ca64c",he?1.5:2.6)+(he?"":st(`M${Q(x)} 0L${Q(x+t*.3)} -11`,"#eef3dc",3.4))}return s};
+D.shrub=(i,o)=>{let s="";
+ if(o.k==="tomato"){s+=st("M0 0V-64","#b08a4a",1.6);for(let k=0;k<7;k++){const y=-6-k*8,l=k%2?-1:1;s+=el(l*8,y,9,4.4,k%2?"#3f8f3f":"#4aa04a",l*-20)}
+  [[8,-14],[-9,-24],[9,-34],[-8,-44],[7,-52]].forEach((p,k)=>s+=ci(p[0],p[1],4.8,k<3?"#e53935":"#7cb342")+ci(p[0]-1.4,p[1]-1.4,1.2,"#fff",' opacity=".4"')+(k<3?ci(p[0]+(p[0]>0?8:-8),p[1]+2,4.4,k===0?"#e53935":"#e8a63a"):""));return s}
+ [[-18,-10],[-6,-6],[8,-8],[18,-12],[-12,-22],[2,-20],[14,-24],[-4,-34],[8,-36]].forEach((p,k)=>s+=el(p[0],p[1],8,5,k%2?"#3d8f3d":"#2f7f35",(k-4)*8));
+ [[-16,-12],[-8,-14],[2,-12],[10,-14],[16,-16],[-10,-26],[4,-28],[12,-30],[-2,-38]].forEach((p,k)=>{const x=p[0],y=p[1];
+  if(o.k==="chili")s+=st(`M${x} ${y}q${k%2?2:-2} 8 ${k%2?4:-3} 14`,k%3?"#d32f2f":"#7cb342",3.2);
+  else if(o.k==="hiem")s+=st(`M${x} ${y+8}l${k%2?2:-2} -9`,k%3?"#e02b20":"#8bc34a",2.6);
+  else if(o.k==="bell")s+=`<rect x="${x-3.6}" y="${y}" width="7.2" height="9.4" rx="2.6" fill="${["#d32f2f","#f2b61e","#58a83e"][k%3]}"/>`+el(x-1.4,y+3,1,2.6,"#fff",0,' opacity=".35"');
+  else if(o.k==="egg")s+=el(x,y+7,3.8,8.4,"#5b2a6e",(k-4)*3)+el(x,y-1,3.2,2,"#4a8a40")+el(x-1.2,y+5,1,3,"#fff",0,' opacity=".3"');
+  else if(o.k==="phao")s+=ci(x,y+4,3.6,k%2?"#f2f0d0":"#9ccc65");
+  else s+=bl(x,y,k%2?-80:-100,9,1.8,"#7fbf4a")});return s};
+D.grass=(i,o)=>{let s="";const n=o.n||11,L=o.L||44;for(let k=0;k<n;k++){const a=-90+(k-n/2)*(o.sp||8)+(RN(i+k)-.5)*6;s+=st(arc((k-n/2)*.8,0,a,L*(.8+RN(i*5+k)*.4),8,o.dr||10),o.c||"#7db843",o.w||2.4)}return s+st("M-6 0H6",o.b||"#d6e8a2",3)};
+D.ginger=(i,o)=>{let s="";for(let k=0;k<5;k++){const x=(k-2)*5,t=(RN(i+k)-.5)*8,h=(o.h||44)+RN(i*3+k)*14;s+=st(`M${x} 0L${Q(x+t)} ${Q(-h)}`,"#b8d58a",2.2);for(let j=0;j<4;j++){const y=-10-j*(h-12)/4,l=j%2?-1:1;s+=bl(x+t*(-y/h),y,l>0?-48:-132,o.ll||17,3.6,o.c||"#66b04c")}}
+ return s+(o.fr?[[-8,-3],[0,-4],[8,-3],[-3,-8]].map(p=>el(p[0],p[1],3.2,4.6,"#a8362a")).join(""):"")};
+D.herb=(i,o)=>{let s="";const c=o.c||"#3f9a45",c2=o.c2||c;
+ [[-18,-6],[-8,-6],[6,-6],[18,-7],[-13,-15],[0,-16],[12,-15],[-6,-25],[7,-26],[0,-34]].forEach((p,k)=>{const r=(RN(i+k)-.5)*70,f=k%2?c:c2;
+  s+=o.lf==="heart"?`<path transform="translate(${p[0]} ${p[1]}) rotate(${Q(r)}) scale(.9)" d="${HEART}" fill="${f}"/>`:o.lf==="round"?ci(p[0],p[1],5,f)+ci(p[0],p[1],4.4,"none",' stroke="#fff" stroke-opacity=".25" stroke-width="1" stroke-dasharray="1.6 1.4"'):o.lf==="lobe"?el(p[0],p[1],3.6,8.2,f,r)+el(p[0]+2,p[1]-1,2,5.4,"#d8dcc8",r,' opacity=".35"'):el(p[0],p[1],4.8,7.6,f,r)});
+ return s+(o.fl?st("M0 -34V-46",o.fl,1.8)+ci(0,-47,2.2,o.fl)+ci(-2,-43,1.6,o.fl):"")};
+D.mush=(i,o)=>{let s="";const k=o.k;
+ if(k==="straw"){[[-10,-8],[0,-12],[10,-7],[-4,-4],[6,-3]].forEach(p=>s+=`<rect x="${p[0]-1.6}" y="${p[1]}" width="3.2" height="9" fill="#efe8d8"/>`+el(p[0],p[1],5.4,6.8,"#8b7e70")+el(p[0]-1.6,p[1]-3,1.8,2.6,"#fff",0,' opacity=".25"'))}
+ else if(k==="oyster"){[[0,-6,0],[-10,-3,-30],[10,-3,30],[0,-14,0]].forEach(p=>s+=`<g transform="translate(${p[0]} ${p[1]}) rotate(${p[2]})">`+pa("M0 0C-10-2-16-10-14-16C-8-20 8-20 14-16 16-10 10-2 0 0Z","#b9b3a5")+st("M0 0L-8-14M0 0L0-17M0 0L8-14","#e9e4d8",.8)+`</g>`)}
+ else if(k==="button"){[[-9,-4],[0,-8],[9,-4],[-3,-1],[5,0]].forEach(p=>s+=`<rect x="${p[0]-2}" y="${p[1]}" width="4" height="7" fill="#f3efe4"/>`+pa(`M${p[0]-6.4} ${p[1]+1}Q${p[0]} ${p[1]-11} ${p[0]+6.4} ${p[1]+1}Z`,"#faf7ee",' stroke="#dcd6c4" stroke-width=".7"'))}
+ else if(k==="shii"){s+=`<rect x="-20" y="-9" width="40" height="9" rx="4" fill="#7a5a3a"/><rect x="-20" y="-9" width="40" height="3" rx="1.5" fill="#99754d"/>`;[[-12,-9],[0,-9],[12,-9],[-6,-3]].forEach(p=>s+=el(p[0],p[1],7,5.4,"#7a4a2a")+st(`M${p[0]-3} ${p[1]-2}l3 2l3-2`,"#e9d3b0",.9))}
+ else{s+=`<rect x="-20" y="-9" width="40" height="9" rx="4" fill="#7a5a3a"/>`;[[-10,-10,-10],[4,-12,6],[14,-8,16]].forEach(p=>s+=`<g transform="translate(${p[0]} ${p[1]}) rotate(${p[2]})">`+pa("M-9 2C-9-9 9-9 9 2Z","#8c2f1f")+st("M-8 1Q0 -3 8 1","#e3a23a",1.6)+`</g>`)}
+ return s};
+/* hoa & cây cảnh */
+D.fl=(i,o)=>{const h=o.h||(34+RN(i)*12),c=o.cs?o.cs[i%o.cs.length]:(o.c||"#e8466a"),cc=o.cc||"#f6c445",y=-h;let s=st(`M0 0Q${Q((RN(i)-.5)*6)} ${Q(-h/2)} 0 ${Q(-h)}`,"#4d9a45",1.8);
+ if(!["glad","tube","rose"].includes(o.t))s+=bl(0,-h*.3,-40,15,3,"#3f8f3f")+bl(0,-h*.45,-140,15,3,"#4a9a45");
+ const ring=(r,w,col,dash)=>`<circle cy="${Q(y)}" r="${r}" fill="none" stroke="${col}" stroke-width="${w}" stroke-dasharray="${dash||"1.8 1.4"}"/>`;
+ switch(o.t){
+  case"daisy":return s+ring(9,5.5,c)+ci(0,y,4.2,cc);
+  case"pom":return s+ring(10,4,c)+ring(6.4,4,o.c2||c,"1.6 1.2")+ci(0,y,3.6,cc);
+  case"sun":return s+ring(13,6,"#f2b705")+ring(8,3,"#e29a05","1.6 1.2")+ci(0,y,7.6,"#6b4423")+ci(0,y,7.6,"none",' stroke="#3e2712" stroke-width="1.2" stroke-dasharray="1 2"');
+  case"lily":return s+[0,60,120,180,240,300].map(a=>bl(0,y,-90+a,14,3.6,c)).join("")+ci(0,y,1.8,cc)+st(`M0 ${y}l-5 -9M0 ${y}l5 -9`,"#c45a1a",1);
+  case"carn":return s+ring(8,5,c,"1.5 1.2")+ci(0,y,5,c)+el(0,y+4,3.4,3,"#4a8a40");
+  case"glad":{s=st(`M0 0V${-h-10}`,"#4d9a45",2)+bl(0,-4,-60,24,3.6,"#3f8f3f")+bl(0,-4,-120,24,3.6,"#3f8f3f");for(let k=0;k<6;k++){const yy=-h+k*5,l=k%2?-1:1;s+=el(l*5,yy,5,3.6,c,l*-30)+ci(l*5,yy,1.4,"#fff",' opacity=".6"')}return s}
+  case"tube":{s=st(`M0 0V${-h-8}`,"#6aa84f",2)+bl(0,-4,-70,24,3.2,"#58a540")+bl(0,-4,-110,24,3.2,"#58a540");for(let k=0;k<6;k++){const yy=-h+k*5,l=k%2?-1:1;s+=bl(l*1.4,yy,l>0?-30:-150,8,2.2,"#fbfbf4")}return s}
+  case"calla":return s+pa(`M0 ${y+4}C-9 ${y} -10 ${y-12} -5 ${y-16}C0 ${y-10} 6 ${y-16} 9 ${y-12}C9 ${y-4} 5 ${y+2} 0 ${y+4}Z`,c)+st(`M0 ${y} V${y-9}`,"#f2c814",2.4);
+  case"bell":return s+[[-6,4],[6,2],[0,-5]].map(p=>pa(`M${p[0]} ${y+p[1]}q-6 -3 -5 -11q5 -6 10 0q1 8 -5 11Z`,c)).join("");
+  case"rose":{s=st(`M0 0V${-h+4}`,"#3f7f3a",1.8);[-1,1].forEach(l=>s+=el(l*7,-h*.4,7,3.8,"#2e7d3a",l*-24)+el(l*8,-h*.6,6,3.4,"#3a8a44",l*-30));return s+ci(0,y,8,c)+ci(0,y,4.6,"none",` stroke="${o.c2||"#8a1a2a"}" stroke-width="1.1" stroke-opacity=".6"`)+st(`M-4 ${y}Q0 ${y-5} 4 ${y}Q0 ${y+5} -3 ${y+2}`,o.c2||"#8a1a2a",1.1,' stroke-opacity=".6"')+el(0,y+8,5,2.6,"#2e7d3a")}
+ }return s};
+D.orchid=(i,o)=>{let s="";const c=o.c||"#f4f0f6",cl=o.cl||"#d6578f";
+ for(const a of[-150,-120,-60,-30])s+=bl(0,-2,a,20,5,"#3f8f48");
+ const bloom=(x,y,r)=>el(x-r*.75,y,r*.8,r*.62,c)+el(x+r*.75,y,r*.8,r*.62,c)+el(x,y-r*.8,r*.46,r*.7,c)+el(x,y+r*.55,r*.42,r*.58,cl)+ci(x,y,r*.2,"#f6d24a");
+ if(o.cut){s+=st("M0 0Q-3 -34 4 -66","#5aa24a",1.8);for(let k=0;k<9;k++){const t=k/9;s+=bloom(Math.sin(t*3)*3+(k%2?4:-4)+3*t,-14-k*6,3.8-k*.15)}return s}
+ s+=st("M0 -4Q-6 -44 26 -62","#5aa24a",2);[[2,-22],[9,-34],[17,-46],[25,-54]].forEach((p,k)=>s+=bloom(p[0],p[1],9-k*1));return s};
+D.pot=(i,o)=>{let s="";const t=o.t;
+ const pot=pa("M-11 0H11L8.4 -16H-8.4Z",o.pc||"#c4693a")+`<rect x="-12" y="-19" width="24" height="5" rx="1.5" fill="${o.pr||"#b05a2e"}"/>`;
+ let top="";const y0=-20;
+ if(t==="succ"){[[0,-6,9,"#8ec6a0"],[0,-3,7,"#7ab992"]].forEach(e=>top+=ci(0,y0+e[1],e[2]+2,e[3]));for(let k=0;k<10;k++){const a=k*36;top+=el(Math.cos(a*Math.PI/180)*6,y0-6+Math.sin(a*Math.PI/180)*3,3.6,5,k%2?"#9bd0ae":"#d98c9c",a+90)}top+=ci(0,y0-6,3,"#e8b4c0")}
+ else if(t==="money"){top+=st(`M-2 -18Q-3 -34 0 -48M2 -18Q3 -34 0 -48M0 -18V-46`,"#8a6a46",2.2)+P7(-10,-52,-20,14,"#3f9d4c")+P7(10,-52,20,14,"#3f9d4c")+P7(0,-62,0,15,"#4aa957")}
+ else if(t==="pothos"){for(let k=0;k<12;k++){const x=-12+k*2.2+(RN(i+k)-.5)*5,y=y0-4-RN(i+k*3)*22;top+=`<path transform="translate(${Q(x)} ${Q(y)}) rotate(${Q((RN(k)-.5)*80)})" d="${HEART}" fill="${k%3?"#3f9a45":"#6cba5a"}"/>`}top+=st("M-12 -16Q-18 -4-14 6","#4a9a45",1.6)+`<path transform="translate(-14 8)" d="${HEART}" fill="#4aa550"/>`}
+ else if(t==="peace"){for(let k=0;k<7;k++){const a=-90+(k-3)*18;top+=el(Math.cos(a*Math.PI/180)*8,y0-14+Math.sin(a*Math.PI/180)*14,5.4,12,"#2f7f3f",a+90)}top+=st(`M-3 ${y0} L-3 ${y0-32}`,"#5aa04a",1.6)+pa(`M-3 ${y0-30}C-9 ${y0-32} -9 ${y0-44} -3 ${y0-48}C3 ${y0-44} 3 ${y0-32} -3 ${y0-30}Z`,"#fbfbf3")+st(`M-3 ${y0-32}V${y0-42}`,"#f2d85a",2)}
+ else if(t==="lucky"){top+=`<rect x="-2.4" y="${y0-26}" width="4.8" height="26" fill="#a98a5a"/>`;for(const a of[-170,-140,-110,-70,-40,-10])top+=st(arc(0,y0-26,a,30,6,a<-100&&a>-170?4:14),"#3f9a45",4)+st(arc(0,y0-26,a,30,6,a<-100&&a>-170?4:14),"#c8dc58",1.2)}
+ else if(t==="snake"){[[-9,36],[-3,46],[4,40],[10,32],[0,30]].forEach((p,k)=>top+=bl(p[0],y0,-90+(k-2)*5,p[1],5,k%2?"#2f7f4a":"#38905a")+st(arc(p[0],y0,-90+(k-2)*5,p[1]*.9,0,0),"#d8dc6a",.9,' opacity=".7"'))}
+ else if(t==="zz"){for(let k=0;k<5;k++){const a=-90+(k-2)*22,x=Math.cos(a*Math.PI/180)*18,y=y0+Math.sin(a*Math.PI/180)*36;top+=st(`M0 ${y0}Q${Q(x*.3)} ${Q(y*.6)} ${Q(x)} ${Q(y)}`,"#5a8a40",1.4);for(let j=0;j<5;j++){const tt=(j+1)/5.5;top+=el(x*tt*.9+(j%2?2:-2),y0+(y-y0)*tt,2.6,3.8,"#2f8f4a",a)}}}
+ else if(t==="rub"){top+=`<rect x="-1.6" y="${y0-40}" width="3.2" height="40" fill="#7a6a4a"/>`;for(let k=0;k<6;k++){const l=k%2?-1:1;top+=el(l*8,y0-8-k*6,10,5.4,"#2a6a3a",l*-30)+el(l*8,y0-8-k*6-1,8,2,"#4f9a5f",l*-30,' opacity=".5"')}top+=bl(0,y0-44,-90,12,2.4,"#c4302b")}
+ else if(t==="kum"){[[0,-34,17],[-12,-26,12],[12,-26,12]].forEach(e=>top+=ci(e[0],y0+e[1]+14,e[2],"#2f9e55"));top+=ci(-4,y0-6,8,"#43b86b",' opacity=".5"');[[-10,-8],[8,-12],[0,-20],[-16,-18],[14,-24],[-4,-2],[6,-2],[-12,-30],[10,-34]].forEach((p,k)=>top+=ci(p[0],y0+p[1]-4,3.2,k%2?"#ff9f1c":"#ff8a00")+ci(p[0]-1,y0+p[1]-5,.9,"#fff",' opacity=".6"'))}
+ else if(t==="bou"){for(let k=0;k<9;k++){const a=-160+k*17,d=arc(0,y0,a,34,10,18);top+=st(d,"#6a8a4a",1.6)}[[-26,-24],[-20,-34],[-8,-40],[8,-38],[20,-32],[26,-20],[-4,-30],[10,-24],[-14,-24],[0,-44]].forEach((p,k)=>{top+=ci(p[0],y0+p[1]+6,4.4,["#d6246e","#e8458a","#b3175a"][k%3])+ci(p[0]+2,y0+p[1]+8,3,["#e8458a","#d6246e","#f06aa8"][k%3])+el(p[0]-5,y0+p[1]+10,4,2.4,"#3f8f3f",-20)})}
+ return top+pot};
+D.rose=(i,o)=>D.fl(i,{...o,t:"rose"});
+/* ===== đồ vật / nông sản sau thu hoạch (đặt trên đất) ===== */
+const PR={
+ sack:(i,o)=>pa("M-26 0Q-30 -28 -20 -46L-14 -50H14L20 -46Q30 -28 26 0Z","#c9a66b")+pa("M-26 0Q-30 -28 -20 -46L-14 -50L-12 0Z","#b08f55",' opacity=".5"')+el(0,-50,16,6,"#fbf5e1")+[...Array(14)].map((_,k)=>ci(-12+RN(k)*24,-50+RN(k+9)*6-3,.9,"#e4d9b8")).join("")+st("M-18-44H18","#8a6a3a",1.4)+st("M-24-20Q0-14 24-20","#a98a52",.9,' stroke-dasharray="2 2"'),
+ mound:(i,o)=>{let s="";const n=o.n||5;for(let r=0;r<n;r++)for(let c=0;c<n-r;c++){const x=(c-(n-r-1)/2)*(o.r*2.1),y=-o.r-r*(o.r*1.75);s+=o.k==="kid"?`<g transform="translate(${Q(x)} ${Q(y)}) rotate(${Q((RN(r*9+c)-.5)*50)})"><path d="M-6 0C-6-5 0-6 5-3 7-1 6 3 3 4 0 5-1 2-3 2-5 3-6 2-6 0Z" fill="#f2e6c9" stroke="#d8c79c" stroke-width=".6"/></g>`:ci(x,y,o.r,o.c)+(o.k==="coco"?ci(x,y,o.r,"none",` stroke="${o.c2}" stroke-width="1.4" stroke-dasharray="1 2"`)+ci(x-2,y-2,1.2,"#3b2a1a")+ci(x+2,y-2,1.2,"#3b2a1a")+ci(x,y+2,1.2,"#3b2a1a"):ci(x-o.r*.3,y-o.r*.3,o.r*.28,"#fff",' opacity=".35"'))}return s},
+ blocks:(i,o)=>{let s="";[[-22,-10],[0,-10],[22,-10],[-11,-28],[11,-28],[0,-46]].forEach((p,k)=>s+=`<rect x="${p[0]-10}" y="${p[1]-9}" width="20" height="18" rx="3" fill="${k%2?"#efe6cc":"#f5eed6"}" stroke="#cdbf96" stroke-width="1"/><path d="M${p[0]-7} ${p[1]-4}H${p[0]+7}" stroke="#d8cba2" stroke-width="1"/>`);return s},
+ basket:(i,o)=>{let s=pa("M-24-24Q-26 0 -14 0H14Q26 0 24-24Z","#b98b4e")+st("M-23-16H23M-22-8H22","#8f6a34",1.2);for(let k=0;k<26;k++){const x=-22+k*1.7,y=-26-RN(k)*8;s+=bl(x,-24,-90+(RN(k+2)-.5)*80,12+RN(k+3)*6,2.4,k%3?"#6dbb4a":"#98d466")}return s},
+ bundle:(i,o)=>{let s="";[[-12,-8],[-4,-10],[4,-8],[12,-10],[-8,-18],[0,-20],[8,-18]].forEach((p,k)=>s+=`<g transform="translate(${p[0]} ${p[1]}) rotate(${(k-3)*3})"><rect x="-26" y="-4" width="52" height="8" rx="4" fill="${k%2?"#a85f2e":"#b86c36"}"/><ellipse cx="-25" cy="0" rx="2.6" ry="4" fill="#6d3a1a"/></g>`);return s+`<rect x="-4" y="-26" width="8" height="26" fill="#c9a66b" opacity=".9"/>`},
+ star:(i,o)=>{let s="";[[-24,-8],[-8,-8],[8,-8],[24,-8],[-16,-20],[0,-20],[16,-20],[-8,-32],[8,-32],[0,-44]].forEach((p,k)=>s+=`<g transform="translate(${p[0]} ${p[1]}) rotate(${k*17}) scale(.62)">${[...Array(8)].map((_,j)=>`<path d="M0 0C-6-8-5-17 0-23 5-17 6-8 0 0Z" fill="#7a3f1d" transform="rotate(${j*45})"/>`).join("")}<circle r="5" fill="#5a2a10"/></g>`);return s},
+ logs:(i,o)=>{let s="";const L=(x,y)=>`<g transform="translate(${x} ${y})"><circle r="12" fill="#c58b57" stroke="#8a5a2e" stroke-width="1.5"/><circle r="7.5" fill="none" stroke="#a8713f" stroke-width="1.2"/><circle r="3" fill="#8a5a2e"/></g>`;[[-26,-12],[0,-12],[26,-12],[-13,-33],[13,-33],[0,-54]].forEach(p=>s+=L(p[0],p[1]));return s},
+ tea:(i,o)=>el(0,-2,22,5,"#000",0,' opacity=".1"')+pa("M-18-26C-22-6-14 0 0 0 14 0 22-6 18-26Z","#f4f0e6",' stroke="#cfc6b0" stroke-width="1"')+el(0,-28,18,5,"#e8e2d2")+pa("M18-18Q32-22 28-8Q26-2 20-4","#f4f0e6",' stroke="#cfc6b0" stroke-width="1"')+pa("M-18-18L-30-26L-26-30L-14-22Z","#f4f0e6",' stroke="#cfc6b0" stroke-width="1"')+el(0,-33,9,3.4,"#e8e2d2")+ci(0,-37,2.6,"#cfc6b0")+pa("M34-8H52L50 0H36Z","#f4f0e6",' stroke="#cfc6b0" stroke-width="1"')+el(43,-8,9,2.4,"#c8b060"),
+ bunch:(i,o)=>{let s="";for(let k=0;k<5;k++){const r=(k-2)*9;s+=`<g transform="rotate(${r})"><path d="M-4.4-8Q0-12 4.4-8L1.6 36Q0 40-1.6 36Z" fill="${o.c||"#f08a24"}"/>`+st("M-3-2H1M-2 8H2M-1 18H2","#c96a0e",1,' opacity=".7"')+`</g>`+bl(0,-8,-90+r*1.4,26,3.6,"#4fae52")}return s}
+};
+const PRM=(k,x,y,s)=>({[0]:x,[1]:y,[2]:s,[3]:0,[5]:PR[k]});
+
+/* ===== giàn leo, đồi chè, ao sen ===== */
+const HG={
+ cuc:k=>el(0,13,3.6,12,"#3f9a45")+ci(0,26,1.8,"#f2c814")+el(-1,8,1,5,"#fff",0,' opacity=".3"'),
+ bau:k=>st("M0-4V2","#6aa84f",1)+ci(0,7,4.8,"#bcdc7e")+ci(0,19,8.6,"#c6e48a")+el(-3,17,2,5,"#fff",0,' opacity=".35"'),
+ kho:k=>el(0,13,3.8,12.5,"#5ea944")+`<ellipse cy="13" rx="3.8" ry="12.5" fill="none" stroke="#3f8a3a" stroke-width="1.4" stroke-dasharray="1 2.2"/>`,
+ muop:k=>el(0,17,3.2,17,"#6cb34b")+st("M-1 2V32M1 2V32","#4a8a3a",.6),
+ bi:k=>el(0,16,9,14,"#8fc07b")+el(0,16,8,12.4,"#e6efe0",0,' opacity=".55"'),
+ dau:k=>{const l=k%2?1:-1;return st(`M0 0q${l*4} 16 ${l} 34`,"#7cc455",1.8)+st(`M3 0q${l*4} 14 ${l*1.4} 30`,"#6bb847",1.6)},
+ susu:k=>pa("M0 0C5 0 5 6 8 12 9 18 5 21 0 21-5 21-9 18-8 12-5 6-5 0 0 0Z","#bfe08a")+st("M0 2V20","#a0c870",.8),
+ nho:k=>{let s="";for(let r=0;r<5;r++)for(let c=0;c<5-r;c++)s+=ci((c-(4-r)/2)*6.4,4+r*5.6,3.3,k%3?"#6a2a8c":"#a3d160")+"";return s},
+ cd:k=>ci(0,8,6.4,"#7b3a8c")+ci(-2,6,1.6,"#fff",' opacity=".4"'),
+ gac:k=>ci(0,10,9,"#e55a1c")+ci(0,10,9,"none",' stroke="#f2a31c" stroke-width="2.4" stroke-dasharray="1 3"')
+};
+const TRELLIS=(kind,c)=>{c=c||{};let s=BG({...c,sun:0,g:"#8a6a42",g2:"#6e5232",fur:"#5d3a21",b1:"#d6ecff",b2:"#eef6e2"});
+ for(let x=60;x<1260;x+=140)s+=`<rect x="${x-3}" y="52" width="6" height="120" fill="#a5834a"/><rect x="${x-3}" y="52" width="2" height="120" fill="#c4a468"/>`;
+ s+=`<rect y="52" width="1200" height="4" fill="#8a6a34"/>`;
+ for(let x=0;x<1230;x+=20)s+=ci(x+RN(x)*8,58+RN(x+3)*8,11+RN(x+5)*6,RN(x+9)>.5?"#3e9448":"#4aa354");
+ for(let k=0;k<27;k++){const x=24+k*45+RN(k)*18;s+=`<g transform="translate(${Q(x)} ${Q(64+RN(k+4)*8)})"><g class="hv-fy" style="--dl:${Q(-RN(k)*3.4)}s;--dy:-2px">${HG[kind](k)}</g></g>`}
+ s+=row(D.ros,{up:1,L:26,c:"#6fb84f",c2:"#5aa642"},166,.9,40,1,500,false);
+ return {b1:"#d6ecff",b2:"#eef6e2",svg:s}};
+const TEA=(c)=>{c=c||{};let s=BG({sun:1,sx:760,h1:"#b9d9c0",h2:"#8fc48e",g:"#94643c",g2:"#7a4d2b"});
+ s+=put(D.tree(1,{sh:"tall",c:["#5a9a4f","#4e8f46"]}),360,112,.6,false,1)+put(D.tree(2,{sh:"tall",c:["#5a9a4f","#4e8f46"]}),860,114,.6,false,2)+put(D.tree(3,{sh:"tall",c:["#4e8f46","#5a9a4f"]}),1090,110,.5,false,3);
+ for(let k=0;k<10;k++){const y=106+k*6.4+k*k*.2,a=9+k*1.5,w=8+k*1.9,P=`Q150 ${Q(y-a)} 300 ${Q(y)}T600 ${Q(y)}T900 ${Q(y)}T1210 ${Q(y)}`;
+  s+=`<path d="M-10 ${Q(y+w*.45)}${P.replace(/(\d+(?:\.\d+)?) (\d+(?:\.\d+)?)/g,(m,x,yy)=>x+" "+Q(+yy+w*.45))}" fill="none" stroke="#1f5e2c" stroke-width="1.6" opacity=".7"/>`
+   +`<path d="M-10 ${Q(y)}${P}" fill="none" stroke="${k%2?"#2a7a37":"#2f8a3c"}" stroke-width="${Q(w*.82)}"/>`
+   +`<path d="M-10 ${Q(y-w*.22)}${P.replace(/(\d+(?:\.\d+)?) (\d+(?:\.\d+)?)/g,(m,x,yy)=>x+" "+Q(+yy-w*.22))}" fill="none" stroke="#7ccf5e" stroke-width="${Q(w*.34)}" stroke-dasharray="12 3" opacity=".9"/>`}
+ return {b1:"#cfe9ff",b2:"#eef6e2",svg:s}};
+const LOTUS=(c)=>{c=c||{};let s=BG({sun:1,sx:760,h1:"#cfdcc8",h2:"#a9cfa8",g:"#5fa9b6",g2:"#4a93a3"});
+ s+=`<path d="M0 132Q300 126 600 132T1200 130V170H0Z" fill="#79bcc8" opacity=".6"/>`;
+ for(let k=0;k<34;k++){const x=RN(k*3)*1200,y=134+RN(k*7)*34,r=22+RN(k+9)*16;s+=el(x,y,r,r*.3,"#58a24f")+el(x,y-1,r*.8,r*.22,"#6dba5f",0,' opacity=".6"')+st(`M${Q(x)} ${Q(y)}L${Q(x+r*.9)} ${Q(y-1)}`,"#3f8a3f",1)}
+ const flower=(x,y,r)=>{let f="";[-62,-32,0,32,62].forEach(a=>f+=bl(x,y,-90+a,r,r*.36,"#f3a1c0"));[-42,-16,16,42].forEach(a=>f+=bl(x,y+1,-90+a,r*.78,r*.3,"#fbd0e0"));return f+el(x,y-2,r*.22,r*.12,"#f2c814")};
+ for(let k=0;k<8;k++){const x=70+k*150+RN(k)*50,h=70+RN(k+4)*34,y=168-h;s+=st(`M${Q(x)} 168Q${Q(x+4)} ${Q(168-h/2)} ${Q(x)} ${Q(y)}`,"#5a9a4a",2.6)+(k%3===1?bl(x,y,-90,22,6,"#f3a1c0")+bl(x,y,-72,19,5,"#f7bcd2"):flower(x,y,26))}
+ for(let k=0;k<5;k++){const x=190+k*220+RN(k+30)*60,h=60+RN(k+14)*30,y=168-h;s+=st(`M${Q(x)} 168L${Q(x)} ${Q(y)}`,"#5a9a4a",2.6)+pa(`M${Q(x-11)} ${Q(y)}H${Q(x+11)}L${Q(x+7)} ${Q(y+13)}Q${Q(x)} ${Q(y+17)} ${Q(x-7)} ${Q(y+13)}Z`,"#b6c957")+[-5,0,5,-2.5,2.5].map((d,q)=>ci(x+d,y+3+(q>2?6:0),1.5,"#7a8a2a")).join("")}
+ return {b1:"#f7e8ee",b2:"#e8f2ea",svg:s}};
+
+/* ===== bảng màu, bố cục, ánh xạ tên cây → cảnh ===== */
+FR.dot=(o,i)=>ci(0,0,2.6,"#fff")+ci(0,0,.8,"#f2c814");
+D.aspa=(i)=>{let s="";for(let k=0;k<6;k++){const x=(k-2.5)*5,h=30+RN(i*5+k)*14;s+=bl(x,0,-90+(k-2.5)*4,h,2.6,"#6aa84f")+el(x+(k-2.5)*.4,-h+1,2.4,4,"#5a9a45")}return s};
+PR.shoot=(i,o)=>{let s="";[[-10,0,.9],[8,0,1],[0,-6,.8]].forEach((p,k)=>s+=`<g transform="translate(${p[0]} ${p[1]}) scale(${p[2]})">`+pa("M-9 0L-4-30Q0-37 4-30L9 0Z","#c9a46a")+st("M-8-6Q0-2 8-6M-6-14Q0-10 6-14M-4-22Q0-18 4-22","#8a6a3a",1)+pa("M-4-30Q0-37 4-30L2-24H-2Z","#7a8f3a")+`</g>`);return s};
+const GOLD={b1:"#fff0bd",b2:"#ffe38f",g:"#a9c85a",g2:"#8eb046",h1:"#dbe6a6",h2:"#c7dc86"};
+const GRASS={b1:"#cfe9ff",b2:"#f4f8e4",g:"#8cc15a",g2:"#74a847"};
+const RED={b1:"#e6efe0",b2:"#d9e8cf",g:"#b3562f",g2:"#964526",h1:"#c7ddc4",h2:"#a8cc9d",fur:"#7c3a1e"};
+const SOIL={b1:"#cfe9ff",b2:"#f4f8e4",g:"#8a5a36",g2:"#6e4528",fur:"#5d3a21"};
+const SAND={b1:"#e6f1ff",b2:"#fbf1d6",g:"#d9c27d",g2:"#c2a862"};
+const WATER={b1:"#e6f1ff",b2:"#eef6e2",g:"#68b2c2",g2:"#4f98a8",h1:"#c3dcc8",h2:"#9fcba0"};
+const NURS={b1:"#fde7ef",b2:"#fff2dc",g:"#7ea84c",g2:"#648f3a",fur:"#5b3d22"};
+const SHED={b1:"#e8efe4",b2:"#d8e4d0",g:"#bdb6aa",g2:"#a69e91"};
+const FOR={b1:"#d6e8d8",b2:"#c3dccb",g:"#5d7f3d",g2:"#4a6a2f",h1:"#a9c9b0",h2:"#8bb598"};
+const RT=[[130,.46,26,.7,0],[148,.72,38,.92,1],[168,1.0,56,1,1]];
+const RM=[[130,.55,30,.7,0],[148,.85,44,.92,1],[168,1.2,64,1,1]];
+const RL=[[131,.9,26,.75,0],[149,1.35,38,.95,1],[170,1.9,58,1,1]];
+const GR=["#2f9e55","#3aae62","#2a9150"],DK=["#1c5e30","#216b37","#2a7d40"],MD=["#2a7436","#2f8540","#3a964a"];
+const F=(d,o,pal,rows,x)=>SCENE(d,o,{...pal,rows,...(x||{})});
+const ORCH=(o,pal,xtra,cen,d)=>SCENE(d||D.tree,o,{...pal,rows:[[128,.32,70,.6,0],[144,.5,100,.85,0]],hero:cen===false?[[260,160,.8,1],[940,160,.8,1]].concat(xtra||[]):[[300,160,.82,1],[900,160,.82,1],[600,168,1.12,1]].concat(xtra||[])});
+const TREE=(sh,c,f,tr)=>({sh,c,f,tr});
+const fr=(k,c,r,n,c2)=>({k,c,r,n,c2});
+const HN=(k,x,y,s)=>[x,y,s,0,0,PR[k]];
+const NM=(x)=>(typeof nz==="function"?nz:s=>String(s).toLowerCase())(x||"");
+
+const MAP=[
+/* ----- nông sản ----- */
+["ns",/^lua/,()=>F(D.rice,{g:1},GOLD,RT,{st:.85})],
+["ns",/^gao/,()=>F(D.rice,{g:1},GOLD,[[132,.5,22,.65,0],[150,.8,34,.85,0]],{hero:[HN("sack",600,170,1.5)]})],
+["ns",/^ngo/,()=>F(D.corn,{},{...GRASS,g:"#9ccb5a",g2:"#7fb043"},RT)],
+["ns",/^san$/,()=>F(D.cassava,{},RED,RM,{hero:[[600,170,1.5,0,0,(i)=>D.pile(i,{k:"cassava"})]]})],
+["ns",/^khoai lang/,()=>F(D.swp,{},SOIL,RL,{hero:[[600,170,1.5,0,0,(i)=>D.pile(i,{k:"sweet"})]]})],
+["ns",/^dau (tuong|xanh|den|do)$/,(n)=>F(D.bean,{lc:"#4caf50",p:/tuong/.test(n)?"#b09a5a":/xanh/.test(n)?"#7cb342":/den/.test(n)?"#3a3a3a":"#a8362a",pl:12,pw:3},GRASS,RM)],
+["ns",/^lac$/,()=>F(D.bean,{lc:"#5aa84a",fl:"#f6c82a",pl:0,pw:0,nop:1},SOIL,RM,{hero:[[600,170,1.5,0,0,(i)=>D.pile(i,{k:"peanut"})]]})],
+["ns",/^mia$/,()=>F(D.cane,{c:"#6e3f7c"},GRASS,RT)],
+["ns",/^vung/,()=>F(D.sesame,{},GRASS,RM)],
+["ns",/^khoai (mon|so)$/,()=>F(D.taro,{},SOIL,RM,{hero:[[600,170,1.5,0,0,(i)=>D.pile(i,{k:"taro"})]]})],
+["ns",/^dong rieng/,()=>F(D.canna,{},GRASS,RM)],
+["ns",/^(hat|ngo) sen/,()=>LOTUS()],
+["ns",/^co voi/,()=>F(D.grass,{n:16,L:78,c:"#6fb23c",w:3,sp:5,dr:16,b:"#bcd88a"},GRASS,RT)],
+/* ----- cây ăn quả ----- */
+["qa",/^sau rieng/,()=>ORCH(TREE("vase",DK,fr("spiky","#a4a63e",0,7)),GRASS)],
+["qa",/^xoai/,()=>ORCH(TREE("wide",MD,{k:"oval",c:"#8fc23f",c2:"#f2c438",n:12}),GRASS)],
+["qa",/^thanh long/,()=>F(D.dragon,{},SAND,[[130,.45,42,.7,0],[148,.7,58,.92,0],[168,1.0,84,1,0]])],
+["qa",/^(buoi|thanh tra)/,(n)=>ORCH(TREE("round",GR,fr("round",/da xanh|nam roi|thanh tra/.test(n)?"#a9d04a":"#c3dc54",9,7)),GRASS)],
+["qa",/^chuoi/,(n)=>ORCH({y:/tieu/.test(n)},GRASS,null,true,D.banana)],
+["qa",/^cam/,(n)=>ORCH(TREE("round",GR,fr("round",/sanh/.test(n)?"#bcbd2c":"#f58a1f",6.5,16)),GRASS)],
+["qa",/^quyt/,()=>ORCH(TREE("round",GR,fr("round","#f5a31f",5.5,18)),GRASS)],
+["qa",/^chanh day/,()=>TRELLIS("cd")],
+["qa",/^chanh/,()=>ORCH(TREE("round",GR,fr("round","#9fd13a",4.6,22)),GRASS)],
+["qa",/^nhan/,()=>ORCH(TREE("round",MD,{k:"cluster",c:"#c9a05c",n:12}),GRASS)],
+["qa",/^vai/,()=>ORCH(TREE("round",MD,{k:"cluster",c:"#d6304a",n:12}),GRASS)],
+["qa",/^chom chom/,()=>ORCH(TREE("round",MD,{k:"cluster",c:"#d63a2a",hair:"#e8473a",n:12}),GRASS)],
+["qa",/^mang cut/,()=>ORCH(TREE("round",DK,fr("round","#5b2150",6.2,14)),GRASS)],
+["qa",/^mit/,()=>ORCH(TREE("wide",DK,{k:"trunk",c:"#8fae43",c2:"#6c8a2c",n:3}),GRASS)],
+["qa",/^dua \(khom\)/,()=>F(D.pineapple,{},SOIL,RL.map(r=>[r[0],r[1]*1.1,r[2]*.9,r[3],0]))],
+["qa",/^dua kho/,()=>F(D.palm,{nut:"#7a5a30"},{...SAND,g:"#c9d68a"},[[128,.32,70,.6,0],[144,.5,100,.85,0],[166,.8,170,1,0]],{hero:[[600,170,1.2,0,0,(i)=>PR.mound(i,{k:"coco",r:8,c:"#8a6a3a",c2:"#5a4326",n:4})]]})],
+["qa",/^dua( xiem)?$/,(n)=>F(D.palm,{nut:/xiem/.test(n)?"#a6c23a":"#7a9a3a"},{...SAND,g:"#bdd47a"},[[128,.32,70,.6,0],[144,.5,100,.85,0],[166,.8,170,1,0]])],
+["qa",/^dua hau/,()=>F(D.gourd,{k:"wm"},SAND,RL)],
+["qa",/^dua luoi/,()=>F(D.gourd,{k:"mel"},SAND,RL)],
+["qa",/^dua le/,()=>F(D.gourd,{k:"yel"},SAND,RL)],
+["qa",/^bo$/,()=>ORCH(TREE("round",DK,{k:"pear",c:"#3d5a2a",n:9}),GRASS)],
+["qa",/^oi$/,()=>ORCH(TREE("round",GR,fr("round","#b9d65a",5.5,12)),GRASS)],
+["qa",/^mang cau xiem/,()=>ORCH(TREE("round",GR,{k:"oval",c:"#6fa83c",c2:"#8cc050",n:8}),GRASS)],
+["qa",/^na \(/,()=>ORCH(TREE("round",GR,fr("round","#9fc86a",6,10)),GRASS)],
+["qa",/^man hau/,()=>ORCH(TREE("round",GR,fr("round","#d9425a",4.6,22)),GRASS)],
+["qa",/^mo$/,()=>ORCH(TREE("round",GR,fr("round","#f2b134",4.6,22)),GRASS)],
+["qa",/^hong gion/,()=>ORCH(TREE("round",MD,fr("round","#f28b1e",6.5,14)),GRASS)],
+["qa",/^du du/,()=>ORCH({},GRASS,null,true,D.papaya)],
+["qa",/^vu sua/,()=>ORCH(TREE("round",DK,fr("round","#7a3a8c",7,9)),GRASS)],
+["qa",/^nho$/,()=>TRELLIS("nho")],
+["qa",/^tao$/,()=>ORCH(TREE("round",GR,fr("round","#d8312f",6,14)),GRASS)],
+["qa",/^le$/,()=>ORCH(TREE("round",GR,{k:"pear",c:"#c9d65a",n:12}),GRASS)],
+["qa",/^sa po che/,()=>ORCH(TREE("round",DK,fr("round","#a77b4a",5.5,14)),GRASS)],
+["qa",/^man \(roi/,()=>ORCH(TREE("round",GR,fr("round","#e8607a",5.5,16)),GRASS)],
+["qa",/^coc$/,()=>ORCH(TREE("round",GR,{k:"oval",c:"#9fd13a",c2:"#d8e060",n:14}),GRASS)],
+["qa",/^sau$/,()=>ORCH(TREE("round",GR,fr("round","#b6c84a",4.6,22)),GRASS)],
+["qa",/^khe$/,()=>ORCH(TREE("round",GR,{k:"star",c:"#e8d54a",n:14}),GRASS)],
+["qa",/^luu$/,()=>ORCH(TREE("round",GR,{k:"round",c:"#c83a2a",r:6,n:10,top:1}),GRASS)],
+["qa",/^me$/,()=>ORCH(TREE("wide",MD,{k:"tam",c:"#8a6a46",n:12}),GRASS)],
+["qa",/^dau tay/,()=>F(D.straw,{},{...SOIL,g:"#3b3a38",g2:"#2c2b2a",fur:"#1f1f1f"},RL)],
+["qa",/^nhot/,()=>ORCH(TREE("round",GR,fr("round","#f6a52a",4.4,22)),GRASS)],
+["qa",/^dao$/,()=>ORCH(TREE("round",GR,fr("round","#f6a08a",5.6,14)),GRASS)],
+["qa",/^so ri/,()=>ORCH(TREE("round",GR,fr("round","#c2183c",3.8,28)),GRASS)],
+["qa",/^bon bon/,()=>ORCH(TREE("round",GR,{k:"cluster",c:"#d6b25c",n:10}),GRASS)],
+/* ----- cây công nghiệp ----- */
+["cn",/^ca phe/,(n)=>F(D.coffee,{},/arabica/.test(n)?{...RED,b1:"#dfe8f2",b2:"#e2ecdc"}:RED,[[130,.5,32,.7,0],[148,.78,48,.92,1],[168,1.1,70,1,1]])],
+["cn",/^(ho|tieu)/,(n)=>F(D.pepper,{},RED,[[130,.46,40,.7,0],[148,.7,60,.92,1],[168,1.0,86,1,1]],/trang/.test(n)?{hero:[[600,170,1.6,0,0,(i)=>PR.mound(i,{k:"pep",r:3.2,c:"#efe6cc",n:7})]]}:{})],
+["cn",/^mu cao su/,()=>F(D.rubber,{},{...RED,g:"#7b5a3a",g2:"#5f4328",fur:"#4a3320"},[[130,.5,44,.7,0],[148,.78,64,.92,0]],{hero:[HN("blocks",600,170,1.5)]})],
+["cn",/^cao su/,()=>F(D.rubber,{},{...RED,g:"#7b5a3a",g2:"#5f4328",fur:"#4a3320"},[[130,.5,44,.7,0],[148,.78,64,.92,1],[168,1.1,92,1,1]])],
+["cn",/^dieu nhan/,()=>ORCH(TREE("wide",MD,{k:"cashew",c:"#f2b134",n:10}),SAND,[[600,170,1.4,0,0,(i)=>PR.mound(i,{k:"kid",r:6,n:5})]],false)],
+["cn",/^(hat )?dieu/,()=>ORCH(TREE("wide",MD,{k:"cashew",c:"#e8452c",n:10}),SAND)],
+["cn",/^che bup/,()=>{const s=TEA();s.svg+=put(PR.basket(1,{}),600,170,1.5,false,1);return s}],
+["cn",/^che thai/,()=>{const s=TEA();s.svg+=put(PR.tea(1,{}),560,170,1.4,false,1);return s}],
+["cn",/^che/,()=>TEA()],
+["cn",/^ca cao/,()=>ORCH(TREE("round",DK,{k:"pod",c:"#f2b61e",c2:"#c9810f",n:4}),GRASS)],
+["cn",/^que$/,()=>ORCH(TREE("dense",["#1f5e32","#27703c","#2f8446"],null,"#8a5a3a"),RED,[HN("bundle",600,170,1.5)],false)],
+["cn",/^hoi$/,()=>ORCH(TREE("dense",["#1f5e32","#27703c","#2f8446"]),RED,[HN("star",600,170,1.5)],false)],
+["cn",/^mac ca/,()=>ORCH(TREE("round",DK,fr("round","#8dbb5a",4.4,18)),RED)],
+["cn",/^thuoc la/,()=>F(D.tobacco,{},SOIL,RM)],
+["cn",/^co dau/,()=>F(D.palm,{nut:"oil"},RED,[[128,.32,70,.6,0],[144,.5,100,.85,0],[166,.8,170,1,0]])],
+["cn",/^coi$/,()=>F(D.reed,{},WATER,RM)],
+["cn",/^dau tam/,()=>F(D.mulb,{},GRASS,RM)],
+["cn",/^bong vai/,()=>F(D.cotton,{},SAND,RM)],
+/* ----- rau màu ----- */
+["rm",/^ca chua/,()=>F(D.shrub,{k:"tomato"},SOIL,RM)],
+["rm",/^dua leo/,()=>TRELLIS("cuc")],
+["rm",/^bau$/,()=>TRELLIS("bau")],
+["rm",/^bi xanh/,()=>TRELLIS("bi")],
+["rm",/^muop dang/,()=>TRELLIS("kho")],
+["rm",/^muop$/,()=>TRELLIS("muop")],
+["rm",/^su su/,()=>TRELLIS("susu")],
+["rm",/^dau (dua|cove|ha lan)/,()=>TRELLIS("dau")],
+["rm",/^bi do/,()=>F(D.gourd,{k:"pump"},SOIL,RL)],
+["rm",/^bi ngoi/,()=>F(D.gourd,{k:"zuc"},SOIL,RL)],
+["rm",/^cai thao/,()=>F(D.head,{k:"napa"},SOIL,RM)],
+["rm",/^bap cai/,()=>F(D.head,{k:"cab"},SOIL,RM)],
+["rm",/^su hao/,()=>F(D.head,{k:"kohl"},SOIL,RM)],
+["rm",/^sup lo/,()=>F(D.head,{k:"cauli"},SOIL,RM)],
+["rm",/^bong cai xanh/,()=>F(D.head,{k:"broc"},SOIL,RM)],
+["rm",/^ca rot/,()=>F(D.root,{fe:1},SOIL,RL,{hero:[[600,170,1.3,0,0,PR.bunch]]})],
+["rm",/^cu cai trang/,()=>F(D.root,{c:"#f4f4ee",lc:"#58b04f"},SOIL,RL)],
+["rm",/^cu den/,()=>F(D.root,{c:"#8e2748",lc:"#9a4a58"},SOIL,RL)],
+["rm",/^khoai tay/,()=>F(D.bean,{lc:"#4a9b45",fl:"#fbfbf0",nop:1},SOIL,RM,{hero:[[600,170,1.5,0,0,(i)=>D.pile(i,{k:"potato"})]]})],
+["rm",/^xa lach xoan/,()=>F(D.ros,{c:"#5fae52",c2:"#7cc062",c3:"#9ad47a"},SOIL,RL)],
+["rm",/^xa lach/,()=>F(D.ros,{c:"#9ad47a",c2:"#7cbf5d"},SOIL,RL)],
+["rm",/^rau muong/,()=>F(D.kang,{},WATER,RM)],
+["rm",/^cai (xanh|cuc)/,()=>F(D.ros,{up:1,c:"#6bb35a",c2:"#58a14c"},SOIL,RL)],
+["rm",/^cai ngot/,()=>F(D.ros,{up:1,c:"#8cc968",c2:"#78b855"},SOIL,RL)],
+["rm",/^cai bo xoi/,()=>F(D.ros,{up:1,c:"#3f8f4a",c2:"#357f40",L:30},SOIL,RL)],
+["rm",/^cai ngong/,()=>F(D.ros,{up:1,c:"#7cc068",c2:"#6bb058",L:40},SOIL,RL)],
+["rm",/^rau den/,()=>F(D.ros,{up:1,c:"#a8365a",c2:"#8f2b4e",L:30},SOIL,RL)],
+["rm",/^rau ma/,()=>F(D.herb,{lf:"round",c:"#6cba5a",c2:"#58a84a"},SOIL,RL)],
+["rm",/^(rau ngot|rau lang|rau day|mong toi)/,(n)=>F(D.herb,{lf:/ngot/.test(n)?"oval":"heart",c:"#4a9f45",c2:"#5fb352"},SOIL,RM)],
+["rm",/^(rau can|can tay)/,()=>F(D.ros,{up:1,c:"#b4d98a",c2:"#9ccb70",L:40},SOIL,RL)],
+["rm",/^mang tay/,()=>F(D.aspa,{},SOIL,RM)],
+["rm",/^ngo ri/,()=>F(D.herb,{lf:"lobe",c:"#6fb85a",c2:"#5aa848"},SOIL,RM)],
+["rm",/^tia to/,()=>F(D.herb,{lf:"oval",c:"#7b3f7e",c2:"#5a9a4a"},SOIL,RM)],
+["rm",/^kinh gioi/,()=>F(D.herb,{lf:"lobe",c:"#5fa84f",c2:"#6fb85a"},SOIL,RM)],
+["rm",/^diep ca/,()=>F(D.herb,{lf:"heart",c:"#4f9a4f",c2:"#6a8a5a",fl:"#f4f0e8"},SOIL,RM)],
+["rm",/^thi la/,()=>F(D.grass,{n:14,L:48,c:"#8cc863",w:1.3,sp:6,dr:8,b:"#cfe5a8"},SOIL,RM)],
+["rm",/^he$/,()=>F(D.all,{k:"he"},SOIL,RM)],
+["rm",/^toi tay/,()=>F(D.all,{k:"leek"},SOIL,RM)],
+["rm",/^hanh la/,()=>F(D.all,{k:"scal"},SOIL,RM)],
+["rm",/^toi$/,()=>F(D.all,{k:"garlic"},SOIL,RM)],
+["rm",/^hanh tim/,()=>F(D.all,{k:"onion",c:"#a64a68"},SOIL,RM,{hero:[[600,170,1.5,0,0,(i)=>D.pile(i,{k:"shallot"})]]})],
+["rm",/^hanh tay/,()=>F(D.all,{k:"onion",c:"#d9a441"},SOIL,RM)],
+["rm",/^ot chuong/,()=>F(D.shrub,{k:"bell"},SOIL,RM)],
+["rm",/^ot hiem/,()=>F(D.shrub,{k:"hiem"},SOIL,RM)],
+["rm",/^ot$/,()=>F(D.shrub,{k:"chili"},SOIL,RM)],
+["rm",/^ca tim/,()=>F(D.shrub,{k:"egg"},SOIL,RM)],
+["rm",/^ca phao/,()=>F(D.shrub,{k:"phao"},SOIL,RM)],
+["rm",/^dau bap/,()=>F(D.shrub,{k:"okra"},SOIL,RM)],
+["rm",/^gung/,()=>F(D.ginger,{},SOIL,RM,{hero:[[600,170,1.5,0,0,(i)=>D.pile(i,{k:"ginger"})]]})],
+["rm",/^nghe/,()=>F(D.ginger,{c:"#4f9a45"},SOIL,RM,{hero:[[600,170,1.5,0,0,(i)=>D.pile(i,{k:"turmeric"})]]})],
+["rm",/^nam rom/,()=>F(D.mush,{k:"straw"},{...SHED,g:"#d9c27a",g2:"#bfa75e"},RL)],
+["rm",/^nam so/,()=>F(D.mush,{k:"oyster"},{...SHED,g:"#d9c27a",g2:"#bfa75e"},RL)],
+["rm",/^nam mo/,()=>F(D.mush,{k:"button"},{...SHED,g:"#6b4a32",g2:"#553a26"},RL)],
+["rm",/^nam dong co/,()=>F(D.mush,{k:"shii"},{...SHED,g:"#8a6a4a",g2:"#70553a"},RL)],
+["rm",/^mang tre/,()=>F(D.bamboo,{},GRASS,[[130,.4,90,.7,0],[148,.55,130,.9,0]],{hero:[HN("shoot",560,170,1.7)]})],
+["rm",/^ngo (bao tu|sen)/,(n)=>/sen/.test(n)?LOTUS():F(D.corn,{},{...GRASS,g:"#9ccb5a",g2:"#7fb043"},RT)],
+/* ----- hoa & cây cảnh ----- */
+["hc",/^hoa hong/,()=>F(D.rose,{cs:["#d8284a","#e8466a","#f7b6c6","#f6c445"]},NURS,RM)],
+["hc",/^hoa cuc/,()=>F(D.fl,{t:"pom",cs:["#f6c92a","#f3ecd0","#f6c92a","#e8a0d0"],cc:"#c9a21a"},NURS,RM)],
+["hc",/^cuc mam xoi/,()=>F(D.fl,{t:"pom",cs:["#f0a8d0","#f6c92a","#c28ae0"],c2:"#e8c0e0",cc:"#f6e08a"},NURS,RM)],
+["hc",/^hoa ly/,()=>F(D.fl,{t:"lily",cs:["#fdfdfb","#f7b6d2","#fdfdfb"],cc:"#e8a02a"},NURS,RM)],
+["hc",/^hoa cam chuong/,()=>F(D.fl,{t:"carn",cs:["#e8466a","#f7b6c6","#fdfdfb"]},NURS,RM)],
+["hc",/^hoa dong tien/,()=>F(D.fl,{t:"daisy",cs:["#f0502a","#f6a02a","#e8466a","#f7d84a"],cc:"#3a2a1a"},NURS,RM)],
+["hc",/^hoa lay on/,()=>F(D.fl,{t:"glad",cs:["#e8466a","#f09a2a"],h:60},NURS,RM)],
+["hc",/^hoa hue/,()=>F(D.fl,{t:"tube",h:56},NURS,RM)],
+["hc",/^lan y$/,()=>F(D.pot,{t:"peace"},SHED,[[132,.7,44,.8,0],[150,1.0,58,.95,0],[169,1.3,80,1,0]])],
+["hc",/^lan (ho diep)/,()=>F(D.orchid,{},SHED,[[132,.7,52,.8,0],[150,1.0,70,.95,0],[169,1.35,96,1,0]])],
+["hc",/^lan (cat canh)/,()=>F(D.orchid,{cut:1,c:"#c06ad6",cl:"#f2d85a"},SHED,[[132,.7,30,.8,0],[150,1.0,40,.95,0],[169,1.4,56,1,0]])],
+["hc",/^lan dendro/,()=>F(D.orchid,{cut:1,c:"#f0a8d0",cl:"#e8c04a"},SHED,[[132,.7,30,.8,0],[150,1.0,40,.95,0],[169,1.4,56,1,0]])],
+["hc",/^lan mokara/,()=>F(D.orchid,{cut:1,c:"#f09a3a",cl:"#c43a2a"},SHED,[[132,.7,30,.8,0],[150,1.0,40,.95,0],[169,1.4,56,1,0]])],
+["hc",/^mai vang/,()=>ORCH({pc:"#f6c928",cc:"#c9791a"},GRASS,null,true,D.bare)],
+["hc",/^hoa dao/,()=>ORCH({pc:"#ffb3c7",cc:"#ff7aa2"},GRASS,null,true,D.bare)],
+["hc",/^quat canh/,()=>F(D.pot,{t:"kum"},SHED,[[132,.7,44,.8,0],[150,1.0,60,.95,0],[169,1.35,86,1,0]])],
+["hc",/^sen da/,()=>F(D.pot,{t:"succ"},SHED,[[132,.7,40,.8,0],[150,1.0,52,.95,0],[169,1.3,72,1,0]])],
+["hc",/^kim ngan/,()=>F(D.pot,{t:"money"},SHED,[[132,.7,44,.8,0],[150,1.0,60,.95,0],[169,1.35,86,1,0]])],
+["hc",/^trau ba/,()=>F(D.pot,{t:"pothos"},SHED,[[132,.7,44,.8,0],[150,1.0,58,.95,0],[169,1.3,80,1,0]])],
+["hc",/^hoa sen/,()=>LOTUS()],
+["hc",/^hoa loa ken/,()=>F(D.fl,{t:"calla",cs:["#fdfdfb"],h:50},NURS,RM)],
+["hc",/^hoa huong duong/,()=>F(D.fl,{t:"sun",h:62},NURS,[[130,.5,30,.7,0],[148,.8,44,.92,1],[168,1.15,66,1,1]])],
+["hc",/^hoa cat tuong/,()=>F(D.fl,{t:"bell",cs:["#a58ad6","#fdfdfb","#f4a6c8"]},NURS,RM)],
+["hc",/^hoa thuoc duoc/,()=>F(D.fl,{t:"pom",cs:["#d6246e","#f06a3a","#f6c445"],cc:"#f6e08a"},NURS,RM)],
+["hc",/^hoa giay/,()=>F(D.pot,{t:"bou"},SHED,[[132,.7,52,.8,0],[150,1.0,70,.95,0],[169,1.35,96,1,0]])],
+["hc",/^mai chieu thuy/,()=>ORCH(TREE("round",["#3a8f4a","#4aa05a","#348442"],{k:"dot",n:46,fy:0}),GRASS)],
+["hc",/^cay phat tai/,()=>F(D.pot,{t:"lucky"},SHED,[[132,.7,44,.8,0],[150,1.0,60,.95,0],[169,1.35,86,1,0]])],
+["hc",/^cay luoi ho/,()=>F(D.pot,{t:"snake"},SHED,[[132,.7,44,.8,0],[150,1.0,60,.95,0],[169,1.35,86,1,0]])],
+["hc",/^cay kim tien/,()=>F(D.pot,{t:"zz"},SHED,[[132,.7,44,.8,0],[150,1.0,60,.95,0],[169,1.35,86,1,0]])],
+["hc",/^cay da bup do/,()=>F(D.pot,{t:"rub"},SHED,[[132,.7,44,.8,0],[150,1.0,60,.95,0],[169,1.35,86,1,0]])],
+/* ----- gia vị & dược liệu ----- */
+["dl",/^sa$/,()=>F(D.grass,{n:11,L:50,c:"#7db843",b:"#d6e8a2"},GRASS,RM)],
+["dl",/^rieng$/,()=>F(D.ginger,{h:52,c:"#58a244"},GRASS,RM,{hero:[[600,170,1.5,0,0,(i)=>D.pile(i,{k:"ginger"})]]})],
+["dl",/^hung que/,()=>F(D.herb,{lf:"oval",c:"#3f9a45",c2:"#4aa84f",fl:"#8e5ab8"},GRASS,RM)],
+["dl",/^la lot/,()=>F(D.herb,{lf:"heart",c:"#3e9a4a",c2:"#4aa856"},GRASS,RM)],
+["dl",/^ngai cuu/,()=>F(D.herb,{lf:"lobe",c:"#8fae7a",c2:"#7a9a6a"},GRASS,RM)],
+["dl",/^dinh lang/,()=>F(D.herb,{lf:"lobe",c:"#4a9f4a",c2:"#5fb352"},GRASS,RM)],
+["dl",/^atiso/,()=>F(D.arti,{},GRASS,RM)],
+["dl",/^nha dam/,()=>F(D.aloe,{},SAND,RM)],
+["dl",/^gac/,()=>TRELLIS("gac")],
+["dl",/^(thao qua|sa nhan)/,(n)=>F(D.ginger,{h:70,ll:22,fr:/thao/.test(n)?1:0,c:"#4f9a45"},FOR,RM)],
+["dl",/^dang sam/,()=>F(D.herb,{lf:"heart",c:"#6cb35a",c2:"#58a44a"},GRASS,RM)],
+["dl",/^(tam that|sam ngoc linh)/,()=>F(D.gin,{bc:"#e0302a"},FOR,RM)],
+["dl",/^ba kich/,()=>F(D.herb,{lf:"heart",c:"#3f8f4a",c2:"#5aa84f"},GRASS,RM)],
+["dl",/^ca gai leo/,()=>F(D.herb,{lf:"lobe",c:"#4a9a4a",c2:"#5aaa55",fl:"#8e5ab8"},GRASS,RM)],
+["dl",/^giao co lam/,()=>F(D.gin,{},FOR,RM)],
+["dl",/^ha thu o/,()=>F(D.herb,{lf:"heart",c:"#4a9a40",c2:"#6a4a4a"},GRASS,RM)],
+["dl",/^linh chi/,()=>F(D.mush,{k:"reishi"},{...SHED,g:"#8a6a4a",g2:"#70553a"},RL)],
+["dl",/^co ngot/,()=>F(D.herb,{lf:"oval",c:"#7cc050",c2:"#5aa840"},GRASS,RM)],
+/* ----- cây lâm nghiệp ----- */
+["lm",/^keo/,()=>F(D.acacia,{},{...RED,h1:"#c7ddc4"},[[128,.38,30,.7,0],[146,.58,44,.9,0],[166,.85,64,1,0]])],
+["lm",/^bach dan/,()=>F(D.tree,{sh:"tall",c:["#5a9a4f","#4e8f46","#6aae5a"]},{...RED,g:"#a9803f",g2:"#8a6a30",fur:"#6a4a20"},[[128,.5,60,.7,0],[148,.75,84,.92,0],[168,1.0,120,1,0]])],
+["lm",/^thong/,()=>F(D.pine,{},FOR,[[128,.4,40,.7,0],[146,.6,56,.9,0],[166,.9,80,1,0]])],
+["lm",/^go cao su/,()=>F(D.rubber,{},{...RED,g:"#7b5a3a",g2:"#5f4328",fur:"#4a3320"},[[130,.5,44,.7,0],[148,.78,64,.92,0]],{hero:[HN("logs",600,170,1.4)]})],
+["lm",/^(tre|luong)$/,()=>F(D.bamboo,{},GRASS,[[130,.5,70,.7,0],[148,.7,100,.9,1],[168,1.0,150,1,1]])],
+["lm",/^may$/,()=>F(D.rattan,{},FOR,RM)],
+["lm",/^do bau/,()=>ORCH(TREE("dense",DK),FOR,[[600,170,1.4,0,0,(i)=>PR.mound(i,{k:"chip",r:5,c:"#4a3224",n:4})]],false)],
+["lm",/^tram/,()=>F(D.melal,{},WATER,[[130,.5,50,.7,0],[148,.75,70,.92,0],[168,1.0,100,1,0]])]
+];
+const FB={
+ ns:()=>F(D.bean,{lc:"#4caf50",p:"#8bc34a"},GRASS,RM),
+ qa:()=>ORCH(TREE("round",GR,fr("round","#ef5b35",6,14)),GRASS),
+ cn:()=>F(D.coffee,{},RED,RM),
+ rm:()=>F(D.ros,{},SOIL,RL),
+ dl:()=>F(D.herb,{lf:"oval"},GRASS,RM),
+ lm:()=>F(D.pine,{},FOR,RM),
+ hc:()=>F(D.fl,{t:"daisy",cs:["#f0502a","#f6a02a","#e8466a","#f7d84a"],cc:"#3a2a1a"},NURS,RM)};
+const pick=(nm,cat)=>{for(const m of MAP)if(m[0]===cat&&m[1].test(nm))return m[2](nm);return FB[cat]?FB[cat]():null};
+
+const sp=v=>{const w=84,h=26,p=3,mn=Math.min(...v),mx=Math.max(...v),rg=mx-mn||1,
+ pt=v.map((n,i)=>[p+i*(w-2*p)/(v.length-1),mx===mn?h/2:h-p-(n-mn)/rg*(h-2*p)]),
+ d="M"+pt.map(a=>Q(a[0])+" "+Q(a[1])).join(" L"),e=pt[pt.length-1];
+ return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><path class="hvl" pathLength="1" d="${d}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle class="hv-pu" cx="${Q(e[0])}" cy="${Q(e[1])}" r="5" fill="currentColor" opacity=".3"/><circle cx="${Q(e[0])}" cy="${Q(e[1])}" r="2.8" fill="currentColor"/></svg>`};
+
+return function(x,h,r){
+ try{
+  const sc=pick(NM(x.name),x.cat);if(!sc)return"";
+  let v=(Array.isArray(h)?h:[]).slice(-14).map(z=>+(Array.isArray(z)?z[1]:z&&z.price)).filter(Number.isFinite);
+  if(v.length<2&&Array.isArray(x.trend))v=x.trend.map(Number).filter(Number.isFinite);
+  let chip="";
+  if(r&&!x.ref&&v.length>1){const a=v[0],b=v[v.length-1],ch=a?(b-a)/a*100:0,k=ch>0?"up":ch<0?"dn":"fl";
+   chip=`<div class="hvs ${k}"><div><small>Xu hướng gần đây</small><b>${sgn(ch)}%</b></div>${sp(v)}</div>`}
+  return `<div class="hv hv-${x.cat}" style="--b1:${sc.b1};--b2:${sc.b2}" role="img" aria-label="Minh họa ${E(x.name)}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${sc.svg}</svg>${chip}</div>`;
+ }catch(e){return""}
+};
+})();
+
 async function viewDetail(a){
  const x0=C.find(i=>i.id===S.id);if(!x0){S.id=null;return viewList()}
  const{p}=sel(),A=DATA[x0.id]||{};let r=p&&px(x0.id,p),nat=false;if(!r){r=px(x0.id,"");nat=!!(p&&r)}
@@ -925,8 +1524,8 @@ async function viewDetail(a){
      </div>` : `<p class="empty">Chưa có lịch sử cập nhật cho sản phẩm này.</p>`}
  </section>`;
 
- main.innerHTML=`<button class="bk" data-act="back">← Quay lại danh sách</button>
- <div class="dh"><span class="tag">${cn?cn[1]:""}</span> <span class="tag">${E(p&&!nat?p:"Toàn quốc")}</span><h2>${E(x.name)}</h2>`+
+ main.innerHTML=`<button class="bk" data-act="back">← Quay lại danh sách</button>${hvHero(x,h,r)}
+ <div class="dh"><span class="tag">${cn?hvIc(x.cat)+cn[1]:""}</span> <span class="tag">${E(p&&!nat?p:"Toàn quốc")}</span><h2>${E(x.name)}</h2>`+
  (r?`
  <!-- TÍNH NĂNG 1: INLINE EDIT -->
  <div class="big" style="display:flex;align-items:center;gap:10px">
